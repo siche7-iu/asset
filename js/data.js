@@ -105,4 +105,105 @@ function buildAssets() {
   return assets;
 }
 
-window.APP_DATA = { assets: buildAssets() };
+// ===== 대시보드 표시용 요약 데이터 =====
+// 화면(이미지)에 보이는 큰 수치들은 운영 시스템 전체 규모를 가정한 "요약 통계"입니다.
+// (원장관리 목록의 샘플 자산 70여 건과는 별개로, 시연 화면을 이미지와 똑같이 보여주기 위한 값)
+var DASHBOARD = {
+  asOf: "오전 09:12",
+  insight: "강원 지역 사업소의 노후 자산 교체 주기가 도래했습니다. 다음 분기 예산 편성 시 유지보수 비용 12.4% 절감이 예상되는 교체 안을 검토하세요.",
+
+  // KPI 6칸
+  kpis: [
+    { label: "총 자산 가치", value: "₩12,405", unit: "억", icon: "trend",
+      badge: "전월 대비 ▲ 1.2%", tone: "red", badgeIcon: "trend" },
+    { label: "전체 자산 수", value: "12,492", unit: "개", icon: "box",
+      badge: "관리중인 자산 수 : 8,421개", tone: "amber" },
+    { label: "고위험 자산", value: "42", unit: "개", icon: "warn",
+      badge: "위험", tone: "red", badgeIcon: "warn" },
+    { label: "점검 예정", value: "128", unit: "개", icon: "clock",
+      badge: "7일 이내 점검 대상", tone: "blue", badgeIcon: "clock" },
+    { label: "유지보수 가동률", value: "98.4", unit: "%",
+      gauge: { pct: 98.4, color: "#16A34A" }, badge: "이번 달 완료 기준", tone: "green", badgeIcon: "check" },
+    { label: "감가상각률(평균)", value: "14.2", unit: "%",
+      gauge: { pct: 14.2, color: "#2563EB" }, badge: "전월 대비 ▼ 0.3%", tone: "blue", badgeIcon: "trend" }
+  ],
+
+  // 노후 위험도 분포 (도넛 + 범례)
+  risk: {
+    centerTotal: "12,492개",
+    centerSub: "자산 가치 2,548억원",
+    segments: [
+      { key: "HIGH",        note: "즉시 교체 필요", count: 1248, label: "1,248개", pct: "9.6%",  color: "#F2426A" },
+      { key: "MEDIUM",      note: "추후 교체 필요", count: 3572, label: "3,572개", pct: "27.3%", color: "#F5B73D" },
+      { key: "LOW",         note: "정상",          count: 7672, label: "7,672개", pct: "59.1%", color: "#3B82F6" },
+      { key: "신규 / 미평가", note: "",             count: 0,    label: "0개",     pct: "0.0%",  color: "#CBD5E1" }
+    ],
+    formula: "* 위험도 산정 기준: 노후도(40%) + 장애이력(30%) + 유지보수비용(20%) + 중요도(10%)"
+  },
+
+  // 교체 시기 도래 자산 (타임라인)
+  timeline: {
+    rows: [
+      { label: "~ 6개월 이내", value: "56억원",  count: "218개",   color: "#EF4444" },
+      { label: "6개월 ~ 1년",  value: "102억원", count: "424개",   color: "#F5B73D" },
+      { label: "1년 ~ 2년",    value: "128억원", count: "606개",   color: "#F97316" },
+      { label: "2년 이후",     value: "426억원", count: "1,912개", color: "#3B82F6" }
+    ],
+    totalCount: "3,160개",
+    totalValue: "712"
+  },
+
+  // 지역별 관리 현황 (지도 마커) — x/y 는 지도 영역 안에서의 위치(%)
+  regions: [
+    { name: "서울", count: "4,218", x: 40, y: 33, active: true,
+      detail: [["전체 자산", "4,218개"], ["고위험 자산", "12개 [HIGH]"], ["점검 예정", "37개 (7일 이내 6개)"],
+               ["계약 만료 임박", "5개"], ["노후 자산(8년+)", "857개"], ["유지보수 가동률", "97.8%"]] },
+    { name: "강원", count: "1,124", x: 73, y: 18,
+      detail: [["전체 자산", "1,124개"], ["고위험 자산", "8개 [HIGH]"], ["점검 예정", "14개 (7일 이내 3개)"],
+               ["계약 만료 임박", "2개"], ["노후 자산(8년+)", "286개"], ["유지보수 가동률", "96.1%"]] },
+    { name: "경상", count: "2,193", x: 79, y: 50,
+      detail: [["전체 자산", "2,193개"], ["고위험 자산", "11개 [HIGH]"], ["점검 예정", "29개 (7일 이내 5개)"],
+               ["계약 만료 임박", "4개"], ["노후 자산(8년+)", "498개"], ["유지보수 가동률", "98.0%"]] },
+    { name: "전라", count: "1,587", x: 32, y: 73,
+      detail: [["전체 자산", "1,587개"], ["고위험 자산", "7개 [HIGH]"], ["점검 예정", "21개 (7일 이내 4개)"],
+               ["계약 만료 임박", "3개"], ["노후 자산(8년+)", "312개"], ["유지보수 가동률", "97.4%"]] },
+    { name: "제주", count: "412", x: 34, y: 92,
+      detail: [["전체 자산", "412개"], ["고위험 자산", "4개 [HIGH]"], ["점검 예정", "6개 (7일 이내 1개)"],
+               ["계약 만료 임박", "1개"], ["노후 자산(8년+)", "115개"], ["유지보수 가동률", "95.6%"]] }
+  ],
+
+  // 위험 자산 TOP 5
+  top5: [
+    { title: "강원 춘천지점 ATM 03호",        sub: "장애 발생 5회 + 사용연수 7년 초과", badge: "심각", tone: "red" },
+    { title: "본사 서버실 서버 12호",          sub: "메모리 오류 반복 + EOL 도래",       badge: "경고", tone: "amber" },
+    { title: "영남 부산지점 네트워크장비 05호", sub: "펌웨어 미지원 + 장애 3회",          badge: "경고", tone: "amber" },
+    { title: "전라 광주지점 ATM 07호",         sub: "부품 단종 + 사용연수 8년 초과",     badge: "경고", tone: "amber" },
+    { title: "경기 수원지점 키오스크 02호",     sub: "디스플레이 불량 반복 + 장애 2회",   badge: "주의", tone: "amber" }
+  ],
+
+  // 최근 이슈 내역
+  issues: [
+    { time: "14:20", title: "경기 용인 지점 CCTV 망 장애 복구...", sub: "현장 점검팀: 김철수 과장" },
+    { time: "11:05", title: "본사 공조 시스템 소음 민원 접수",      sub: "유지보수 업체: (주)그레이엔지니어링" },
+    { time: "09:12", title: "신규 자산 12건 등록 완료 (영남 지역)",  sub: "자산 분류: 사무용 기기" }
+  ],
+
+  // 계약/점검 일정
+  schedule: [
+    { tag: "MAINTENANCE", date: "5/24 (수)", title: "서울 지역 전력 설비 점검",   sub: "대상: 본사 외 3개 지점" },
+    { tag: "CONTRACT",    date: "5/28 (월)", title: "데이터센터 임대 계약 갱신", sub: "협력사: KT 클라우드 서비스" },
+    { tag: "MAINTENANCE", date: "6/2 (금)",  title: "영남 지역 네트워크 장비 점검", sub: "대상: 부산 외 2개 지점" }
+  ],
+
+  // 자산 노후도 분석
+  aging: {
+    bars: [
+      { label: "신규 (0-3년)", pct: 42, color: "#3B82F6" },
+      { label: "보통 (4-7년)", pct: 35, color: "#22D3EE" },
+      { label: "노후 (8년+)",  pct: 23, color: "#22C55E" }
+    ],
+    stats: [["총 노후 자산", "2,068개"], ["분기 교체 권고", "42개"], ["예상 교체 비용", "38.2억원"]]
+  }
+};
+
+window.APP_DATA = { assets: buildAssets(), dashboard: DASHBOARD };

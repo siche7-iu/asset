@@ -5,3 +5,8 @@
 # OS가 만드는 잡파일
 Thumbs.db
 .DS_Store
+
+# Node.js / Playwright
+node_modules/
+test-results/
+playwright-report/

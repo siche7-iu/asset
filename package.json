@@ -1,0 +1,26 @@
+{
+  "name": "asset",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "screenshot": "playwright test --grep @screenshot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siche7-iu/asset.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/siche7-iu/asset/issues"
+  },
+  "homepage": "https://github.com/siche7-iu/asset#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
