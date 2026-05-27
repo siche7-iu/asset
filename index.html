@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NH 고정자산관리 (시연용)</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="layout">
+
+    <!-- ===== 사이드바 ===== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo">NH</span>
+        <div class="brand-text">
+          <strong>고정자산관리</strong>
+          <small>Fixed Asset Management</small>
+        </div>
+      </div>
+
+      <nav id="nav">
+        <div class="nav-group">
+          <div class="nav-group-label">WORKSPACE</div>
+          <button class="nav-item active" data-view="dashboard" data-title="대시보드"><span class="ic">📊</span>대시보드</button>
+          <button class="nav-item" data-view="soon" data-title="AI Agent"><span class="ic">🤖</span>AI Agent</button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-label">자산 관리</div>
+          <button class="nav-item" data-view="list" data-title="원장관리"><span class="ic">📋</span>원장관리</button>
+          <button class="nav-item" data-view="soon" data-title="리스관리"><span class="ic">📑</span>리스관리</button>
+          <button class="nav-item" data-view="soon" data-title="재물조사"><span class="ic">🔎</span>재물조사</button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-label">예산 · 세무</div>
+          <button class="nav-item" data-view="soon" data-title="고정투자예산"><span class="ic">💰</span>고정투자예산</button>
+          <button class="nav-item" data-view="soon" data-title="세무관리"><span class="ic">🧾</span>세무관리</button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-label">결산 · 감사</div>
+          <button class="nav-item" data-view="soon" data-title="결산관리"><span class="ic">📕</span>결산관리</button>
+          <button class="nav-item" data-view="soon" data-title="회계감사자료"><span class="ic">🗂️</span>회계감사자료</button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-label">시스템</div>
+          <button class="nav-item" data-view="soon" data-title="시스템관리"><span class="ic">⚙️</span>시스템관리</button>
+        </div>
+      </nav>
+
+      <div class="side-foot">
+        <b>v0.9.3 · NH Demo Build</b><br>
+        전자결재 · ITSM · ERP · 자산DB · 농협 중앙회 연계<br>
+        <a>고객 지원</a> · <a>로그아웃</a>
+      </div>
+    </aside>
+
+    <!-- ===== 본문 ===== -->
+    <div class="main">
+      <header class="topbar">
+        <div>
+          <span class="page-title" id="page-title">대시보드</span>
+          <span class="page-sub">고정자산관리시스템</span>
+        </div>
+        <div class="topbar-right">
+          <input type="text" class="top-search" id="top-search" placeholder="🔍 자산 통합 검색">
+          <button class="icon-btn" title="알림">🔔</button>
+          <button class="icon-btn" title="내 계정">👤</button>
+          <button class="btn-primary" id="btn-register">+ 자산 등록</button>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <!-- 대시보드 -->
+        <section id="view-dashboard" class="view">
+          <div class="stat-cards">
+            <div class="stat-card"><span class="s-label">전체 자산</span><span class="s-value" id="stat-total">-</span><span class="s-trend up" id="trend-total"></span></div>
+            <div class="stat-card"><span class="s-label">총 취득금액</span><span class="s-value" id="stat-price">-</span><span class="s-trend up">▲ 전년比 +3.4%</span></div>
+            <div class="stat-card"><span class="s-label">사용중</span><span class="s-value" id="stat-inuse">-</span><span class="s-trend flat" id="rate-inuse"></span></div>
+            <div class="stat-card"><span class="s-label">유휴</span><span class="s-value" id="stat-idle">-</span><span class="s-trend down">▼ 점검 필요</span></div>
+            <div class="stat-card"><span class="s-label">수리중</span><span class="s-value" id="stat-repair">-</span><span class="s-trend flat">진행중</span></div>
+            <div class="stat-card"><span class="s-label">폐기예정</span><span class="s-value" id="stat-dispose">-</span><span class="s-trend down">▼ 처분 대상</span></div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card"><h3>분류별 자산 수</h3><div class="bar-chart" id="chart-category"></div></div>
+            <div class="card"><h3>상태별 비율</h3><div class="donut-wrap" id="chart-status"></div></div>
+          </div>
+          <div class="grid-2">
+            <div class="card"><h3>부서별 자산 수</h3><div class="bar-chart" id="chart-department"></div></div>
+            <div class="card"><h3>최근 등록 자산</h3>
+              <table class="mini-table">
+                <thead><tr><th>자산번호</th><th>자산명</th><th>분류</th><th>취득일</th></tr></thead>
+                <tbody id="recent-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 원장관리 (자산 목록/검색) -->
+        <section id="view-list" class="view">
+          <p class="muted" style="margin-bottom:14px">총 <b id="list-count">0</b>건 · 행을 클릭하면 상세 정보를 볼 수 있습니다.</p>
+          <div class="toolbar">
+            <input type="text" id="search-input" placeholder="🔍 자산명, 자산번호, 사용자, 부서로 검색">
+            <select id="filter-category"></select>
+          </div>
+          <div class="card no-pad">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>자산번호</th><th>자산명</th><th>분류</th>
+                  <th>사용부서</th><th>사용자</th><th>취득금액</th><th>상태</th>
+                </tr>
+              </thead>
+              <tbody id="list-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 자산 상세 -->
+        <section id="view-detail" class="view">
+          <button class="back-btn" id="detail-back">← 원장관리로</button>
+          <div class="card" id="detail-content"></div>
+        </section>
+
+        <!-- 준비 중 -->
+        <section id="view-soon" class="view">
+          <div class="soon-box">
+            <div class="soon-ic">🚧</div>
+            <h2 id="soon-title">준비 중인 화면입니다</h2>
+            <p>이 메뉴는 시연용 프로토타입에서 아직 구현되지 않았습니다.<br>현재는 <b>대시보드</b>와 <b>원장관리</b>(자산 목록·상세)를 체험하실 수 있습니다.</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
