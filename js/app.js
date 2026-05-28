@@ -16,8 +16,10 @@
     sectionIds.forEach(function (k) {
       document.getElementById("view-" + k).classList.toggle("active", k === name);
     });
-    window.scrollTo(0, 0);
+    var contentEl = document.querySelector('.content');
+    if (contentEl) contentEl.scrollTop = 0;
     if (name === 'dashboard') triggerDashboardAnimations();
+    if (name === 'ai-agent') triggerAiAgentAnimations();
   }
   function activateSidebar(view) {
     navItems.forEach(function (b) {
@@ -538,14 +540,42 @@
         '<div class="step-meta"><div class="step-title">' + st.title + '</div>' +
         '<div class="step-sub">' + st.sub + '</div></div></li>';
     }).join('');
-    // 채팅 초기 인사
-    document.getElementById('ai-chat-body').innerHTML =
-      '<div class="msg agent">' +
-        '<div class="msg-bubble">안녕하세요. <b>고정자산관리 AI Agent</b>입니다.<br>' +
-        '자산 현황·장애·이력·계약·점검 기준을 종합 분석하여 <b>교체 우선순위와 조치안까지</b> 함께 제시합니다.<br>' +
-        '좌측 추천 질문을 클릭하거나 자연어로 직접 물어보세요.</div>' +
-      '</div>';
+    // 채팅 본문은 비워두고, 화면 진입 시 triggerAiAgentAnimations에서 인사 메시지를 fade-in으로 추가
+    document.getElementById('ai-chat-body').innerHTML = '';
     resetAgentRight();
+  }
+
+  function _appendGreetingBubble() {
+    var body = document.getElementById('ai-chat-body');
+    if (!body) return;
+    // 이미 인사 메시지가 있으면 건너뜀 (중복 방지)
+    if (body.querySelector('.msg.agent.greeting')) return;
+    var div = document.createElement('div');
+    div.className = 'msg agent greeting anim-pop';
+    div.innerHTML = '<div class="msg-bubble">안녕하세요. <b>고정자산관리 AI Agent</b>입니다.<br>' +
+      '자산 현황·장애·이력·계약·점검 기준을 종합 분석하여 <b>교체 우선순위와 조치안까지</b> 함께 제시합니다.<br>' +
+      '좌측 추천 질문을 클릭하거나 자연어로 직접 물어보세요.</div>';
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function triggerAiAgentAnimations() {
+    // 진입할 때마다 카드들이 새로 등장하도록 view 안의 anim 클래스를 강제로 재시작
+    var view = document.getElementById('view-ai-agent');
+    if (!view) return;
+    // 채팅 본문에 진행 중인 분석이 없다면(=새 진입) 인사 메시지를 fade-in으로 추가
+    var body = document.getElementById('ai-chat-body');
+    var hasOngoing = body && (body.querySelector('.msg.user') || body.querySelector('.msg.agent.answer') || body.querySelector('.msg.thinking'));
+    if (!hasOngoing) {
+      // 본문을 비우고 약 0.55초 후 인사 메시지 등장 (우측 패널 등장 직후 자연스럽게)
+      body.innerHTML = '';
+      setTimeout(_appendGreetingBubble, 550);
+    }
+    // 추천/즐겨찾기 항목 stagger 등장을 위해 ready 클래스 재토글
+    view.classList.remove('anim-on');
+    // reflow → 클래스 재부착으로 키프레임 재시작
+    void view.offsetWidth;
+    view.classList.add('anim-on');
   }
 
   function resetAgentRight() {
@@ -840,6 +870,8 @@
       el.classList.remove('selected');
     });
     renderAgentInit();
+    // 인사 메시지 fade-in 재등장
+    setTimeout(_appendGreetingBubble, 200);
   }
 
   function submitAgentInput(e) {
@@ -891,6 +923,81 @@
   } else {
     history.replaceState(null, "", "#/dashboard"); // hashchange 없이 URL만 교체
     _renderView("#/dashboard");
+  }
+})();
+
+// ===== 알림 팝업 =====
+(function () {
+  var btnNotify = document.getElementById('btn-notify');
+  var popup     = document.getElementById('notify-popup');
+  var badge     = document.getElementById('notify-badge');
+  if (!btnNotify || !popup) return;
+
+  var count = 3;
+
+  function updateBadge() {
+    if (!badge) return;
+    if (count <= 0) { badge.hidden = true; }
+    else { badge.hidden = false; badge.textContent = count; }
+  }
+
+  // 팝업 열기 / 닫기
+  btnNotify.addEventListener('click', function (e) {
+    e.stopPropagation();
+    popup.hidden = !popup.hidden;
+  });
+
+  // 팝업 바깥 클릭 → 닫기
+  document.addEventListener('click', function (e) {
+    if (!popup.hidden && !popup.contains(e.target) && e.target !== btnNotify) {
+      popup.hidden = true;
+    }
+  });
+
+  // 팝업 내부 버튼 처리
+  popup.addEventListener('click', function (e) {
+    e.stopPropagation();
+
+    // 해제 / 지우기
+    var actBtn = e.target.closest('.np-act-btn');
+    if (actBtn) {
+      var idx    = actBtn.dataset.idx;
+      var action = actBtn.dataset.action;
+      var item   = document.getElementById('np-item-' + idx);
+      if (action === 'delete') {
+        var div = document.getElementById('np-div-' + idx);
+        if (div) div.remove();
+        if (item) item.remove();
+        count = Math.max(0, count - 1);
+        updateBadge();
+      } else if (action === 'dismiss') {
+        if (item) {
+          item.classList.remove('np-item-focused');
+          var btnsRow = item.querySelector('.np-item-btns');
+          if (btnsRow) btnsRow.remove();
+        }
+        count = Math.max(0, count - 1);
+        updateBadge();
+      }
+      return;
+    }
+
+    // 더보기 / 전체 알림 보기 → 팝업 닫기
+    if (e.target.closest('.np-more-btn') || e.target.closest('.np-view-all')) {
+      popup.hidden = true;
+    }
+  });
+
+  // 모두 지우기
+  var clearAllBtn = document.getElementById('np-clear-all');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var body = document.getElementById('np-body');
+      if (body) body.innerHTML = '<div class="np-empty">새 알림이 없습니다</div>';
+      count = 0;
+      updateBadge();
+    });
   }
 })();
 

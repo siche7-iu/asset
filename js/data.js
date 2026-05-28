@@ -206,4 +206,237 @@ var DASHBOARD = {
   }
 };
 
-window.APP_DATA = { assets: buildAssets(), dashboard: DASHBOARD };
+// ===== AI Agent 시연용 데이터 =====
+// 본점영업부 노후 PC 5건 (시나리오 1)
+var AI_AGENT_PC_LIST = [
+  { id: 'AST-2020-0142', name: '본점영업부 데스크탑PC 01호',
+    category: '데스크탑', model: 'HP 프로데스크 400 G6', department: '본점영업부',
+    owner: '김민수 대리', location: '본점 3F 사무실A', status: '교체권고',
+    acquireDate: '2020-03-15', price: 1250000, usedYears: 6.2, statusTone: 'red',
+    history: [
+      { date: '2020-03-15', type: '등록', detail: '본점영업부 배정 / 신규 취득 등록' },
+      { date: '2024-06-10', type: '이동', detail: '사무실B → 사무실A 이동' },
+      { date: '2025-09-05', type: '수리', detail: 'HDD 교체 (SSD 256GB)' },
+      { date: '2026-03-12', type: '점검', detail: 'OS 패치 적용 및 정기 점검' }
+    ],
+    aiNote: '사용연수가 내용연수(5년)를 초과했고 최근 6개월 내 수리 1회 발생. 교체 권고.'
+  },
+  { id: 'AST-2020-0143', name: '본점영업부 데스크탑PC 02호',
+    category: '데스크탑', model: '델 옵티플렉스 7010', department: '본점영업부',
+    owner: '이서연 사원', location: '본점 3F 사무실A', status: '점검필요',
+    acquireDate: '2020-08-22', price: 1180000, usedYears: 5.8, statusTone: 'amber',
+    history: [
+      { date: '2020-08-22', type: '등록', detail: '본점영업부 배정 / 신규 취득 등록' },
+      { date: '2025-02-18', type: '수리', detail: '전원 어댑터 교체' },
+      { date: '2026-04-30', type: '실사', detail: '연 1회 정기 자산 실사 확인' }
+    ],
+    aiNote: '사용연수 5.8년으로 내용연수 도래. 1회 수리 이력으로 점검 후 교체 검토.'
+  },
+  { id: 'AST-2019-0089', name: '본점영업부 노트북 03호',
+    category: '노트북', model: 'LG 그램 14', department: '본점영업부',
+    owner: '박지훈 대리', location: '본점 3F 사무실B', status: '교체권고',
+    acquireDate: '2019-11-04', price: 1620000, usedYears: 6.5, statusTone: 'red',
+    history: [
+      { date: '2019-11-04', type: '등록', detail: '본점영업부 배정 / 신규 취득 등록' },
+      { date: '2023-05-10', type: '수리', detail: '배터리 교체' },
+      { date: '2025-08-22', type: '수리', detail: '키보드 교체' }
+    ],
+    aiNote: '사용연수 6.5년으로 내용연수 1.5년 초과. 수리 이력 2회. 즉시 교체 우선순위.'
+  },
+  { id: 'AST-2020-0150', name: '본점영업부 데스크탑PC 04호',
+    category: '데스크탑', model: '삼성 DB400P', department: '본점영업부',
+    owner: '최예린 사원', location: '본점 4F 회의실B', status: '점검필요',
+    acquireDate: '2020-12-01', price: 1150000, usedYears: 5.5, statusTone: 'amber',
+    history: [
+      { date: '2020-12-01', type: '등록', detail: '본점영업부 배정 / 신규 취득 등록' },
+      { date: '2026-01-15', type: '점검', detail: '정기 점검 / 이상 없음' }
+    ],
+    aiNote: '사용연수 5.5년 내용연수 도래. 수리 이력 없음. 점검 후 교체 일정 수립 권고.'
+  },
+  { id: 'AST-2019-0091', name: '본점영업부 노트북 05호',
+    category: '노트북', model: 'HP 엘리트북 840', department: '본점영업부',
+    owner: '정우진 대리', location: '본점 3F 사무실A', status: '교체권고',
+    acquireDate: '2019-06-20', price: 1750000, usedYears: 6.8, statusTone: 'red',
+    history: [
+      { date: '2019-06-20', type: '등록', detail: '본점영업부 배정 / 신규 취득 등록' },
+      { date: '2024-09-12', type: '수리', detail: '메인보드 부분 수리' }
+    ],
+    aiNote: '사용연수 6.8년으로 내용연수 크게 초과. 메인보드 수리 이력. 즉시 교체 우선순위.'
+  }
+];
+
+// 본점영업부 보험 만료 임박 차량 6건 (시나리오 2)
+var AI_AGENT_VEHICLE_LIST = [
+  { id: 'AST-2021-0205', name: '본점영업부 영업차량 3호',
+    category: '차량', model: '그랜저 IG 2.5 가솔린', department: '본점영업부',
+    vehicleNo: '56다 1234', owner: '한가람 과장', location: '본점 지하1F 주차장',
+    status: 'D-7 만료임박', statusTone: 'red',
+    acquireDate: '2021-08-15', price: 38500000, dDay: 7,
+    insurance: { company: 'KB손해보험', policyNo: 'KB-2025-78901',
+      coverage: '종합 (대인무한·대물 10억·자차)',
+      startDate: '2025-06-07', endDate: '2026-06-07',
+      annualPremium: 1820000, autoRenew: false },
+    history: [
+      { date: '2021-08-15', type: '취득', detail: '신규 구입 / 본점영업부 배정' },
+      { date: '2023-06-07', type: '갱신', detail: 'KB손해보험 종합 갱신' },
+      { date: '2024-06-07', type: '갱신', detail: 'KB손해보험 종합 갱신' },
+      { date: '2025-06-07', type: '갱신', detail: 'KB손해보험 종합 갱신' }
+    ],
+    aiNote: '보험 만료까지 7일. 자동 갱신 미설정. D-7 이내 최우선 갱신 처리 필요.'
+  },
+  { id: 'AST-2022-0118', name: '본점영업부 영업차량 1호',
+    category: '차량', model: '쏘나타 DN8 2.0 가솔린', department: '본점영업부',
+    vehicleNo: '12가 3456', owner: '김민수 대리', location: '본점 지하1F 주차장',
+    status: 'D-12 만료임박', statusTone: 'red',
+    acquireDate: '2022-05-10', price: 28500000, dDay: 12,
+    insurance: { company: '삼성화재', policyNo: 'SS-2025-12345',
+      coverage: '종합 (대인무한·대물 5억·자차)',
+      startDate: '2025-06-12', endDate: '2026-06-12',
+      annualPremium: 1250000, autoRenew: false },
+    history: [
+      { date: '2022-05-10', type: '취득', detail: '신규 구입 / 본점영업부 배정' },
+      { date: '2024-06-12', type: '갱신', detail: '삼성화재 종합 갱신' },
+      { date: '2025-06-12', type: '갱신', detail: '삼성화재 종합 갱신' },
+      { date: '2025-11-20', type: '사고', detail: '경미한 접촉 (자차 처리)' }
+    ],
+    aiNote: '보험 만료까지 12일. 자동 갱신 미설정. 만기 공백 위험. 즉시 갱신 권고.'
+  },
+  { id: 'AST-2022-0119', name: '본점영업부 영업차량 2호',
+    category: '차량', model: 'K5 3세대 2.0 LPG', department: '본점영업부',
+    vehicleNo: '34나 7890', owner: '오세진 사원', location: '본점 지하1F 주차장',
+    status: 'D-19 만료', statusTone: 'amber',
+    acquireDate: '2022-09-03', price: 26800000, dDay: 19,
+    insurance: { company: '현대해상', policyNo: 'HD-2025-23456',
+      coverage: '종합 (대인무한·대물 5억·자차)',
+      startDate: '2025-06-19', endDate: '2026-06-19',
+      annualPremium: 1180000, autoRenew: true },
+    history: [
+      { date: '2022-09-03', type: '취득', detail: '신규 구입 / 본점영업부 배정' },
+      { date: '2024-06-19', type: '갱신', detail: '현대해상 종합 갱신' },
+      { date: '2025-06-19', type: '갱신', detail: '현대해상 종합 갱신' }
+    ],
+    aiNote: '보험 만료까지 19일. 자동 갱신 설정됨. 갱신 예정 보험료 사전 확인 권고.'
+  },
+  { id: 'AST-2022-0220', name: '본점영업부 임원차량 1호',
+    category: '차량', model: '제네시스 G80 3.5', department: '본점영업부',
+    vehicleNo: '78라 5678', owner: '윤다은 차장', location: '본점 지하1F 주차장',
+    status: 'D-22 만료', statusTone: 'amber',
+    acquireDate: '2022-11-20', price: 72500000, dDay: 22,
+    insurance: { company: 'DB손해보험', policyNo: 'DB-2025-34567',
+      coverage: '종합 (대인무한·대물 10억·자차·자손)',
+      startDate: '2025-06-22', endDate: '2026-06-22',
+      annualPremium: 2480000, autoRenew: true },
+    history: [
+      { date: '2022-11-20', type: '취득', detail: '신규 구입 / 본점영업부 임원배정' },
+      { date: '2024-06-22', type: '갱신', detail: 'DB손해보험 종합 갱신' },
+      { date: '2025-06-22', type: '갱신', detail: 'DB손해보험 종합 갱신' }
+    ],
+    aiNote: '보험 만료까지 22일. 자동 갱신 설정됨. 임원차량 — 보장 범위 재검토 권고.'
+  },
+  { id: 'AST-2023-0114', name: '본점영업부 리스차량 1호',
+    category: '차량', model: '카니발 KA4 9인승', department: '본점영업부',
+    vehicleNo: '90마 3456', owner: '장현우 과장', location: '본점 지하1F 주차장',
+    status: 'D-25 만료', statusTone: 'amber',
+    acquireDate: '2023-02-08', price: 41800000, dDay: 25,
+    insurance: { company: 'KB손해보험', policyNo: 'KB-2025-45678',
+      coverage: '종합 (대인무한·대물 5억·자차)',
+      startDate: '2025-06-25', endDate: '2026-06-25',
+      annualPremium: 1340000, autoRenew: true },
+    history: [
+      { date: '2023-02-08', type: '취득', detail: '리스 계약 / 본점영업부 배정' },
+      { date: '2024-06-25', type: '갱신', detail: 'KB손해보험 종합 갱신' },
+      { date: '2025-06-25', type: '갱신', detail: 'KB손해보험 종합 갱신' }
+    ],
+    aiNote: '보험 만료까지 25일. 자동 갱신 설정됨. 리스 계약 종료일 별도 확인 권고.'
+  },
+  { id: 'AST-2022-0121', name: '본점영업부 영업차량 4호',
+    category: '차량', model: '아반떼 CN7 1.6', department: '본점영업부',
+    vehicleNo: '11바 6789', owner: '임수아 사원', location: '본점 지하1F 주차장',
+    status: 'D-28 만료', statusTone: 'blue',
+    acquireDate: '2022-12-15', price: 21500000, dDay: 28,
+    insurance: { company: '메리츠화재', policyNo: 'MR-2025-56789',
+      coverage: '종합 (대인무한·대물 3억·자차)',
+      startDate: '2025-06-28', endDate: '2026-06-28',
+      annualPremium: 980000, autoRenew: true },
+    history: [
+      { date: '2022-12-15', type: '취득', detail: '신규 구입 / 본점영업부 배정' },
+      { date: '2024-06-28', type: '갱신', detail: '메리츠화재 종합 갱신' },
+      { date: '2025-06-28', type: '갱신', detail: '메리츠화재 종합 갱신' }
+    ],
+    aiNote: '보험 만료까지 28일. 자동 갱신 설정됨. 정상 처리 가능.'
+  }
+];
+
+var AI_AGENT = {
+  suggestions: [
+    { icon: '🔍', text: '본점영업부 자산 중에 5년 이상 사용한 노후 PC 목록 보여줘' },
+    { icon: '🛡', text: '본점영업부에서 보험 만료 예정인 차량 목록 조회해줘' },
+    { icon: '🏧', text: 'ATM 장비가 빈번하게 정지 알려줘' },
+    { icon: '💰', text: '이번 분기 교체 예산 예상해줘' },
+    { icon: '📅', text: '다음달 점검 일정 보여줘' },
+    { icon: '📝', text: '노후 장비 현황 보고서 작성해줘' }
+  ],
+  favorites: [
+    { text: '본점 서버실 노후도 점검' },
+    { text: '지점별 ATM 장애율 비교' },
+    { text: '분기 차량 보험 만기 예측' },
+    { text: '감사 대응 점검 가능 자산' }
+  ],
+  steps: [
+    { title: '질의 이해',         sub: '분류·범위·지표 추출' },
+    { title: '자산 데이터 조회',   sub: '원장·이력·태그' },
+    { title: '위험도 분석',       sub: '노후도·장애율·비용' },
+    { title: '정책 적용',         sub: '감가·내용연수·교체기준' },
+    { title: '조치안 생성',       sub: '교체·임대·유지 비용 비교' },
+    { title: '출력 정리',         sub: '분석·진단·조치안' }
+  ],
+  scripts: {
+    '본점영업부 자산 중에 5년 이상 사용한 노후 PC 목록 보여줘': {
+      reply: '본점영업부 PC중에서 5년 이상 사용한 노후 PC 목록을 보여드릴께요',
+      thinkingSteps: ['자산 데이터 조회', '정책 기준 검토'],
+      resultType: 'pc',
+      intro: '본점영업부 운영 PC <b>31대</b> 중 <b>1,247건</b>의 자산 이력과 ITSM <b>1건</b>의 점검 일정을 분석한 결과 다음과 같은 조치가 필요합니다.',
+      meta: '평균 사용 <b>5.2년</b> · HDD→SSD 미전환 <b>7대</b> · OS 지원 종료 <b>1대</b>',
+      actionText: '일괄 교체 시 → 노후화 <b>30%</b> 해소 / 임대 전환 시 <b>20%</b> 단가 절감 / 단순 점검 추가 항목 가능',
+      assets: AI_AGENT_PC_LIST,
+      relatedChips: [
+        { label: '본점영업부 데스크탑', count: '12대' },
+        { label: '본점영업부 노트북',   count: '6대' },
+        { label: '본점영업부 모니터',   count: '13대' },
+        { label: '강남영업소 PC',       count: '25대' },
+        { label: '강남영업소 노트북',   count: '4대' }
+      ],
+      riskDist: { high: 6, medium: 5, low: 20 },
+      cost: { value: '2,160만원', sub: '노후 PC 32대 × 87만원 × 할인 0.7' },
+      actions: ['우선 5대 교체 결재 상신', '4대 임대 전환 검토', '점검 일정 자동 등록'],
+      buttons: [
+        { label: '📑 노후 PC 자산이력 보기', style: 'outline', action: 'history' },
+        { label: '🛠 ITSM 조치 등록',        style: 'primary', action: 'itsm' }
+      ]
+    },
+    '본점영업부에서 보험 만료 예정인 차량 목록 조회해줘': {
+      reply: '본점영업부 자동차 보험중에서 1개월내 보험 만료 예정인 목록을 조회할께요.',
+      thinkingSteps: ['보험 계약 조회', '만기 기준 검토'],
+      resultType: 'vehicle',
+      intro: '본점영업부 운영 차량 <b>24대</b> 중 향후 1개월 내 보험이 만료되는 차량은 총 <b>6대</b>입니다. 그중 자동 갱신 미설정 <b>2건</b>은 만기 공백 위험이 있어 즉시 조치가 필요합니다.',
+      meta: '평균 잔여 <b>14.2일</b> · 자동갱신 미설정 <b>2건</b> · D-7 이내 <b>1건</b>',
+      actionText: '6건 일괄 갱신 시 → 보험료 <b>8%</b> 절감 / 개별 갱신은 표준 단가 적용 / D-7 이내 1건은 자동갱신 우선 설정 권고',
+      assets: AI_AGENT_VEHICLE_LIST,
+      relatedChips: [
+        { label: '본점영업부 영업차량', count: '6대' },
+        { label: '본점영업부 임원차량', count: '2대' },
+        { label: '본점영업부 리스차량', count: '4대' },
+        { label: '자동갱신 미설정',     count: '2대' }
+      ],
+      riskDist: { high: 1, medium: 3, low: 2 },
+      cost: { value: '7,500만원', sub: '차량 6대 × 평균 125만원, 일괄 갱신 8% 절감 시 6,900,000원' },
+      actions: ['6건 일괄 갱신', '자동갱신 미설정 2건 우선 설정', '견적 3사 비교 후 확정'],
+      buttons: [
+        { label: '📑 차량 자산이력 보기',  style: 'outline', action: 'history' },
+        { label: '📝 보험 갱신 결재 상신', style: 'primary', action: 'approval' }
+      ]
+    }
+  }
+};
+
+window.APP_DATA = { assets: buildAssets(), dashboard: DASHBOARD, aiAgent: AI_AGENT };
