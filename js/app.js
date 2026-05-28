@@ -320,7 +320,7 @@
 
     var searchInput = document.getElementById("search-input");
 
-    applyFilter = function () {
+    applyFilter = window._assetApplyFilter = function () {
       var q = searchInput.value.trim();
       var cat = select.value;
       var filtered = assets.filter(function (a) {
@@ -422,3 +422,57 @@
     _renderView("#/dashboard");
   }
 })();
+
+// ===== 자산 등록 모달 =====
+function openRegisterModal() {
+  document.getElementById('register-modal').classList.add('open');
+  document.getElementById('reg-name').focus();
+}
+function closeRegisterModal() {
+  var modal = document.getElementById('register-modal');
+  modal.classList.remove('open');
+  ['reg-name','reg-model','reg-owner','reg-location','reg-date','reg-price'].forEach(function(id) {
+    document.getElementById(id).value = '';
+    document.getElementById(id).style.borderColor = '';
+  });
+  ['reg-category','reg-department','reg-status'].forEach(function(id) {
+    document.getElementById(id).selectedIndex = 0;
+    document.getElementById(id).style.borderColor = '';
+  });
+}
+function saveNewAsset() {
+  var name = document.getElementById('reg-name').value.trim();
+  var category = document.getElementById('reg-category').value;
+  var dept = document.getElementById('reg-department').value;
+  var valid = true;
+  [['reg-name', name], ['reg-category', category], ['reg-department', dept]].forEach(function(pair) {
+    var el = document.getElementById(pair[0]);
+    if (!pair[1]) { el.style.borderColor = '#EF4444'; valid = false; }
+    else { el.style.borderColor = ''; }
+  });
+  if (!valid) return;
+  var assets = window.APP_DATA.assets;
+  var lastNum = assets.reduce(function(max, a) {
+    var m = a.id.match(/AST-\d{4}-(\d+)/);
+    return m ? Math.max(max, parseInt(m[1])) : max;
+  }, 0);
+  var year = new Date().getFullYear();
+  var newId = 'AST-' + year + '-' + String(lastNum + 1).padStart(4, '0');
+  var newAsset = {
+    id: newId,
+    name: name,
+    category: category,
+    model: document.getElementById('reg-model').value.trim() || '-',
+    department: dept,
+    owner: document.getElementById('reg-owner').value.trim() || '-',
+    location: document.getElementById('reg-location').value.trim() || '-',
+    status: document.getElementById('reg-status').value,
+    acquireDate: document.getElementById('reg-date').value || new Date().toISOString().slice(0,10),
+    price: parseInt(document.getElementById('reg-price').value) || 0,
+    history: [{ date: new Date().toISOString().slice(0,10), type: '등록', detail: '자산 신규 등록' }]
+  };
+  assets.unshift(newAsset);
+  closeRegisterModal();
+  location.hash = '#/list';
+  if (window._assetApplyFilter) { window._assetApplyFilter(); }
+}
