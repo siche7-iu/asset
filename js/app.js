@@ -17,6 +17,7 @@
       document.getElementById("view-" + k).classList.toggle("active", k === name);
     });
     window.scrollTo(0, 0);
+    if (name === 'dashboard') triggerDashboardAnimations();
   }
   function activateSidebar(view) {
     navItems.forEach(function (b) {
@@ -131,16 +132,19 @@
     return '<svg class="kpi-gauge" viewBox="0 0 56 56">' +
       '<circle cx="28" cy="28" r="24" fill="none" stroke="#EEF1F5" stroke-width="6"/>' +
       '<circle cx="28" cy="28" r="24" fill="none" stroke="' + color + '" stroke-width="6" stroke-linecap="round"' +
-      ' stroke-dasharray="' + len + ' ' + (c - len) + '" transform="rotate(-90 28 28)"/></svg>';
+      ' stroke-dasharray="0 ' + c.toFixed(2) + '"' +
+      ' data-len="' + len.toFixed(2) + '" data-circ="' + c.toFixed(2) + '"' +
+      ' transform="rotate(-90 28 28)"/></svg>';
   }
 
   function renderKpis() {
-    document.getElementById("kpi-row").innerHTML = DASH.kpis.map(function (k) {
+    document.getElementById("kpi-row").innerHTML = DASH.kpis.map(function (k, i) {
       var bi = k.badgeIcon ? icon(k.badgeIcon) : "";
       var main = '<div class="kpi-main' + (k.gauge ? " with-gauge" : "") + '">' +
         (k.gauge ? gaugeSvg(k.gauge.pct, k.gauge.color) : "") +
         '<span class="kpi-value">' + k.value + (k.unit ? '<span class="u">' + k.unit + '</span>' : "") + '</span></div>';
-      return '<div class="kpi-card"><div class="kpi-label">' + k.label + '</div>' + main +
+      return '<div class="kpi-card" style="--card-delay:' + (0.08 + i * 0.04).toFixed(2) + 's">' +
+        '<div class="kpi-label">' + k.label + '</div>' + main +
         '<span class="kpi-badge ' + k.tone + '">' + bi + k.badge + '</span></div>';
     }).join("");
   }
@@ -286,11 +290,59 @@
     document.getElementById("aging-bars").innerHTML = a.bars.map(function (b) {
       return '<div class="ab-row"><div class="ab-top"><span class="ab-label">' + b.label +
         '</span><span class="ab-pct">' + b.pct + '%</span></div>' +
-        '<div class="ab-track"><div class="ab-fill" style="width:' + b.pct + '%;background:' + b.color + '"></div></div></div>';
+        '<div class="ab-track"><div class="ab-fill" data-pct="' + b.pct + '" style="width:0;background:' + b.color + '"></div></div></div>';
     }).join("");
     document.getElementById("aging-stats").innerHTML = a.stats.map(function (s) {
       return '<div class="as-row"><span class="as-label">' + s[0] + '</span><span class="as-val">' + s[1] + '</span></div>';
     }).join("");
+  }
+
+  // ===== 대시보드 진입 애니메이션 트리거 =====
+  function triggerDashboardAnimations() {
+    // ① KPI 게이지 원호: 0 리셋 → 성장
+    var gauges = document.querySelectorAll('.kpi-gauge circle[data-len]');
+    gauges.forEach(function(el) {
+      el.style.transition = 'none';
+      el.style.strokeDasharray = '0 ' + el.dataset.circ;
+    });
+    requestAnimationFrame(function() { requestAnimationFrame(function() {
+      gauges.forEach(function(el) {
+        el.style.transition = '';
+        var len = parseFloat(el.dataset.len), circ = parseFloat(el.dataset.circ);
+        el.style.strokeDasharray = len + ' ' + (circ - len);
+      });
+    }); });
+
+    // ② KPI 숫자 카운터 (0 → 최종값)
+    setTimeout(function() {
+      document.querySelectorAll('.kpi-value').forEach(function(el) {
+        var tn = el.childNodes[0];
+        if (!tn || tn.nodeType !== 3) return;
+        var raw = tn.textContent.trim();
+        var ns = raw.replace(/,/g, '');
+        var target = parseFloat(ns);
+        if (isNaN(target) || target <= 0) return;
+        var dec = ns.indexOf('.') > -1 ? ns.split('.')[1].length : 0;
+        var t0 = performance.now();
+        (function tick(now) {
+          var p = Math.min((now - t0) / 700, 1);
+          var ease = 1 - Math.pow(1 - p, 3);
+          tn.textContent = dec > 0
+            ? (ease * target).toFixed(dec)
+            : Math.round(ease * target).toLocaleString('ko-KR');
+          if (p < 1) requestAnimationFrame(tick); else tn.textContent = raw;
+        })(t0);
+      });
+    }, 160);
+
+    // ③ Aging 바: 0 리셋 → 성장
+    setTimeout(function() {
+      var fills = document.querySelectorAll('#aging-bars .ab-fill[data-pct]');
+      fills.forEach(function(el) { el.style.transition = 'none'; el.style.width = '0'; });
+      requestAnimationFrame(function() { requestAnimationFrame(function() {
+        fills.forEach(function(el) { el.style.transition = ''; el.style.width = el.dataset.pct + '%'; });
+      }); });
+    }, 560);
   }
 
   // ===== 원장관리 (목록/검색) =====

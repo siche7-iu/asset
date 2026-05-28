@@ -733,3 +733,49 @@ table { width: 100%; border-collapse: collapse; }
   .map-sep { display: none; }
   .map-right { width: 100%; border-top: 1px solid var(--c-border); padding-top: 14px; }
 }
+
+/* ===== 대시보드 진입 애니메이션 ===== */
+@keyframes dashFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+/* 대시보드 전체 fade 비활성화 — 내부 요소별 개별 처리 */
+#view-dashboard.active { animation: none; }
+
+/* AI 배너 */
+#view-dashboard.active .ai-banner {
+  animation-name: dashFadeUp;
+  animation-duration: .45s;
+  animation-timing-function: cubic-bezier(.22,1,.36,1);
+  animation-fill-mode: both;
+  animation-delay: 0s;
+}
+/* KPI 카드 (delay는 JS의 --card-delay 변수로 개별 지정) */
+#view-dashboard.active .kpi-card {
+  animation-name: dashFadeUp;
+  animation-duration: .4s;
+  animation-timing-function: cubic-bezier(.22,1,.36,1);
+  animation-fill-mode: both;
+  animation-delay: var(--card-delay, .08s);
+}
+/* 내 업무 현황 카드 */
+#view-dashboard.active .my-task-card {
+  animation-name: dashFadeUp;
+  animation-duration: .4s;
+  animation-timing-function: cubic-bezier(.22,1,.36,1);
+  animation-fill-mode: both;
+  animation-delay: .30s;
+}
+/* 가운데 그리드 3개 패널 */
+#view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .36s; }
+#view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .43s; }
+#view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
+/* 하단 그리드 3개 패널 */
+#view-dashboard.active > .grid-3:nth-child(4) > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
+#view-dashboard.active > .grid-3:nth-child(4) > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .57s; }
+#view-dashboard.active > .grid-3:nth-child(4) > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .64s; }
+
+/* aging 바 성장 트랜지션 */
+.ab-fill { transition: width .9s cubic-bezier(.4,0,.2,1); }
+/* KPI 게이지 원호 트랜지션 */
+.kpi-gauge circle[data-len] { transition: stroke-dasharray .85s cubic-bezier(.4,0,.2,1); }
