@@ -742,10 +742,14 @@ table { width: 100%; border-collapse: collapse; }
 /* 대시보드 전체 fade 비활성화 — 내부 요소별 개별 처리 */
 #view-dashboard.active { animation: none; }
 
-/* AI 배너 */
+/* AI 배너 — 왼쪽→오른쪽 와이프 */
+@keyframes dashRevealLeft {
+  from { clip-path: inset(0 100% 0 0 round 40px); }
+  to   { clip-path: inset(0 0%   0 0 round 40px); }
+}
 #view-dashboard.active .ai-banner {
-  animation-name: dashFadeUp;
-  animation-duration: .45s;
+  animation-name: dashRevealLeft;
+  animation-duration: .65s;
   animation-timing-function: cubic-bezier(.22,1,.36,1);
   animation-fill-mode: both;
   animation-delay: 0s;
