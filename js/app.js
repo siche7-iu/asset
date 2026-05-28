@@ -9,7 +9,7 @@
   var navItems = document.querySelectorAll(".nav-item");
   var tabs = document.querySelectorAll(".tab");
   var soonTitle = document.getElementById("soon-title");
-  var sectionIds = ["dashboard", "list", "detail", "soon"];
+  var sectionIds = ["dashboard", "list", "detail", "soon", "ai-agent"];
 
   // ===== 화면(섹션) 보이기/숨기기 =====
   function showSection(name) {
@@ -73,6 +73,12 @@
       activateTab(null);
       return;
     }
+    if (view === "ai-agent") {
+      showSection("ai-agent");
+      activateSidebar("ai-agent");
+      activateTab(null);
+      return;
+    }
     showSection(view);
     activateSidebar(view);
     activateTab(view);
@@ -100,6 +106,9 @@
       if (view === "soon") { navigate("soon", { title: title }); }
       else { navigate("dashboard"); }
       _renderView(location.hash);
+      // 클릭한 탭을 직접 활성화 (navigate/_renderView가 항상 "고정자산관리시스템"으로 초기화하므로 마지막에 덮어쓴다)
+      tabs.forEach(function (x) { x.classList.remove("active"); });
+      t.classList.add("active");
     });
   });
 
@@ -507,9 +516,375 @@
     alert("AI 도우미는 시연용 프로토타입에서 준비 중입니다.");
   });
 
+  // ===== AI Agent =====
+  var AI = window.APP_DATA.aiAgent;
+  var _aiSeq = null;          // 현재 진행중인 setTimeout id 묶음
+  var _aiCurrentScript = null; // 현재 답변 카드의 스크립트
+
+  function renderAgentInit() {
+    // 추천 질문
+    document.getElementById('suggest-list').innerHTML = AI.suggestions.map(function (s, i) {
+      return '<li class="suggest-item" data-idx="' + i + '" onclick="askAgent(this.dataset.q)" data-q="' + s.text.replace(/"/g, '&quot;') + '">' +
+        '<span class="s-ico">' + s.icon + '</span><span class="s-text">' + s.text + '</span></li>';
+    }).join('');
+    // 즐겨찾는 분석
+    document.getElementById('fav-list').innerHTML = AI.favorites.map(function (f) {
+      return '<li class="fav-item">✓ ' + f.text + '</li>';
+    }).join('');
+    // 분석 단계 6개 (모두 비활성)
+    document.getElementById('step-list').innerHTML = AI.steps.map(function (st, i) {
+      return '<li class="step-item" data-step="' + (i + 1) + '">' +
+        '<span class="step-num">' + (i + 1) + '</span>' +
+        '<div class="step-meta"><div class="step-title">' + st.title + '</div>' +
+        '<div class="step-sub">' + st.sub + '</div></div></li>';
+    }).join('');
+    // 채팅 초기 인사
+    document.getElementById('ai-chat-body').innerHTML =
+      '<div class="msg agent">' +
+        '<div class="msg-bubble">안녕하세요. <b>고정자산관리 AI Agent</b>입니다.<br>' +
+        '자산 현황·장애·이력·계약·점검 기준을 종합 분석하여 <b>교체 우선순위와 조치안까지</b> 함께 제시합니다.<br>' +
+        '좌측 추천 질문을 클릭하거나 자연어로 직접 물어보세요.</div>' +
+      '</div>';
+    resetAgentRight();
+  }
+
+  function resetAgentRight() {
+    // 우측 단계 카드 초기화
+    Array.prototype.forEach.call(document.querySelectorAll('#step-list .step-item'), function (el) {
+      el.classList.remove('active');
+    });
+    document.getElementById('related-empty').style.display = '';
+    document.getElementById('related-chips').style.display = 'none';
+    document.getElementById('related-chips').innerHTML = '';
+    document.getElementById('risk-mini-row').style.display = 'none';
+    document.getElementById('risk-mini-row').innerHTML = '';
+    document.getElementById('cost-value').textContent = '- 원';
+    document.getElementById('cost-sub').textContent = '분석 시 자동으로 채워집니다';
+    document.getElementById('ai-cost-card').classList.remove('highlight');
+    document.getElementById('actions-empty').style.display = '';
+    document.getElementById('action-list').style.display = 'none';
+    document.getElementById('action-list').innerHTML = '';
+    document.getElementById('ai-right').classList.remove('detail-mode');
+  }
+
+  function clearAgentTimers() {
+    if (_aiSeq) { _aiSeq.forEach(function (t) { clearTimeout(t); }); _aiSeq = null; }
+  }
+
+  function _appendUserBubble(text) {
+    var body = document.getElementById('ai-chat-body');
+    var div = document.createElement('div');
+    div.className = 'msg user';
+    div.innerHTML = '<div class="msg-bubble">' + escapeHtml(text) + '</div>';
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function _appendThinkingBubble() {
+    var body = document.getElementById('ai-chat-body');
+    var div = document.createElement('div');
+    div.className = 'msg agent thinking';
+    div.id = 'msg-thinking';
+    div.innerHTML = '<div class="msg-bubble thinking-bubble">' +
+      '<span class="thinking-label">분석중<span class="dots"><i>.</i><i>.</i><i>.</i></span></span>' +
+      '<span class="thinking-step" id="thinking-step"></span></div>';
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function _setThinkingStep(text) {
+    var el = document.getElementById('thinking-step');
+    if (el) el.textContent = text;
+  }
+
+  function _removeThinkingBubble() {
+    var el = document.getElementById('msg-thinking');
+    if (el) el.remove();
+  }
+
+  function _highlightSuggestion(question) {
+    Array.prototype.forEach.call(document.querySelectorAll('.suggest-item'), function (el) {
+      el.classList.toggle('selected', el.dataset.q === question);
+    });
+  }
+
+  function _activateStep(n) {
+    var el = document.querySelector('#step-list .step-item[data-step="' + n + '"]');
+    if (el) el.classList.add('active');
+  }
+
+  function _renderAnswerCard(script) {
+    var assetsHtml = script.resultType === 'pc'
+      ? _renderPcTable(script.assets)
+      : _renderVehicleTable(script.assets);
+
+    var btnsHtml = script.buttons.map(function (b) {
+      var cls = b.style === 'primary' ? 'btn-answer-primary' : 'btn-answer-outline';
+      return '<button class="' + cls + '" onclick="aiAnswerAction(\'' + b.action + '\')">' + b.label + '</button>';
+    }).join('');
+
+    var body = document.getElementById('ai-chat-body');
+    var div = document.createElement('div');
+    div.className = 'msg agent answer';
+    div.innerHTML = '<div class="msg-bubble answer-bubble">' +
+      '<div class="answer-intro">' + script.intro + '</div>' +
+      '<div class="answer-meta">' + script.meta + '</div>' +
+      assetsHtml +
+      '<div class="answer-action-text">조치 안내: ' + script.actionText + '</div>' +
+      '<div class="answer-actions">' + btnsHtml + '</div>' +
+    '</div>';
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function _renderPcTable(list) {
+    var rows = list.map(function (a) {
+      return '<tr data-asset-id="' + a.id + '" onclick="openAiDetail(\'' + a.id + '\')">' +
+        '<td>' + a.id + '</td>' +
+        '<td>' + a.name + '</td>' +
+        '<td>' + a.usedYears + '년</td>' +
+        '<td>' + a.department + '</td>' +
+        '<td><span class="tag-badge ' + a.statusTone + '">' + a.status + '</span></td>' +
+      '</tr>';
+    }).join('');
+    return '<div class="answer-table-wrap"><table class="answer-table">' +
+      '<thead><tr><th>자산번호</th><th>자산명</th><th>사용연수</th><th>부서</th><th>상태</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function _renderVehicleTable(list) {
+    var rows = list.map(function (a) {
+      return '<tr data-asset-id="' + a.id + '" onclick="openAiDetail(\'' + a.id + '\')">' +
+        '<td>' + a.vehicleNo + '</td>' +
+        '<td>' + a.model + '</td>' +
+        '<td>' + a.insurance.company + '</td>' +
+        '<td>' + a.insurance.endDate + '</td>' +
+        '<td><span class="tag-badge ' + a.statusTone + '">D-' + a.dDay + '</span></td>' +
+        '<td>' + a.department + '</td>' +
+      '</tr>';
+    }).join('');
+    return '<div class="answer-table-wrap"><table class="answer-table">' +
+      '<thead><tr><th>차량번호</th><th>차종</th><th>보험사</th><th>만료일</th><th>D-day</th><th>부서</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function _renderRightAfterAnswer(script) {
+    // 관련 자산 칩
+    var chips = document.getElementById('related-chips');
+    chips.innerHTML = script.relatedChips.map(function (c) {
+      return '<span class="related-chip">' + c.label + ' <b>' + c.count + '</b></span>';
+    }).join('');
+    document.getElementById('related-empty').style.display = 'none';
+    chips.style.display = '';
+    // 위험도 분포
+    var risk = document.getElementById('risk-mini-row');
+    var rd = script.riskDist;
+    risk.innerHTML =
+      '<span class="risk-mini-badge red">HIGH ' + rd.high + '</span>' +
+      '<span class="risk-mini-badge amber">MEDIUM ' + rd.medium + '</span>' +
+      '<span class="risk-mini-badge blue">LOW ' + rd.low + '</span>';
+    risk.style.display = '';
+    // 영향 비용
+    document.getElementById('cost-value').textContent = script.cost.value;
+    document.getElementById('cost-sub').textContent = script.cost.sub;
+    document.getElementById('ai-cost-card').classList.add('highlight');
+    // 추천 조치
+    var al = document.getElementById('action-list');
+    al.innerHTML = script.actions.map(function (a) {
+      return '<li><span class="ac-check">☐</span> ' + a + '</li>';
+    }).join('');
+    document.getElementById('actions-empty').style.display = 'none';
+    al.style.display = '';
+  }
+
+  function askAgent(question) {
+    if (!question || !AI.scripts[question]) {
+      // 매칭 안 되는 질문 — 기본 응답
+      _appendUserBubble(question || '');
+      var body = document.getElementById('ai-chat-body');
+      var div = document.createElement('div');
+      div.className = 'msg agent';
+      div.innerHTML = '<div class="msg-bubble">해당 질의를 분석하려면 데이터셋이 더 필요합니다. 좌측 추천 질문을 이용해 주세요.</div>';
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+      document.getElementById('ai-chat-text').value = '';
+      return;
+    }
+    clearAgentTimers();
+    var script = AI.scripts[question];
+    _aiCurrentScript = script;
+    _highlightSuggestion(question);
+    document.getElementById('ai-chat-text').value = '';
+
+    // 단계 카드 + 우측 결과 초기화
+    resetAgentRight();
+    // 기존 분석중·답변 카드 모두 제거 (분석중 새로 시작)
+    _removeThinkingBubble();
+    Array.prototype.forEach.call(document.querySelectorAll('#ai-chat-body .msg.agent.answer'), function (el) {
+      el.remove();
+    });
+    // 0ms: 사용자 버블 + 분석중 인디케이터 + 단계1 활성
+    _appendUserBubble(question);
+    _appendThinkingBubble();
+    _activateStep(1);
+
+    var t = [];
+    t.push(setTimeout(function () { _setThinkingStep(script.thinkingSteps[0]); _activateStep(2); }, 350));
+    t.push(setTimeout(function () { _activateStep(3); }, 700));
+    t.push(setTimeout(function () { _setThinkingStep(script.thinkingSteps[1]); _activateStep(4); }, 1050));
+    t.push(setTimeout(function () { _activateStep(5); }, 1400));
+    t.push(setTimeout(function () { _activateStep(6); }, 1750));
+    t.push(setTimeout(function () {
+      _removeThinkingBubble();
+      _renderAnswerCard(script);
+      _renderRightAfterAnswer(script);
+      _aiSeq = null;
+    }, 2100));
+    _aiSeq = t;
+  }
+
+  function openAiDetail(assetId) {
+    if (!_aiCurrentScript) return;
+    var asset = _aiCurrentScript.assets.find(function (a) { return a.id === assetId; });
+    if (!asset) return;
+    // 행 선택 강조
+    Array.prototype.forEach.call(document.querySelectorAll('.answer-table tbody tr'), function (tr) {
+      tr.classList.toggle('row-selected', tr.dataset.assetId === assetId);
+    });
+    // 우측 상세 패널 렌더
+    var html = '<button class="detail-back" onclick="closeAiDetail()">← 분석 결과로 돌아가기</button>' +
+      '<div class="detail-head">' +
+        '<div class="detail-id">' + asset.id + '</div>' +
+        '<div class="detail-name">' + asset.name + '</div>' +
+        '<span class="tag-badge ' + asset.statusTone + '">' + asset.status + '</span>' +
+      '</div>';
+
+    if (_aiCurrentScript.resultType === 'pc') {
+      var life = 5, used = asset.usedYears, depRate = Math.min(100, Math.round(used / life * 100));
+      var isDanger = used >= life;
+      html += '<div class="detail-section"><div class="detail-section-title">기본 정보</div>' +
+        _detailRow('분류', asset.category) + _detailRow('모델', asset.model) +
+        _detailRow('사용부서', asset.department) + _detailRow('사용자', asset.owner) +
+        _detailRow('위치', asset.location) +
+        _detailRow('취득일', asset.acquireDate + ' (사용 ' + used + '년)') +
+        _detailRow('취득금액', asset.price.toLocaleString('ko-KR') + ' 원') +
+      '</div>' +
+      '<div class="detail-section"><div class="detail-section-title">감가상각 진행률</div>' +
+        '<div class="dep-gauge-wrap">' +
+          '<div class="dep-gauge-label"><span>내용연수 ' + life + '년 · 잔여 ' + (life - used).toFixed(1) + '년</span><span>' + depRate + '%</span></div>' +
+          '<div class="dep-gauge-track"><div class="dep-gauge-fill' + (isDanger ? ' danger' : '') + '" style="width:' + depRate + '%"></div></div>' +
+        '</div></div>';
+    } else {
+      var ins = asset.insurance;
+      var dDayTone = asset.dDay <= 7 ? 'danger' : (asset.dDay <= 14 ? '' : '');
+      var dDayPct = Math.max(0, Math.min(100, (asset.dDay / 365) * 100));
+      html += '<div class="detail-section"><div class="detail-section-title">자산 정보</div>' +
+        _detailRow('차량번호', asset.vehicleNo) + _detailRow('차종', asset.model) +
+        _detailRow('사용부서', asset.department) + _detailRow('차량 담당', asset.owner) +
+        _detailRow('위치', asset.location) + _detailRow('취득일', asset.acquireDate) +
+        _detailRow('취득금액', asset.price.toLocaleString('ko-KR') + ' 원') +
+      '</div>' +
+      '<div class="detail-section"><div class="detail-section-title">보험 계약</div>' +
+        _detailRow('보험사', ins.company) + _detailRow('증권번호', ins.policyNo) +
+        _detailRow('보장 범위', ins.coverage) +
+        _detailRow('시작일', ins.startDate) +
+        _detailRow('만료일', ins.endDate + ' (D-' + asset.dDay + ')') +
+        _detailRow('연간 보험료', ins.annualPremium.toLocaleString('ko-KR') + ' 원') +
+        _detailRow('자동 갱신', ins.autoRenew ? '☑ 설정됨' : '☐ 미설정 ⚠') +
+        '<div class="dep-gauge-wrap" style="margin-top:10px">' +
+          '<div class="dep-gauge-label"><span>보험 잔여일</span><span>D-' + asset.dDay + '</span></div>' +
+          '<div class="dep-gauge-track"><div class="dep-gauge-fill ' + dDayTone + '" style="width:' + dDayPct + '%"></div></div>' +
+        '</div></div>';
+    }
+
+    // 최근 이력
+    html += '<div class="detail-section"><div class="detail-section-title">최근 이력</div>' +
+      '<ul class="detail-timeline">' +
+      asset.history.slice().reverse().map(function (h) {
+        return '<li><span class="dt-date">' + h.date + '</span> · <b>' + h.type + '</b> · ' + h.detail + '</li>';
+      }).join('') +
+      '</ul></div>';
+
+    // AI 진단
+    html += '<div class="detail-ai-note"><div class="ain-title">🤖 AI 진단</div>' +
+      '<div class="ain-body">' + asset.aiNote + '</div></div>';
+
+    // 액션 버튼
+    var actionBtns = _aiCurrentScript.resultType === 'pc'
+      ? '<button class="btn-answer-outline" onclick="aiAnswerAction(\'history\')">📑 원장관리에서 자세히 보기</button>' +
+        '<button class="btn-answer-primary" onclick="aiAnswerAction(\'itsm\')">🛠 ITSM 조치 등록</button>'
+      : '<button class="btn-answer-outline" onclick="aiAnswerAction(\'history\')">📑 차량 자산상세 보기</button>' +
+        '<button class="btn-answer-primary" onclick="aiAnswerAction(\'approval\')">📝 전자결재 갱신 상신</button>';
+    html += '<div class="detail-actions">' + actionBtns + '</div>';
+
+    document.getElementById('ai-right-detail').innerHTML = html;
+    document.getElementById('ai-right').classList.add('detail-mode');
+  }
+
+  function _detailRow(label, value) {
+    return '<div class="detail-row"><span class="dr-label">' + label + '</span>' +
+      '<span class="dr-value">' + value + '</span></div>';
+  }
+
+  function closeAiDetail() {
+    document.getElementById('ai-right').classList.remove('detail-mode');
+    Array.prototype.forEach.call(document.querySelectorAll('.answer-table tbody tr'), function (tr) {
+      tr.classList.remove('row-selected');
+    });
+  }
+
+  function resetAgent() {
+    clearAgentTimers();
+    _aiCurrentScript = null;
+    Array.prototype.forEach.call(document.querySelectorAll('.suggest-item'), function (el) {
+      el.classList.remove('selected');
+    });
+    renderAgentInit();
+  }
+
+  function submitAgentInput(e) {
+    e.preventDefault();
+    var v = document.getElementById('ai-chat-text').value.trim();
+    if (!v) return false;
+    askAgent(v);
+    return false;
+  }
+
+  function aiAnswerAction(action) {
+    var msgMap = {
+      'history':  '시연용 프로토타입입니다. 자산이력 화면은 원장관리에서 확인할 수 있습니다.',
+      'itsm':     '시연용 프로토타입입니다. ITSM 조치 등록 화면은 별도 시스템 연계 예정입니다.',
+      'approval': '시연용 프로토타입입니다. 전자결재 갱신 상신 화면은 별도 시스템 연계 예정입니다.'
+    };
+    alert(msgMap[action] || '시연용 프로토타입입니다.');
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  // ESC 키로 자산 상세 닫기
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.getElementById('ai-right') &&
+        document.getElementById('ai-right').classList.contains('detail-mode')) {
+      closeAiDetail();
+    }
+  });
+
+  // 전역 노출 (onclick 핸들러용)
+  window.askAgent = askAgent;
+  window.openAiDetail = openAiDetail;
+  window.closeAiDetail = closeAiDetail;
+  window.resetAgent = resetAgent;
+  window.submitAgentInput = submitAgentInput;
+  window.aiAnswerAction = aiAnswerAction;
+
   // ===== 시작 =====
   renderDashboard();
   renderListView();
+  renderAgentInit();
   // 해시가 있으면 그 화면으로, 없으면 대시보드를 기본으로
   if (location.hash && location.hash.length > 2) {
     _renderView(location.hash);
