@@ -219,21 +219,9 @@
 
   function renderMap() {
     var regions = DASH.regions;
-    var activeIdx = 0;
-    regions.forEach(function(r, i) { if (r.active) activeIdx = i; });
+    var activeIdx = -1;
 
-    // 코로플레스 SVG 조립
-    var svgPaths = PROVINCES.map(function(p) {
-      return '<path id="prov-'+p.id+'" data-r="'+p.r+'" d="'+p.d+'"' +
-        ' fill="'+p.fill+'" stroke="#fff" stroke-width="1.5" style="cursor:pointer;transition:filter .15s"/>';
-    }).join('');
-    W_ISLANDS.forEach(function(i) {
-      svgPaths += '<circle cx="'+i.cx+'" cy="'+i.cy+'" r="'+i.r+'" fill="#60A5FA" stroke="#fff" stroke-width="1"/>';
-    });
-    S_ISLANDS.forEach(function(i) {
-      svgPaths += '<circle cx="'+i.cx+'" cy="'+i.cy+'" r="'+i.r+'" fill="'+(i.ri===3?'#93C5FD':'#3B82F6')+'" stroke="#fff" stroke-width="1"/>';
-    });
-    var svgHtml = '<svg viewBox="0 0 480 580" style="display:block;width:100%;height:auto">' + svgPaths + '</svg>';
+    var mapImgHtml = '<img class="map-bg-img" src="images/korea-map.png" alt="한국 지도">';
 
     // 핀 아이콘
     var pinIco = '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.4-3.6-8-8-8z" fill="currentColor"/><circle cx="12" cy="10" r="3.5" fill="#fff" opacity=".85"/></svg>';
@@ -257,7 +245,7 @@
       '</div>';
     }).join('');
 
-    document.getElementById('map-box').innerHTML = svgHtml + markersHtml;
+    document.getElementById('map-box').innerHTML = mapImgHtml + markersHtml;
 
     function setActive(idx) {
       activeIdx = idx;
@@ -267,23 +255,14 @@
         if (exp) exp.style.display = (i===idx) ? 'block' : 'none';
         if (cmp) cmp.style.display = (i===idx) ? 'none' : 'flex';
       });
-      document.querySelectorAll('#map-box path[data-r]').forEach(function(el) {
-        var ri = +el.getAttribute('data-r');
-        var prov = null;
-        PROVINCES.forEach(function(p) { if ('prov-'+p.id === el.id) prov = p; });
-        if (!prov) return;
-        el.setAttribute('fill', ri===idx ? ACTIVE_FILLS[ri] : prov.fill);
-      });
     }
 
     document.querySelectorAll('.region-marker').forEach(function(m) {
-      m.addEventListener('click', function() { setActive(+m.dataset.i); });
-    });
-    document.querySelectorAll('#map-box path[data-r]').forEach(function(el) {
-      el.addEventListener('click', function() { setActive(+el.getAttribute('data-r')); });
+      m.addEventListener('mouseenter', function() { setActive(+m.dataset.i); });
+      m.addEventListener('mouseleave', function() { setActive(-1); });
     });
 
-    setActive(activeIdx);
+    setActive(-1);
   }
 
   function top5Row(r) {
