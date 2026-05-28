@@ -111,7 +111,7 @@ nav { flex: 1; }
   transition: background .15s;
 }
 .nav-item .ic svg { width: 16px; height: 16px; }
-.nav-item .ic img { width: 28px; height: 28px; }
+.nav-item .ic img { width: 16px; height: 16px; }
 .nav-item .ic-active { display: none; }
 .nav-item.active .ic-default { display: none; }
 .nav-item.active .ic-active { display: block; }
