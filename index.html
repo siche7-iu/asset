@@ -26,8 +26,8 @@
         <div class="nav-group">
           <div class="nav-group-label">WORKSPACE</div>
           <button class="nav-item active" data-view="dashboard" data-title="대시보드">
-            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg></span><span class="nav-item-label">대시보드</span></button>
-          <button class="nav-item" data-view="soon" data-title="AI Agent">
+            <span class="ic"><img src="images/Icon_dashboard.svg" alt="대시보드"></span><span class="nav-item-label">대시보드</span></button>
+          <button class="nav-item" data-view="ai-agent" data-title="AI Agent">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M2 13v2M22 13v2"/><path d="M10 4h4"/></svg></span><span class="nav-item-label">AI Agent</span></button>
         </div>
         <div class="nav-group">
@@ -242,6 +242,86 @@
         <section id="view-detail" class="view">
           <button class="back-btn" id="detail-back">← 원장관리로</button>
           <div class="card" id="detail-content"></div>
+        </section>
+
+        <!-- ===== AI Agent ===== -->
+        <section id="view-ai-agent" class="view">
+          <div class="ai-page-head">
+            <div class="ai-page-title">
+              <h1>AI Agent</h1>
+              <p>고정자산 업무 어시스턴트 · 단순 조회가 아닌 분석·진단·조치안 제시</p>
+            </div>
+            <div class="ai-page-actions">
+              <button class="btn-outline" onclick="resetAgent()">↻ 대화 이력</button>
+              <button class="btn btn-primary" onclick="resetAgent()">+ 새 분석 시작</button>
+            </div>
+          </div>
+
+          <div class="ai-layout">
+            <!-- 좌측: 추천 질문 + 즐겨찾는 분석 -->
+            <aside class="ai-side">
+              <div class="ai-suggest-card">
+                <h3 class="ai-card-title">추천 질문</h3>
+                <ul class="suggest-list" id="suggest-list"></ul>
+              </div>
+              <div class="ai-fav-card">
+                <h3 class="ai-card-title"><span class="fav-star">★</span> 즐겨찾는 분석</h3>
+                <ul class="fav-list" id="fav-list"></ul>
+              </div>
+            </aside>
+
+            <!-- 중앙: 채팅 -->
+            <section class="ai-chat-card">
+              <div class="ai-chat-head">
+                <div class="who">
+                  <span class="who-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M2 13v2M22 13v2"/></svg></span>
+                  <div>
+                    <div class="who-name">고정자산 Agent</div>
+                    <div class="who-sub">분석 가능 자산 1,247건 안내됨</div>
+                  </div>
+                </div>
+                <div class="actions">
+                  <button class="ai-chip">🔗 자산이력</button>
+                  <button class="ai-chip">🛠 ITSM</button>
+                  <button class="ai-chip">📑 전자결재</button>
+                </div>
+              </div>
+              <div class="ai-chat-body" id="ai-chat-body"></div>
+              <form class="ai-chat-input" id="ai-chat-form" onsubmit="return submitAgentInput(event)">
+                <input type="text" id="ai-chat-text" placeholder="자산·장애·계약·점검에 대해 자연어로 질문하세요" autocomplete="off">
+                <button class="btn btn-primary" type="submit">➤ 전송</button>
+              </form>
+            </section>
+
+            <!-- 우측: AGENT 분석 단계 + 관련 자산 + 영향 비용 + 추천 조치 / 자산 상세 -->
+            <aside class="ai-right" id="ai-right">
+              <div class="ai-right-summary" id="ai-right-summary">
+                <div class="ai-step-card">
+                  <h3 class="ai-card-title">🛰 AGENT 분석 단계</h3>
+                  <ol class="step-list" id="step-list"></ol>
+                </div>
+                <div class="ai-related-card">
+                  <h3 class="ai-card-title">📦 관련 자산</h3>
+                  <div class="ai-empty-hint" id="related-empty">분석 시 자동으로 채워집니다</div>
+                  <div class="related-chips" id="related-chips" style="display:none"></div>
+                  <div class="risk-mini-row" id="risk-mini-row" style="display:none"></div>
+                </div>
+                <div class="ai-cost-card" id="ai-cost-card">
+                  <h3 class="ai-card-title">💰 예상 비용</h3>
+                  <div class="cost-value" id="cost-value">- 원</div>
+                  <div class="cost-sub" id="cost-sub">분석 시 자동으로 채워집니다</div>
+                </div>
+                <div class="ai-action-card">
+                  <h3 class="ai-card-title">✅ 추천 조치</h3>
+                  <div class="ai-empty-hint" id="actions-empty">분석 시 자동으로 채워집니다</div>
+                  <ul class="action-list" id="action-list" style="display:none"></ul>
+                </div>
+              </div>
+              <div class="ai-right-detail" id="ai-right-detail">
+                <!-- openAiDetail에서 동적 렌더 -->
+              </div>
+            </aside>
+          </div>
         </section>
 
         <!-- ===== 준비 중 ===== -->

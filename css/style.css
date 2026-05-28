@@ -111,6 +111,7 @@ nav { flex: 1; }
   transition: background .15s;
 }
 .nav-item .ic svg { width: 16px; height: 16px; }
+.nav-item .ic img { width: 28px; height: 28px; }
 .nav-item:hover { background: rgba(255,255,255,.07); color: #fff; }
 .nav-item:hover .ic { background: rgba(255,255,255,.12); }
 .nav-item.active { background: rgba(255,255,255,.13); color: #fff; font-weight: 600; }
@@ -1023,6 +1024,47 @@ table { width: 100%; border-collapse: collapse; }
   .ai-right { min-height: 600px; }
   .ai-chat-card { min-height: 580px; }
 }
+
+/* ===== AI Agent 진입 애니메이션 ===== */
+/* dashFadeUp 키프레임을 재사용해서 각 영역이 순차 등장한다 */
+#view-ai-agent.active.anim-on .ai-page-head     { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both 0s; }
+#view-ai-agent.active.anim-on .ai-suggest-card  { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .08s; }
+#view-ai-agent.active.anim-on .ai-fav-card      { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .16s; }
+#view-ai-agent.active.anim-on .ai-chat-card     { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .20s; }
+#view-ai-agent.active.anim-on .ai-step-card     { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .28s; }
+#view-ai-agent.active.anim-on .ai-related-card  { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .36s; }
+#view-ai-agent.active.anim-on .ai-cost-card     { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .44s; }
+#view-ai-agent.active.anim-on .ai-action-card   { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .52s; }
+
+/* 추천 질문 항목 stagger (총 6개) */
+#view-ai-agent.active.anim-on .suggest-list .suggest-item {
+  animation: dashFadeUp .35s cubic-bezier(.22,1,.36,1) both;
+}
+#view-ai-agent.active.anim-on .suggest-list .suggest-item:nth-child(1) { animation-delay: .20s; }
+#view-ai-agent.active.anim-on .suggest-list .suggest-item:nth-child(2) { animation-delay: .26s; }
+#view-ai-agent.active.anim-on .suggest-list .suggest-item:nth-child(3) { animation-delay: .32s; }
+#view-ai-agent.active.anim-on .suggest-list .suggest-item:nth-child(4) { animation-delay: .38s; }
+#view-ai-agent.active.anim-on .suggest-list .suggest-item:nth-child(5) { animation-delay: .44s; }
+#view-ai-agent.active.anim-on .suggest-list .suggest-item:nth-child(6) { animation-delay: .50s; }
+
+/* 분석 단계 항목 stagger (1~6) */
+#view-ai-agent.active.anim-on .step-list .step-item {
+  animation: dashFadeUp .35s cubic-bezier(.22,1,.36,1) both;
+}
+#view-ai-agent.active.anim-on .step-list .step-item:nth-child(1) { animation-delay: .36s; }
+#view-ai-agent.active.anim-on .step-list .step-item:nth-child(2) { animation-delay: .40s; }
+#view-ai-agent.active.anim-on .step-list .step-item:nth-child(3) { animation-delay: .44s; }
+#view-ai-agent.active.anim-on .step-list .step-item:nth-child(4) { animation-delay: .48s; }
+#view-ai-agent.active.anim-on .step-list .step-item:nth-child(5) { animation-delay: .52s; }
+#view-ai-agent.active.anim-on .step-list .step-item:nth-child(6) { animation-delay: .56s; }
+
+/* 인사 메시지 pop-in (살짝 위로 떠오르면서 페이드 + 약간 확대) */
+@keyframes aiBubblePop {
+  0%   { opacity: 0; transform: translateY(8px) scale(.96); }
+  60%  { opacity: 1; transform: translateY(0) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.msg.agent.greeting.anim-pop { animation: aiBubblePop .42s cubic-bezier(.22,1,.36,1) both; }
 /* 대시보드 전체 fade 비활성화 — 내부 요소별 개별 처리 */
 #view-dashboard.active { animation: none; }
 
