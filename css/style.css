@@ -145,7 +145,7 @@ nav { flex: 1; }
   background: var(--c-surface);
   border-bottom: 1px solid var(--c-border);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 28px; position: sticky; top: 0; z-index: 20;
+  padding: 0 28px; position: sticky; top: 10px; z-index: 20;
 }
 .tabs { display: flex; align-items: center; gap: 30px; height: 100%; }
 .tab {
