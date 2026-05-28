@@ -64,16 +64,15 @@ body {
 /* 사이드바 토글 버튼 */
 .sidebar { position: relative; }
 .sidebar-toggle {
-  position: absolute; top: 14px; right: -13px;
-  width: 26px; height: 26px; border-radius: 50%;
-  background: #fff; border: 1.5px solid #E2E8F0;
+  position: absolute; top: 14px; right: 14px;
+  width: 28px; height: 20px; border-radius: 6px;
+  background: rgba(255,255,255,.1); border: none;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; z-index: 20;
-  box-shadow: 0 1px 5px rgba(0,0,0,.18);
   transition: background .15s;
 }
-.sidebar-toggle:hover { background: #F1F5F9; }
-.sidebar-toggle svg { width: 12px; height: 12px; color: #475569; transition: transform .25s; }
+.sidebar-toggle:hover { background: rgba(255,255,255,.18); }
+.sidebar-toggle svg { width: 14px; height: 14px; color: rgba(255,255,255,.8); transition: transform .25s; }
 
 /* 사이드바 접힌 상태 */
 .sidebar.collapsed { width: 70px; }
@@ -87,11 +86,11 @@ body {
 
 .brand { display: flex; align-items: center; gap: 11px; padding: 2px 6px 16px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 16px; }
 .brand .logo {
-  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
-  background: var(--c-green); color: #fff;
-  font-size: 15px; font-weight: 900; letter-spacing: -1px;
+  width: 24px; height: 24px; flex-shrink: 0;
+  background: transparent; border-radius: 0;
   display: flex; align-items: center; justify-content: center;
 }
+.brand .logo svg { width: 24px; height: 24px; }
 .brand-text strong { display: block; color: #fff; font-size: 14.5px; font-weight: 700; letter-spacing: -.3px; }
 .brand-text strong b { font-weight: 900; }
 .brand-text small { color: #7b97c2; font-size: 10px; letter-spacing: .2px; margin-top: 1px; display: block; }
@@ -116,14 +115,14 @@ nav { flex: 1; }
 .nav-item:hover { background: rgba(255,255,255,.07); color: #fff; }
 .nav-item:hover .ic { background: rgba(255,255,255,.12); }
 .nav-item.active { background: rgba(255,255,255,.13); color: #fff; font-weight: 600; }
-.nav-item.active .ic { background: var(--c-primary); box-shadow: 0 2px 8px rgba(59,130,246,.45); }
+.nav-item.active .ic { background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.18); color: var(--c-navy); }
 
 .side-foot { font-size: 10.5px; color: #6f86ac; line-height: 1.7; padding: 14px 10px 4px; border-top: 1px solid rgba(255,255,255,.1); margin-top: 8px; }
 .side-foot b { color: #aebed9; font-weight: 600; }
 .side-links { display: flex; flex-direction: column; gap: 4px; margin-top: 14px; }
-.side-links a { display: flex; align-items: center; gap: 10px; color: #c2d0e6; text-decoration: none; cursor: pointer; font-size: 13.5px; padding: 6px 0; }
+.side-links a { display: flex; align-items: center; gap: 10px; color: #c2d0e6; text-decoration: none; cursor: pointer; font-size: 13.5px; padding: 8px 12px; background: rgba(255,255,255,.06); border-radius: 10px; }
 .side-links a svg { width: 18px; height: 18px; opacity: .85; }
-.side-links a:hover { color: #fff; }
+.side-links a:hover { color: #fff; background: rgba(255,255,255,.12); }
 
 /* ===== 본문 영역 ===== */
 .main {
@@ -727,6 +726,7 @@ table { width: 100%; border-collapse: collapse; }
 
 /* ===== 미디어쿼리 보완 ===== */
 @media (max-width: 1200px) {
+  #view-dashboard.active { display: block; }
   .kpi-section { flex-direction: column; }
   .my-task-card { width: 100%; }
   .panel-body.map-inner { flex-direction: column; }
@@ -740,7 +740,18 @@ table { width: 100%; border-collapse: collapse; }
   to   { opacity: 1; transform: none; }
 }
 /* 대시보드 전체 fade 비활성화 — 내부 요소별 개별 처리 */
-#view-dashboard.active { animation: none; }
+#view-dashboard.active {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 268px;
+  column-gap: 16px;
+  row-gap: 18px;
+  animation: none;
+}
+#view-dashboard.active > .ai-banner   { grid-column: 1 / -1; margin-bottom: 0; }
+#view-dashboard.active > .kpi-section { display: contents; }
+#view-dashboard.active .kpi-row       { grid-column: 1 / 4; }
+#view-dashboard.active .my-task-card  { grid-column: 4; width: auto; align-self: stretch; }
+#view-dashboard.active > .grid-3      { grid-column: 1 / 4; margin-bottom: 0; }
 
 /* AI 배너 — 왼쪽→오른쪽 와이프 */
 @keyframes dashRevealLeft {
@@ -749,8 +760,8 @@ table { width: 100%; border-collapse: collapse; }
 }
 #view-dashboard.active .ai-banner {
   animation-name: dashRevealLeft;
-  animation-duration: .65s;
-  animation-timing-function: cubic-bezier(.22,1,.36,1);
+  animation-duration: 0.85s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.8, 1);
   animation-fill-mode: both;
   animation-delay: 0s;
 }
