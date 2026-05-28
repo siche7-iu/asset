@@ -19,10 +19,16 @@
     window.scrollTo(0, 0);
   }
   function activateSidebar(view) {
-    navItems.forEach(function (b) { b.classList.toggle("active", b.dataset.view === view); });
+    navItems.forEach(function (b) {
+      var match = (view === "soon")
+        ? (b.dataset.view === "soon" && b.dataset.title === _soonTitle)
+        : (b.dataset.view === view);
+      b.classList.toggle("active", match);
+    });
   }
   function activateTab(view) {
-    tabs.forEach(function (t) { t.classList.toggle("active", view === "dashboard" && t.dataset.view === "dashboard"); });
+    // "고정자산관리시스템" 탭을 항상 활성화 상태로 고정
+    tabs.forEach(function (t) { t.classList.toggle("active", t.dataset.view === "dashboard"); });
   }
 
   // ===== URL 해시 라우팅 =====
@@ -152,7 +158,7 @@
       offset += len; return a;
     }).join("");
     document.getElementById("risk-donut").innerHTML =
-      '<svg viewBox="0 0 168 168" width="168" height="168">' + arcs + '</svg>' +
+      '<svg viewBox="0 0 168 168" width="100%" height="100%">' + arcs + '</svg>' +
       '<div class="center"><span class="c-cap">Total</span><span class="c-total">' + r.centerTotal +
       '</span><span class="c-sub">' + r.centerSub + '</span></div>';
     document.getElementById("risk-legend").innerHTML = r.segments.map(function (s) {
