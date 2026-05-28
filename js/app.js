@@ -176,56 +176,108 @@
       '<div class="rt-sub">(자산 가치 <b>' + t.totalValue + '</b> 억원)</div>';
   }
 
-  // 한국 지도 (라이브러리 없이 직접 그린 단순 SVG)
-  var KOREA_SVG =
-    '<svg class="korea" viewBox="0 0 360 470" xmlns="http://www.w3.org/2000/svg">' +
-    '<defs><clipPath id="krClip"><path d="M150,40 C168,34 196,40 206,62 C214,58 238,60 250,80 C262,72 282,86 286,108 C300,128 300,156 290,178 C302,202 304,236 294,266 C300,288 296,312 282,330 C272,344 252,346 244,334 C232,346 214,356 196,360 C176,366 154,366 138,358 C120,366 104,356 100,338 C92,320 100,300 92,282 C82,262 74,246 82,226 C72,210 62,196 76,182 C90,170 104,178 110,166 C100,150 96,138 106,120 C114,104 130,100 132,84 C136,66 138,48 150,40 Z"/></clipPath></defs>' +
-    '<g clip-path="url(#krClip)">' +
-    '<rect x="0" y="0" width="360" height="470" fill="#CFE2FA"/>' +
-    '<polygon points="196,60 292,112 296,184 200,150" fill="#4A88EA"/>' +
-    '<polygon points="110,118 200,150 150,212 84,182" fill="#4C8DF6"/>' +
-    '<polygon points="84,182 200,150 196,256 92,262" fill="#BAD6F7"/>' +
-    '<polygon points="200,150 296,184 286,330 188,300" fill="#4A88EA"/>' +
-    '<polygon points="92,262 188,300 196,360 104,350" fill="#CFE2FA"/>' +
-    '<g stroke="#fff" stroke-width="2.2" fill="none" stroke-linejoin="round">' +
-    '<path d="M200,150 L196,60"/><path d="M84,182 L200,150 L296,184"/>' +
-    '<path d="M196,150 L188,300"/><path d="M92,262 L188,300 L196,360"/><path d="M188,300 L286,330"/>' +
-    '</g></g>' +
-    '<path d="M150,40 C168,34 196,40 206,62 C214,58 238,60 250,80 C262,72 282,86 286,108 C300,128 300,156 290,178 C302,202 304,236 294,266 C300,288 296,312 282,330 C272,344 252,346 244,334 C232,346 214,356 196,360 C176,366 154,366 138,358 C120,366 104,356 100,338 C92,320 100,300 92,282 C82,262 74,246 82,226 C72,210 62,196 76,182 C90,170 104,178 110,166 C100,150 96,138 106,120 C114,104 130,100 132,84 C136,66 138,48 150,40 Z" fill="none" stroke="#AECBF0" stroke-width="1.5"/>' +
-    '<ellipse cx="120" cy="432" rx="28" ry="14" fill="#9DC4F5"/>' +
-    '</svg>';
-
-  function pinSvg() {
-    return '<span class="pin"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.4-3.6-8-8-8z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></span>';
-  }
+  // ===== 지역별 관리 현황 (코로플레스 지도 + 말풍선) =====
+  // 도·광역시 SVG 경로 (viewBox 0 0 480 580, 근사값)
+  // r: DASH.regions 인덱스 (0=서울, 1=강원, 2=경상, 3=전라, 4=제주)
+  var PROVINCES = [
+    { id:'gyeonggi', r:0, fill:'#1D4ED8',
+      d:'M108,120 L155,82 L200,68 L242,76 L268,98 L275,132 L268,172 L238,198 L205,215 L172,210 L142,196 L118,178 L100,155 L102,132 Z' },
+    { id:'seoul', r:0, fill:'#1E3A8A',
+      d:'M188,130 L205,122 L220,132 L218,152 L200,162 L183,154 Z' },
+    { id:'gangwon', r:1, fill:'#1E40AF',
+      d:'M242,76 L268,42 L308,22 L368,26 L425,58 L445,105 L442,158 L418,188 L382,205 L342,212 L298,202 L268,172 L275,132 L268,98 Z' },
+    { id:'chungbuk', r:0, fill:'#3B82F6',
+      d:'M205,215 L238,198 L268,172 L298,202 L322,218 L320,262 L294,278 L262,282 L232,268 L215,248 Z' },
+    { id:'chungnam', r:0, fill:'#60A5FA',
+      d:'M100,212 L118,198 L142,196 L172,210 L205,215 L215,248 L208,278 L188,298 L158,308 L126,300 L100,280 L88,255 L90,228 Z' },
+    { id:'jeonbuk', r:3, fill:'#93C5FD',
+      d:'M90,288 L126,302 L158,308 L188,300 L215,312 L228,335 L222,368 L195,384 L162,390 L128,380 L100,362 L86,338 Z' },
+    { id:'jeonnam', r:3, fill:'#BAD6F7',
+      d:'M86,340 L100,365 L128,382 L162,392 L195,386 L220,402 L225,438 L208,462 L176,472 L144,464 L110,448 L86,418 L74,388 Z' },
+    { id:'gyeongbuk', r:2, fill:'#2563EB',
+      d:'M298,202 L342,212 L382,205 L418,188 L440,218 L445,268 L428,308 L402,330 L368,344 L334,332 L308,312 L298,278 L320,262 L322,218 Z' },
+    { id:'gyeongnam', r:2, fill:'#3B82F6',
+      d:'M222,370 L255,358 L292,348 L334,335 L368,345 L402,332 L428,362 L422,402 L395,428 L358,440 L318,438 L280,422 L252,404 L228,382 Z' },
+    { id:'jeju', r:4, fill:'#DBEAFE',
+      d:'M145,515 L178,507 L215,508 L238,520 L230,538 L200,545 L165,542 L143,528 Z' }
+  ];
+  var W_ISLANDS = [
+    {cx:68,cy:198,r:9},{cx:55,cy:213,r:6},{cx:60,cy:232,r:8},
+    {cx:72,cy:252,r:5},{cx:48,cy:245,r:4},{cx:52,cy:268,r:6},{cx:60,cy:285,r:5}
+  ];
+  var S_ISLANDS = [
+    {cx:225,cy:445,r:7,ri:3},{cx:248,cy:455,r:5,ri:3},{cx:268,cy:450,r:6,ri:2},
+    {cx:295,cy:458,r:5,ri:2},{cx:318,cy:450,r:4,ri:2},{cx:338,cy:442,r:6,ri:2}
+  ];
+  var ACTIVE_FILLS = ['#1E3A8A','#172554','#1D4ED8','#60A5FA','#BFDBFE'];
 
   function renderMap() {
-    var pins = DASH.regions.map(function (r, i) {
-      var bubble = '<span class="bubble"><span class="b-name">' + r.name + '</span>' +
-        '<span class="b-count">' + r.count + '</span></span>';
-      return '<button class="region-pin' + (r.x > 50 ? " rev" : "") + (r.active ? " active" : "") +
-        '" data-i="' + i + '" style="left:' + r.x + '%;top:' + r.y + '%">' + bubble + pinSvg() + '</button>';
-    }).join("");
-    document.getElementById("map-box").innerHTML =
-      KOREA_SVG + '<div class="region-detail" id="region-detail"></div>' + pins;
+    var regions = DASH.regions;
+    var activeIdx = 0;
+    regions.forEach(function(r, i) { if (r.active) activeIdx = i; });
 
-    function showRegion(i) {
-      var r = DASH.regions[i];
-      document.getElementById("region-detail").innerHTML =
-        '<div class="rd-name">' + r.name + '</div><div class="rd-count">' + r.count + '</div>' +
-        '<div class="rd-rows">' + r.detail.map(function (d) {
-          return '<div class="rd-row"><span>' + d[0] + '</span><b>' + d[1] + '</b></div>';
-        }).join("") + '</div>';
-      document.querySelectorAll(".region-pin").forEach(function (p) {
-        p.classList.toggle("active", +p.dataset.i === i);
+    // 코로플레스 SVG 조립
+    var svgPaths = PROVINCES.map(function(p) {
+      return '<path id="prov-'+p.id+'" data-r="'+p.r+'" d="'+p.d+'"' +
+        ' fill="'+p.fill+'" stroke="#fff" stroke-width="1.5" style="cursor:pointer;transition:filter .15s"/>';
+    }).join('');
+    W_ISLANDS.forEach(function(i) {
+      svgPaths += '<circle cx="'+i.cx+'" cy="'+i.cy+'" r="'+i.r+'" fill="#60A5FA" stroke="#fff" stroke-width="1"/>';
+    });
+    S_ISLANDS.forEach(function(i) {
+      svgPaths += '<circle cx="'+i.cx+'" cy="'+i.cy+'" r="'+i.r+'" fill="'+(i.ri===3?'#93C5FD':'#3B82F6')+'" stroke="#fff" stroke-width="1"/>';
+    });
+    var svgHtml = '<svg viewBox="0 0 480 580" style="display:block;width:100%;height:auto">' + svgPaths + '</svg>';
+
+    // 핀 아이콘
+    var pinIco = '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.4-3.6-8-8-8z" fill="currentColor"/><circle cx="12" cy="10" r="3.5" fill="#fff" opacity=".85"/></svg>';
+
+    // 지역 마커 (말풍선 + 핀) 조립
+    var markersHtml = regions.map(function(r, i) {
+      var rows = r.detail.map(function(d) {
+        return '<div class="cb-row"><span>'+d[0]+'</span><b>'+d[1]+'</b></div>';
+      }).join('');
+      return '<div class="region-marker" data-i="'+i+'" style="left:'+r.x+'%;top:'+r.y+'%">' +
+        '<div class="callout callout-exp" id="callout-exp-'+i+'">' +
+          '<div class="cb-name">'+r.name+'</div>' +
+          '<div class="cb-num">'+r.count+'</div>' +
+          '<div class="cb-div"></div>' + rows +
+        '</div>' +
+        '<div class="callout callout-cmp" id="callout-cmp-'+i+'">' +
+          '<div class="cb-name">'+r.name+'</div>' +
+          '<div class="cb-num">'+r.count+'</div>' +
+        '</div>' +
+        '<div class="cb-pin">'+pinIco+'</div>' +
+      '</div>';
+    }).join('');
+
+    document.getElementById('map-box').innerHTML = svgHtml + markersHtml;
+
+    function setActive(idx) {
+      activeIdx = idx;
+      regions.forEach(function(_, i) {
+        var exp = document.getElementById('callout-exp-'+i);
+        var cmp = document.getElementById('callout-cmp-'+i);
+        if (exp) exp.style.display = (i===idx) ? 'block' : 'none';
+        if (cmp) cmp.style.display = (i===idx) ? 'none' : 'flex';
+      });
+      document.querySelectorAll('#map-box path[data-r]').forEach(function(el) {
+        var ri = +el.getAttribute('data-r');
+        var prov = null;
+        PROVINCES.forEach(function(p) { if ('prov-'+p.id === el.id) prov = p; });
+        if (!prov) return;
+        el.setAttribute('fill', ri===idx ? ACTIVE_FILLS[ri] : prov.fill);
       });
     }
-    document.querySelectorAll(".region-pin").forEach(function (p) {
-      p.addEventListener("click", function () { showRegion(+p.dataset.i); });
+
+    document.querySelectorAll('.region-marker').forEach(function(m) {
+      m.addEventListener('click', function() { setActive(+m.dataset.i); });
     });
-    var def = 0;
-    DASH.regions.forEach(function (r, i) { if (r.active) def = i; });
-    showRegion(def);
+    document.querySelectorAll('#map-box path[data-r]').forEach(function(el) {
+      el.addEventListener('click', function() { setActive(+el.getAttribute('data-r')); });
+    });
+
+    setActive(activeIdx);
   }
 
   function top5Row(r) {
