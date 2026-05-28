@@ -520,3 +520,8 @@ function saveNewAsset() {
   location.hash = '#/list';
   if (window._assetApplyFilter) { window._assetApplyFilter(); }
 }
+
+// ===== 사이드바 토글 =====
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
