@@ -566,3 +566,72 @@ table { width: 100%; border-collapse: collapse; }
   cursor: pointer;
 }
 .btn-modal-save:hover { background: var(--c-primary-strong); }
+
+/* ===== 자산 상세 — 감가상각 카드 ===== */
+.dep-card {
+  background: #F8FAFC;
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 20px;
+}
+.dep-card h3 { font-size: 14px; font-weight: 700; color: #111827; margin: 0 0 14px; }
+.dep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.dep-item { display: flex; flex-direction: column; gap: 3px; }
+.dep-item .di-label { font-size: 11px; color: #6B7280; }
+.dep-item .di-value { font-size: 15px; font-weight: 700; color: #111827; }
+.dep-item .di-value.highlight { color: var(--c-primary); }
+
+.dep-gauge-wrap { display: flex; flex-direction: column; gap: 5px; }
+.dep-gauge-label {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: #6B7280;
+}
+.dep-gauge-track {
+  height: 8px; background: #E5E7EB; border-radius: 4px; overflow: hidden;
+}
+.dep-gauge-fill {
+  height: 100%; background: linear-gradient(90deg, var(--c-primary), #60A5FA);
+  border-radius: 4px; transition: width .4s;
+}
+.dep-gauge-fill.danger { background: linear-gradient(90deg, #EF4444, #F87171); }
+
+/* ===== 자산 상세 — 담당자 연락처 카드 ===== */
+.contact-card {
+  background: #F8FAFC;
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.contact-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: #EFF6FF; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.contact-icon svg { color: var(--c-primary); }
+.contact-info { flex: 1; }
+.contact-info .ci-team { font-size: 12px; color: #6B7280; margin-bottom: 2px; }
+.contact-info .ci-name { font-size: 14px; font-weight: 700; color: #111827; }
+.contact-info .ci-phone { font-size: 12px; color: var(--c-primary); margin-top: 2px; }
+
+/* ===== 자산 상세 — 첨부파일 플레이스홀더 ===== */
+.attach-card {
+  border: 1.5px dashed var(--c-border);
+  border-radius: 12px;
+  padding: 24px 20px;
+  margin-top: 14px;
+  text-align: center;
+  color: #9CA3AF;
+}
+.attach-card svg { margin: 0 auto 8px; display: block; color: #D1D5DB; }
+.attach-card .ac-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.attach-card .ac-sub { font-size: 11px; }

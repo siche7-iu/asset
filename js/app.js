@@ -372,6 +372,33 @@
     for (var i = 0; i < assets.length; i++) { if (assets[i].id === id) { a = assets[i]; break; } }
     if (!a) return;
 
+    // 감가상각 계산
+    var lifeMap = { '노트북':5,'모니터':5,'서버':7,'복합기':5,'책상':10,'의자':10,'차량':10,'에어컨':10,'프로젝터':5,'기타':5 };
+    var life = lifeMap[a.category] || 5;
+    var residual = Math.round(a.price * 0.1);
+    var annualDep = Math.round((a.price - residual) / life);
+    var acqYear = a.acquireDate ? parseInt(a.acquireDate.slice(0,4)) : new Date().getFullYear();
+    var usedYears = Math.max(0, new Date().getFullYear() - acqYear);
+    var depYears = Math.min(usedYears, life);
+    var bookValue = Math.max(residual, a.price - annualDep * depYears);
+    var depRate = Math.min(100, Math.round(depYears / life * 100));
+    var isDanger = depRate >= 80;
+
+    // 담당자 연락처
+    var contactMap = {
+      '노트북':['IT자산관리팀','김태현','02-1234-5678'],
+      '모니터':['IT자산관리팀','김태현','02-1234-5678'],
+      '서버':['IT인프라팀','이승준','02-1234-5679'],
+      '복합기':['IT자산관리팀','김태현','02-1234-5678'],
+      '프로젝터':['IT자산관리팀','김태현','02-1234-5678'],
+      '차량':['차량관리팀','박성민','02-1234-5680'],
+      '책상':['총무팀','최지연','02-1234-5681'],
+      '의자':['총무팀','최지연','02-1234-5681'],
+      '에어컨':['총무팀','최지연','02-1234-5681'],
+      '기타':['총무팀','최지연','02-1234-5681']
+    };
+    var ct = contactMap[a.category] || ['총무팀','최지연','02-1234-5681'];
+
     var historyHtml = a.history.slice().reverse().map(function (h) {
       return '<li><span class="t-date">' + h.date + '</span><span class="t-type">' + h.type + '</span>' +
         '<span class="t-detail">' + h.detail + '</span></li>';
@@ -387,6 +414,38 @@
         field("위치", a.location) + field("상태", a.status) +
         field("취득일", a.acquireDate) + field("취득금액", won(a.price)) +
       '</div>' +
+
+      '<div class="dep-card">' +
+        '<h3>감가상각 정보</h3>' +
+        '<div class="dep-grid">' +
+          '<div class="dep-item"><span class="di-label">내용연수</span><span class="di-value">' + life + '년</span></div>' +
+          '<div class="dep-item"><span class="di-label">사용연수</span><span class="di-value">' + usedYears + '년</span></div>' +
+          '<div class="dep-item"><span class="di-label">잔여연수</span><span class="di-value">' + Math.max(0, life - usedYears) + '년</span></div>' +
+          '<div class="dep-item"><span class="di-label">연간 감가상각액</span><span class="di-value">' + won(annualDep) + '</span></div>' +
+          '<div class="dep-item"><span class="di-label">잔존가액</span><span class="di-value">' + won(residual) + '</span></div>' +
+          '<div class="dep-item"><span class="di-label">현재 장부가</span><span class="di-value highlight">' + won(bookValue) + '</span></div>' +
+        '</div>' +
+        '<div class="dep-gauge-wrap">' +
+          '<div class="dep-gauge-label"><span>감가상각 진행률</span><span>' + depRate + '%</span></div>' +
+          '<div class="dep-gauge-track"><div class="dep-gauge-fill' + (isDanger ? ' danger' : '') + '" style="width:' + depRate + '%"></div></div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="contact-card">' +
+        '<div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>' +
+        '<div class="contact-info">' +
+          '<div class="ci-team">' + ct[0] + ' · 자산담당자</div>' +
+          '<div class="ci-name">' + ct[1] + '</div>' +
+          '<div class="ci-phone">' + ct[2] + '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="attach-card">' +
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>' +
+        '<div class="ac-title">첨부파일</div>' +
+        '<div class="ac-sub">사진, 구매 영수증, 보증서 등 파일을 첨부할 수 있습니다<br>(시연용 프로토타입 — 파일 업로드 기능은 추후 추가 예정)</div>' +
+      '</div>' +
+
       '<h3 class="section-title">변경 이력</h3>' +
       '<ul class="timeline">' + historyHtml + '</ul>';
 
