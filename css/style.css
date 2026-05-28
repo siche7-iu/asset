@@ -112,6 +112,9 @@ nav { flex: 1; }
 }
 .nav-item .ic svg { width: 16px; height: 16px; }
 .nav-item .ic img { width: 28px; height: 28px; }
+.nav-item .ic-active { display: none; }
+.nav-item.active .ic-default { display: none; }
+.nav-item.active .ic-active { display: block; }
 .nav-item:hover { background: rgba(255,255,255,.07); color: #fff; }
 .nav-item:hover .ic { background: rgba(255,255,255,.12); }
 .nav-item.active { background: rgba(255,255,255,.13); color: #fff; font-weight: 600; }
