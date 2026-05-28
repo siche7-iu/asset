@@ -107,8 +107,50 @@
             <button class="ai-more" id="btn-insight">분석 상세 보기 ›</button>
           </div>
 
-          <!-- KPI 6칸 -->
-          <div class="kpi-row" id="kpi-row"></div>
+          <!-- KPI 3×2 + 내 업무 현황 -->
+          <div class="kpi-section">
+            <div class="kpi-row" id="kpi-row"></div>
+            <div class="my-task-card">
+              <div class="my-task-head">
+                <span class="mth-title">내 업무 현황</span>
+                <button class="mth-add">+</button>
+              </div>
+              <div class="my-task-tabs">
+                <button class="mt-tab active">나의 할 일</button>
+                <button class="mt-tab">결재 목록</button>
+              </div>
+              <ul class="my-task-list">
+                <li class="mt-item">
+                  <div class="mt-check"></div>
+                  <div class="mt-body">
+                    <div class="mt-text">강원 ATM 점검 결과 등록</div>
+                    <div class="mt-date urgent">오늘 마감</div>
+                  </div>
+                </li>
+                <li class="mt-item">
+                  <div class="mt-check"></div>
+                  <div class="mt-body">
+                    <div class="mt-text">3분기 예산 검토 완료</div>
+                    <div class="mt-date">05.30 마감</div>
+                  </div>
+                </li>
+                <li class="mt-item">
+                  <div class="mt-check done">✓</div>
+                  <div class="mt-body">
+                    <div class="mt-text done">영남 차량 보험 갱신 확인</div>
+                    <div class="mt-date">완료</div>
+                  </div>
+                </li>
+                <li class="mt-item">
+                  <div class="mt-check done">✓</div>
+                  <div class="mt-body">
+                    <div class="mt-text done">2분기 예산 검토 완료</div>
+                    <div class="mt-date">완료</div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
 
           <!-- 가운데 줄: 노후 위험도 / 타임라인 / 지도 -->
           <div class="grid-3">
@@ -138,14 +180,21 @@
 
             <div class="panel">
               <div class="panel-head"><h3 class="panel-title">지역별 관리 현황</h3></div>
-              <div class="panel-body card-white">
-                <div class="map-box" id="map-box"></div>
+              <div class="panel-body card-white map-inner">
+                <div class="map-left">
+                  <div class="map-box" id="map-box"></div>
+                </div>
+                <div class="map-right">
+                  <div class="map-aging-title">자산 노후도 분석</div>
+                  <div class="aging-bars" id="aging-bars"></div>
+                  <div class="aging-stats" id="aging-stats"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- 아래 줄: TOP5 / 이슈 / 일정 / 노후도 -->
-          <div class="grid-4">
+          <!-- 아래 줄: TOP5 / 이슈 / 일정 -->
+          <div class="grid-3">
             <div class="panel">
               <div class="panel-head"><h3 class="panel-title">위험 자산 TOP 5</h3><span class="dots">⋮</span></div>
               <div class="panel-body card-white"><ul class="rank-list" id="top5-list"></ul></div>
@@ -159,15 +208,6 @@
             <div class="panel">
               <div class="panel-head"><h3 class="panel-title">계약/점검 일정</h3><span class="dots">⋮</span></div>
               <div class="panel-body card-white"><ul class="sched-list" id="sched-list"></ul></div>
-            </div>
-            <div class="panel">
-              <div class="panel-head"><h3 class="panel-title">자산 노후도 분석</h3></div>
-              <div class="panel-body">
-                <div class="aging-wrap">
-                  <div class="aging-bars" id="aging-bars"></div>
-                  <div class="aging-stats" id="aging-stats"></div>
-                </div>
-              </div>
             </div>
           </div>
 
