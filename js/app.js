@@ -826,11 +826,8 @@
 
     // 단계 카드 + 우측 결과 초기화
     resetAgentRight();
-    // 기존 분석중·답변 카드 모두 제거 (분석중 새로 시작)
+    // 진행 중인 분析중 인디케이터만 제거 (이전 답변 유지)
     _removeThinkingBubble();
-    Array.prototype.forEach.call(document.querySelectorAll('#ai-chat-body .msg.agent.answer'), function (el) {
-      el.remove();
-    });
     // 0ms: 사용자 버블 + 분석중 인디케이터 + 단계1 활성
     _appendUserBubble(question);
     _appendThinkingBubble();
