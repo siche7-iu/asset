@@ -11,6 +11,22 @@
   var soonTitle = document.getElementById("soon-title");
   var sectionIds = ["dashboard", "list", "detail", "soon", "ai-agent"];
 
+  // ===== 차트 공용 툴팁 =====
+  var _tipEl = null;
+  function _tip() { return _tipEl || (_tipEl = document.getElementById('chart-tooltip')); }
+  function showTip(cx, cy, html) {
+    var t = _tip(); if (!t) return;
+    t.innerHTML = html;
+    t.classList.add('visible');
+    var W = window.innerWidth, H = window.innerHeight;
+    var tw = t.offsetWidth || 160, th = t.offsetHeight || 56;
+    var x = cx + 14, y = cy - th - 10;
+    if (x + tw > W - 8) x = cx - tw - 14;
+    if (y < 8) y = cy + 16;
+    t.style.left = x + 'px'; t.style.top = y + 'px';
+  }
+  function hideTip() { var t = _tip(); if (t) t.classList.remove('visible'); }
+
   // ===== 화면(섹션) 보이기/숨기기 =====
   function showSection(name) {
     sectionIds.forEach(function (k) {
@@ -169,7 +185,10 @@
       var len = circ * (s.count / total);
       var a = '<circle r="' + R + '" cx="84" cy="84" fill="none" stroke="' + s.color +
         '" stroke-width="26" stroke-dasharray="' + len + ' ' + (circ - len) +
-        '" stroke-dashoffset="' + (-offset) + '" transform="rotate(-90 84 84)"></circle>';
+        '" stroke-dashoffset="' + (-offset) + '" transform="rotate(-90 84 84)"' +
+        ' class="donut-arc" data-key="' + s.key + '" data-label="' + s.label +
+        '" data-pct="' + s.pct + '" data-color="' + s.color + '" data-note="' + (s.note || '') + '"' +
+        ' style="cursor:pointer;transition:opacity .15s"></circle>';
       offset += len; return a;
     }).join("");
     // 중앙 텍스트를 SVG 내부 <text>로 렌더링 → 도넛 축소 시 텍스트도 함께 축소됨
@@ -179,6 +198,19 @@
       '<text x="84" y="93" text-anchor="middle" font-size="20" font-weight="800" fill="#002B6C">' + r.centerTotal + '</text>' +
       '<text x="84" y="108" text-anchor="middle" font-size="9.5" fill="#6B7280">' + r.centerSub + '</text>' +
       '</svg>';
+    // 도넛 arc 마우스오버 툴팁
+    var svg = document.querySelector('#risk-donut svg');
+    svg.addEventListener('mousemove', function (e) {
+      var arc = e.target.classList && e.target.classList.contains('donut-arc') ? e.target : null;
+      if (!arc) { hideTip(); return; }
+      var note = arc.getAttribute('data-note');
+      var html = '<div class="ctt-title">' + arc.getAttribute('data-key') +
+        (note ? ' <span style="font-weight:400;font-size:11px;opacity:.75">(' + note + ')</span>' : '') + '</div>' +
+        '<div class="ctt-row"><span class="ctt-dot" style="background:' + arc.getAttribute('data-color') + '"></span>' +
+        '<span class="ctt-val">' + arc.getAttribute('data-label') + ' (' + arc.getAttribute('data-pct') + ')</span></div>';
+      showTip(e.clientX, e.clientY, html);
+    });
+    svg.addEventListener('mouseleave', hideTip);
     document.getElementById("risk-legend").innerHTML = r.segments.map(function (s) {
       return '<li><span class="sq" style="background:' + s.color + '"></span><div>' +
         '<div class="lg-key"><b>' + s.key + '</b> <span>' + (s.note ? "(" + s.note + ")" : "") + '</span></div>' +
@@ -190,7 +222,9 @@
   function renderTimeline() {
     var t = DASH.timeline;
     document.getElementById("repl-timeline").innerHTML = t.rows.map(function (row) {
-      return '<li style="--dot:' + row.color + '"><div class="repl-card" style="--dot:' + row.color + '">' +
+      return '<li style="--dot:' + row.color + '"><div class="repl-card" style="--dot:' + row.color + '"' +
+        ' data-label="' + row.label + '" data-value="' + row.value +
+        '" data-count="' + row.count + '" data-color="' + row.color + '">' +
         '<span class="r-label">' + row.label + '</span>' +
         '<span class="r-right"><span class="r-value">' + row.value + '</span>' +
         '<span class="r-count">' + row.count + '</span></span></div></li>';
@@ -198,6 +232,16 @@
     document.getElementById("repl-total").innerHTML =
       '<div class="rt-main">총 교체 권고 자산 <b>' + t.totalCount + '</b></div>' +
       '<div class="rt-sub">(자산 가치 <b>' + t.totalValue + '</b> 억원)</div>';
+    // 타임라인 카드 마우스오버 툴팁
+    document.querySelectorAll('#repl-timeline .repl-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var html = '<div class="ctt-title">' + card.getAttribute('data-label') + '</div>' +
+          '<div class="ctt-row"><span class="ctt-dot" style="background:' + card.getAttribute('data-color') + '"></span>' +
+          '<span class="ctt-val">' + card.getAttribute('data-value') + ' &nbsp;/&nbsp; ' + card.getAttribute('data-count') + '</span></div>';
+        showTip(e.clientX, e.clientY, html);
+      });
+      card.addEventListener('mouseleave', hideTip);
+    });
   }
 
   // ===== 지역별 관리 현황 (코로플레스 지도 + 말풍선) =====

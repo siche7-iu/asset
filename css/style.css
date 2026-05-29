@@ -600,6 +600,20 @@ table { width: 100%; border-collapse: collapse; }
 .soon-box h2 { font-size: 18px; color: var(--c-navy); margin: 14px 0 6px; }
 .soon-box p { color: var(--c-muted); font-size: 13.5px; }
 
+/* ===== 차트 공용 툴팁 ===== */
+.chart-tooltip {
+  position: fixed; z-index: 9999; pointer-events: none; display: none;
+  padding: 8px 12px; border-radius: 8px;
+  background: rgba(22,22,32,0.93); color: #fff;
+  font-size: 12.5px; line-height: 1.55; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,.32);
+}
+.chart-tooltip.visible { display: block; }
+.ctt-title { font-weight: 700; font-size: 13px; margin-bottom: 5px; }
+.ctt-row { display: flex; align-items: center; gap: 7px; }
+.ctt-dot { width: 10px; height: 10px; border-radius: 2.5px; flex-shrink: 0; border: 1px solid rgba(255,255,255,.25); }
+.ctt-val { font-size: 12.5px; }
+
 /* ===== 화면이 좁을 때 ===== */
 @media (max-width: 1400px) {
   .kpi-row { grid-template-columns: repeat(3, 1fr); }
@@ -1165,7 +1179,8 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard.active {
   animation: none;
   display: flex; flex-direction: column;
-  flex: 1; min-height: 0;
+  min-height: 0;
+  height: calc(100vh - 20px - var(--header-h) - 62px); /* layout 20px + content padding 22+40px */
 }
 /* 배너·KPI·중간 그리드는 크기 고정, 하단 grid-4가 나머지 채움 */
 #view-dashboard .ai-banner,
