@@ -113,3 +113,4 @@ TODO.md           다음에 할 일 목록(체크리스트).
 - **2026-05-29** — KPI 카드 hover scale 버그 수정. animation-fill-mode: both→backwards 변경. both가 애니 종료 후 transform:none을 frozen 유지해 hover scale을 덮어쓰던 문제 해결. JS mouseenter/mouseleave 방식으로 형제 카드 축소(kpi-dimmed) 확실히 동작.
 - **2026-05-29** — 자산 노후도 분석 막대 차트 마우스오버 툴팁 추가. 각 구간 행 hover 시 검정 말풍선으로 구간명·비율·자산 수 표시. data.js bars에 count 필드 추가.
 - **2026-05-29** — AI INSIGHT 배너 hover 광택 효과 강화. 광택 불투명도 0.5→0.88, 너비 55%→70%, 속도 2s→1.1s linear, 박스 그림자+filter:brightness 추가.
+- **2026-05-29** — 지역별 관리 현황 말풍선 잘림 버그 수정(overflow:visible이 :first-child 적용→:last-child로 교체). 지도 상하좌우 중앙 정렬 + 패딩 18→10px 축소로 지도 크기 확대.

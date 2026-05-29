@@ -1216,10 +1216,18 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard .grid-3 { flex: 3 1 0; min-height: 0; }
 #view-dashboard .grid-3 .panel { min-height: 0; }
 #view-dashboard .grid-3 .panel-body { min-height: 0; overflow-y: auto; }
-/* 지도 패널: 말풍선이 패널 경계를 넘어 표시되도록 overflow 해제 (지도는 3번째=마지막 패널) */
+/* 지도 패널: 말풍선 overflow 해제 + 상하좌우 중앙 정렬 */
 #view-dashboard .grid-3 .panel:last-child,
 #view-dashboard .grid-3 .panel:last-child .panel-body,
 #view-dashboard .grid-3 .panel:last-child .panel-body.card-white { overflow: visible; }
+#view-dashboard .grid-3 .panel:last-child .panel-body.card-white {
+  padding: 10px;
+  justify-content: center;
+}
+#view-dashboard .grid-3 .panel:last-child .panel-body.card-white .map-box {
+  flex: none;
+  width: 100%;
+}
 #view-dashboard .grid-4 {
   flex: 2 1 0; min-height: 0;
   grid-template-rows: 1fr;
