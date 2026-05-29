@@ -297,7 +297,7 @@ nav { flex: 1; }
 .mwp-view-all:hover { color: var(--c-primary); background: #F8FAFF; border-radius: 8px; }
 
 /* 콘텐츠 */
-.content { padding: 22px 28px 40px; flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; scrollbar-width: thin; scrollbar-color: transparent transparent; }
+.content { padding: 22px 28px 10px; flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; scrollbar-width: thin; scrollbar-color: transparent transparent; }
 .content:hover { scrollbar-color: rgba(0,0,0,.12) transparent; }
 .content::-webkit-scrollbar { width: 6px; }
 .content::-webkit-scrollbar-track { background: transparent; }
@@ -319,6 +319,29 @@ nav { flex: 1; }
   border: 1.5px solid transparent;
   border-radius: 40px;
   padding: 12px 20px; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+  transition: box-shadow 0.4s ease;
+}
+.ai-banner:hover {
+  box-shadow: 0 6px 28px rgba(59,130,246,0.22);
+}
+/* 호버 시 왼→오 흐르는 광택 */
+.ai-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: 0;
+  width: 55%; height: 200%;
+  background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
+  transform: translateX(-130%) skewX(-20deg);
+  pointer-events: none;
+  border-radius: inherit;
+}
+.ai-banner:hover::before {
+  animation: aiBannerShimmer 2s ease-in-out infinite;
+}
+@keyframes aiBannerShimmer {
+  0%   { transform: translateX(-130%) skewX(-20deg); }
+  100% { transform: translateX(290%) skewX(-20deg); }
 }
 .ai-ico { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .ai-ico img { width: 40px; height: 40px; display: block; }
@@ -1180,7 +1203,7 @@ table { width: 100%; border-collapse: collapse; }
   animation: none;
   display: flex; flex-direction: column;
   min-height: 0;
-  height: calc(100vh - 20px - var(--header-h) - 62px); /* layout 20px + content padding 22+40px */
+  height: calc(100vh - 20px - var(--header-h) - 32px); /* layout 20px + content padding 22+10px */
 }
 /* 배너·KPI는 크기 고정, 중간·하단 그리드가 남은 공간을 3:2 비율로 분할 */
 #view-dashboard .ai-banner,
@@ -1223,11 +1246,12 @@ table { width: 100%; border-collapse: collapse; }
   animation-delay: 0s;
 }
 /* KPI 카드 (delay는 JS의 --card-delay 변수로 개별 지정) */
+/* fill-mode: backwards → 딜레이 중 from 상태 유지, 애니 종료 후 hover transform 정상 동작 */
 #view-dashboard.active .kpi-card {
   animation-name: dashFadeUp;
   animation-duration: .4s;
   animation-timing-function: cubic-bezier(.22,1,.36,1);
-  animation-fill-mode: both;
+  animation-fill-mode: backwards;
   animation-delay: var(--card-delay, .08s);
 }
 /* 내 업무 현황 카드 */
