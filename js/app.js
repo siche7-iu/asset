@@ -356,13 +356,26 @@
   function renderAging() {
     var a = DASH.aging;
     document.getElementById("aging-bars").innerHTML = a.bars.map(function (b) {
-      return '<div class="ab-row"><div class="ab-top"><span class="ab-label">' + b.label +
+      return '<div class="ab-row" data-label="' + b.label + '" data-pct="' + b.pct +
+        '" data-count="' + (b.count || '') + '" data-color="' + b.color + '">' +
+        '<div class="ab-top"><span class="ab-label">' + b.label +
         '</span><span class="ab-pct">' + b.pct + '%</span></div>' +
         '<div class="ab-track"><div class="ab-fill" data-pct="' + b.pct + '" style="width:0;background:' + b.color + '"></div></div></div>';
     }).join("");
     document.getElementById("aging-stats").innerHTML = a.stats.map(function (s) {
       return '<div class="as-row"><span class="as-label">' + s[0] + '</span><span class="as-val">' + s[1] + '</span></div>';
     }).join("");
+    // 노후도 막대 행 마우스오버 툴팁
+    document.querySelectorAll('#aging-bars .ab-row').forEach(function (row) {
+      row.addEventListener('mousemove', function (e) {
+        var html = '<div class="ctt-title">' + row.getAttribute('data-label') + '</div>' +
+          '<div class="ctt-row"><span class="ctt-dot" style="background:' + row.getAttribute('data-color') + '"></span>' +
+          '<span class="ctt-val">' + row.getAttribute('data-pct') + '%' +
+          (row.getAttribute('data-count') ? ' &nbsp;/ ' + row.getAttribute('data-count') : '') + '</span></div>';
+        showTip(e.clientX, e.clientY, html);
+      });
+      row.addEventListener('mouseleave', hideTip);
+    });
   }
 
   // ===== 대시보드 진입 애니메이션 트리거 =====

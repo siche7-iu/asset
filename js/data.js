@@ -198,9 +198,9 @@ var DASHBOARD = {
   // 자산 노후도 분석
   aging: {
     bars: [
-      { label: "신규 (0-3년)", pct: 42, color: "#3B82F6" },
-      { label: "보통 (4-7년)", pct: 35, color: "#22D3EE" },
-      { label: "노후 (8년+)",  pct: 23, color: "#22C55E" }
+      { label: "신규 (0-3년)", pct: 42, color: "#3B82F6", count: "5,247개" },
+      { label: "보통 (4-7년)", pct: 35, color: "#22D3EE", count: "4,372개" },
+      { label: "노후 (8년+)",  pct: 23, color: "#22C55E", count: "2,873개" }
     ],
     stats: [["총 노후 자산", "2,068개"], ["분기 교체 권고", "42개"], ["예상 교체 비용", "38.2억원"]]
   }
