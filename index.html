@@ -81,9 +81,14 @@
           <button class="tab" data-view="soon" data-title="현장 점검">현장 점검</button>
         </nav>
         <div class="topbar-right">
+          <button class="btn btn-primary" id="btn-report">리포트 생성</button>
+          <span class="tb-divider"></span>
           <!-- 내 업무 현황 버튼 + 팝업 -->
           <div class="mywork-wrapper">
-            <button class="btn-outline" id="btn-mywork">내 업무 현황</button>
+            <button class="btn-mywork" id="btn-mywork">
+              내 업무 현황
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
             <div id="mywork-popup" class="mywork-popup" hidden>
               <div class="mwp-arrow"></div>
               <div class="mwp-head">
@@ -138,7 +143,6 @@
               </div>
             </div>
           </div>
-          <button class="btn-outline" id="btn-report">리포트 생성</button>
           <span class="tb-divider"></span>
           <button class="icon-btn" id="btn-notify" title="알림">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
