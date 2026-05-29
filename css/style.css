@@ -426,17 +426,17 @@ nav { flex: 1; }
   border-radius: 12px;
   position: relative;
 }
-/* 말풍선 꼬리 (아래 삼각형) */
+/* 말풍선 꼬리 (아래 삼각형) — clip-path 방식으로 박스와 2px 겹쳐서 이음새 제거 */
 .callout::after {
   content: '';
   position: absolute;
   bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 0; height: 0;
-  border: 8px solid transparent;
-  border-top-color: #1E2A3A;
-  border-bottom: none;
+  width: 16px;
+  height: 10px; /* 8px 돌출 + 2px 박스 안으로 overlap */
+  background: #1E2A3A;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
 /* 확장형 말풍선 (선택된 지역) */
