@@ -295,16 +295,18 @@ nav { flex: 1; }
 .mwp-view-all:hover { color: var(--c-primary); background: #F8FAFF; border-radius: 8px; }
 
 /* 콘텐츠 */
-.content { padding: 22px 28px 40px; flex: 1; overflow-y: auto; overflow-x: hidden; }
+.content { padding: 22px 28px 40px; flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; scrollbar-width: thin; scrollbar-color: transparent transparent; }
+.content:hover { scrollbar-color: rgba(0,0,0,.12) transparent; }
 .content::-webkit-scrollbar { width: 6px; }
 .content::-webkit-scrollbar-track { background: transparent; }
-.content::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 3px; }
-.content::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,.2); }
+.content::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
+.content:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); }
+.content:hover::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,.22); }
 .muted { color: var(--c-muted); font-size: 13px; }
 
 /* 화면 전환 */
 .view { display: none; }
-.view.active { display: block; animation: fade .2s ease; }
+.view.active { display: block; animation: fade .2s ease; flex-shrink: 0; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 /* ===== AI 인사이트 배너 ===== */
@@ -316,8 +318,8 @@ nav { flex: 1; }
   border-radius: 40px;
   padding: 12px 20px; margin-bottom: 20px;
 }
-.ai-ico { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; background: linear-gradient(135deg,#4C8DF6,#2563EB); display: flex; align-items: center; justify-content: center; }
-.ai-ico svg { width: 22px; height: 22px; }
+.ai-ico { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.ai-ico img { width: 40px; height: 40px; display: block; }
 .ai-text { flex: 1; min-width: 0; }
 .ai-top { display: flex; align-items: center; gap: 10px; margin-bottom: 3px; }
 .ai-tag { background: var(--c-navy); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .5px; padding: 3px 8px; border-radius: 5px; }
@@ -596,6 +598,7 @@ table { width: 100%; border-collapse: collapse; }
 @media (max-width: 1400px) {
   .kpi-row { grid-template-columns: repeat(3, 1fr); }
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  #view-dashboard .grid-4 { grid-template-rows: auto; }
 }
 @media (max-width: 1200px) {
   .kpi-row { grid-template-columns: repeat(3, 1fr); }
@@ -1152,8 +1155,33 @@ table { width: 100%; border-collapse: collapse; }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 .msg.agent.greeting.anim-pop { animation: aiBubblePop .42s cubic-bezier(.22,1,.36,1) both; }
-/* 대시보드 전체 fade 비활성화 — 내부 요소별 개별 처리 */
-#view-dashboard.active { animation: none; }
+/* 대시보드 — 플렉스 컬럼으로 뷰포트를 꽉 채움 */
+#view-dashboard.active {
+  animation: none;
+  display: flex; flex-direction: column;
+  flex: 1; min-height: 0;
+}
+/* 배너·KPI·중간 그리드는 크기 고정, 하단 grid-4가 나머지 채움 */
+#view-dashboard .ai-banner,
+#view-dashboard .kpi-section,
+#view-dashboard .grid-3 { flex-shrink: 0; }
+#view-dashboard .grid-4 {
+  flex: 1; min-height: 0;
+  grid-template-rows: 1fr;
+}
+/* 하단 카드 내부 스크롤 */
+#view-dashboard .grid-4 .panel { min-height: 0; }
+#view-dashboard .grid-4 .panel-body {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+#view-dashboard .grid-4 .panel-body:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
+#view-dashboard .grid-4 .panel-body::-webkit-scrollbar { width: 4px; }
+#view-dashboard .grid-4 .panel-body::-webkit-scrollbar-track { background: transparent; }
+#view-dashboard .grid-4 .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
+#view-dashboard .grid-4 .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
 
 /* AI 배너 — 왼쪽→오른쪽 와이프 */
 @keyframes dashRevealLeft {
@@ -1187,10 +1215,11 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .36s; }
 #view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .43s; }
 #view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
-/* 하단 그리드 3개 패널 */
-#view-dashboard.active > .grid-3:nth-child(4) > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
-#view-dashboard.active > .grid-3:nth-child(4) > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .57s; }
-#view-dashboard.active > .grid-3:nth-child(4) > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .64s; }
+/* 하단 grid-4 패널 4개 */
+#view-dashboard.active > .grid-4 > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
+#view-dashboard.active > .grid-4 > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .57s; }
+#view-dashboard.active > .grid-4 > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .64s; }
+#view-dashboard.active > .grid-4 > .panel:nth-child(4) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .71s; }
 
 /* aging 바 성장 트랜지션 */
 .ab-fill { transition: width .9s cubic-bezier(.4,0,.2,1); }
