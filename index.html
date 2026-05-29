@@ -77,7 +77,7 @@
       <header class="topbar">
         <nav class="tabs" id="header-tabs">
           <button class="tab active" data-view="dashboard">고정자산관리시스템</button>
-          <button class="tab" data-view="soon" data-title="지역별 현황">지역별 현황</button>
+          <button class="tab" data-view="soon" data-title="자산현황">자산현황</button>
           <button class="tab" data-view="soon" data-title="현장 점검">현장 점검</button>
         </nav>
         <div class="topbar-right">
@@ -123,9 +123,63 @@
               <button class="np-view-all">전체 알림 보기</button>
             </div>
           </div>
-          <button class="avatar" title="내 계정">
+          <button class="avatar" id="btn-mywork" title="내 업무 현황">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
           </button>
+          <!-- 내 업무 현황 팝업 -->
+          <div id="mywork-popup" class="mywork-popup" hidden>
+            <div class="mwp-arrow"></div>
+            <div class="mwp-head">
+              <span class="mwp-title">내 업무 현황</span>
+              <span class="mwp-sub">김철수 · IT자산팀</span>
+            </div>
+            <div class="mwp-body">
+              <div class="mwp-section-label">나의 할 일</div>
+              <ul class="mwp-list">
+                <li class="mwp-item mwp-item-urgent">
+                  <span class="mwp-dot"></span>
+                  <div class="mwp-item-body">
+                    <span class="mwp-item-text">강원 ATM 점검 결과 등록</span>
+                    <span class="mwp-item-date urgent">오늘 마감</span>
+                  </div>
+                </li>
+                <li class="mwp-item">
+                  <span class="mwp-dot"></span>
+                  <div class="mwp-item-body">
+                    <span class="mwp-item-text">3분기 예산 검토 완료</span>
+                    <span class="mwp-item-date">05.30 마감</span>
+                  </div>
+                </li>
+                <li class="mwp-item mwp-item-done">
+                  <span class="mwp-dot done"></span>
+                  <div class="mwp-item-body">
+                    <span class="mwp-item-text done">영남 차량 보험 갱신 확인</span>
+                    <span class="mwp-item-date">완료</span>
+                  </div>
+                </li>
+              </ul>
+              <div class="mwp-section-label" style="margin-top:10px">결재 목록</div>
+              <ul class="mwp-list">
+                <li class="mwp-item">
+                  <span class="mwp-dot blue"></span>
+                  <div class="mwp-item-body">
+                    <span class="mwp-item-text">자산 반납 요청 3건</span>
+                    <span class="mwp-item-date">대기중</span>
+                  </div>
+                </li>
+                <li class="mwp-item">
+                  <span class="mwp-dot blue"></span>
+                  <div class="mwp-item-body">
+                    <span class="mwp-item-text">보험 만기 알림 2건</span>
+                    <span class="mwp-item-date">확인 필요</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mwp-footer">
+              <button class="mwp-view-all">전체 업무 보기</button>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -146,49 +200,9 @@
             <button class="ai-more" id="btn-insight">분석 상세 보기 ›</button>
           </div>
 
-          <!-- KPI 3×2 + 내 업무 현황 -->
+          <!-- KPI 6칸 -->
           <div class="kpi-section">
             <div class="kpi-row" id="kpi-row"></div>
-            <div class="my-task-card">
-              <div class="my-task-head">
-                <span class="mth-title">내 업무 현황</span>
-                <button class="mth-add">+</button>
-              </div>
-              <div class="my-task-tabs">
-                <button class="mt-tab active">나의 할 일</button>
-                <button class="mt-tab">결재 목록</button>
-              </div>
-              <ul class="my-task-list">
-                <li class="mt-item">
-                  <div class="mt-check"></div>
-                  <div class="mt-body">
-                    <div class="mt-text">강원 ATM 점검 결과 등록</div>
-                    <div class="mt-date urgent">오늘 마감</div>
-                  </div>
-                </li>
-                <li class="mt-item">
-                  <div class="mt-check"></div>
-                  <div class="mt-body">
-                    <div class="mt-text">3분기 예산 검토 완료</div>
-                    <div class="mt-date">05.30 마감</div>
-                  </div>
-                </li>
-                <li class="mt-item">
-                  <div class="mt-check done">✓</div>
-                  <div class="mt-body">
-                    <div class="mt-text done">영남 차량 보험 갱신 확인</div>
-                    <div class="mt-date">완료</div>
-                  </div>
-                </li>
-                <li class="mt-item">
-                  <div class="mt-check done">✓</div>
-                  <div class="mt-body">
-                    <div class="mt-text done">2분기 예산 검토 완료</div>
-                    <div class="mt-date">완료</div>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </div>
 
           <!-- 가운데 줄: 노후 위험도 / 타임라인 / 지도 -->
@@ -219,22 +233,14 @@
 
             <div class="panel">
               <div class="panel-head"><h3 class="panel-title">지역별 관리 현황</h3></div>
-              <div class="panel-body card-white map-inner">
-                <div class="map-left">
-                  <div class="map-box" id="map-box"></div>
-                </div>
-                <div class="map-sep"></div>
-                <div class="map-right">
-                  <div class="map-aging-title">자산 노후도 분석</div>
-                  <div class="aging-bars" id="aging-bars"></div>
-                  <div class="aging-stats" id="aging-stats"></div>
-                </div>
+              <div class="panel-body card-white">
+                <div class="map-box" id="map-box"></div>
               </div>
             </div>
           </div>
 
-          <!-- 아래 줄: TOP5 / 이슈 / 일정 -->
-          <div class="grid-3">
+          <!-- 아래 줄: TOP5 / 이슈 / 일정 / 노후도분석 -->
+          <div class="grid-4">
             <div class="panel">
               <div class="panel-head"><h3 class="panel-title">위험 자산 TOP 5</h3><span class="dots">⋮</span></div>
               <div class="panel-body card-white"><ul class="rank-list" id="top5-list"></ul></div>
@@ -248,6 +254,13 @@
             <div class="panel">
               <div class="panel-head"><h3 class="panel-title">계약/점검 일정</h3><span class="dots">⋮</span></div>
               <div class="panel-body card-white"><ul class="sched-list" id="sched-list"></ul></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3 class="panel-title">자산 노후도 분석</h3></div>
+              <div class="panel-body">
+                <div class="aging-bars" id="aging-bars"></div>
+                <div class="aging-stats" id="aging-stats" style="margin-top:12px"></div>
+              </div>
             </div>
           </div>
 

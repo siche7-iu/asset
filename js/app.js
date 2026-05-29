@@ -1001,6 +1001,29 @@
   }
 })();
 
+// ===== 내 업무 현황 팝업 =====
+(function () {
+  var btnMywork    = document.getElementById('btn-mywork');
+  var myworkPopup  = document.getElementById('mywork-popup');
+  var notifyPopup  = document.getElementById('notify-popup');
+
+  if (!btnMywork || !myworkPopup) return;
+
+  btnMywork.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var isHidden = myworkPopup.hidden;
+    // 알림 팝업 닫기
+    if (notifyPopup) notifyPopup.hidden = true;
+    myworkPopup.hidden = !isHidden;
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!myworkPopup.hidden && !myworkPopup.contains(e.target) && e.target !== btnMywork) {
+      myworkPopup.hidden = true;
+    }
+  });
+})();
+
 // ===== 자산 등록 모달 =====
 function openRegisterModal() {
   document.getElementById('register-modal').classList.add('open');
