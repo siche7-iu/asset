@@ -96,4 +96,13 @@ TODO.md           다음에 할 일 목록(체크리스트).
 - **2026-05-29** — 대시보드 HTML 구조 개편. ① 헤더 탭 '지역별 현황' → '자산현황' 변경. ② KPI 섹션에서 my-task-card 제거(KPI 6칸이 전체 폭 차지). ③ 아바타 버튼에 '내 업무 현황' 팝업(mywork-popup) 추가(알림 팝업과 상호 닫힘 연동). ④ 지도 패널을 지도 단독으로 단순화. ⑤ 하단 grid-3 → grid-4 변경 후 자산 노후도 분석 패널 이동 추가.
 - **2026-05-29** — style.css 대시보드 CSS 6곳 변경. ① kpi-section→1행/kpi-row→6열 그리드. ② my-task-card·mth-title·mt-tab 등 내 업무 현황 카드 CSS 전부 제거. ③ 내 업무 현황 팝업(.mywork-popup) CSS 추가(알림 팝업 바로 뒤). ④ 지도 2열 레이아웃(map-inner·map-left·map-right·map-sep·map-aging-title) CSS 제거, .panel-body.card-white .map-box 추가. ⑤ aging-bars·aging-stats 스타일 분리 선언 정리. ⑥ 미디어쿼리 1400px에 kpi-row 3열 추가.
 - **2026-05-29** — 4K 전체화면 대응 개선: ① `.risk-donut`을 `clamp(120px, 38%, 230px)`로 설정해 패널 폭에 비례해 도넛이 커지도록 수정. 도넛-범례 gap도 `clamp(12px,3%,24px)`으로 반응형 적용. ② `.repl-timeline`에 `flex:1` 복구 + 각 `li`를 `flex:1`로 설정 + `.repl-card`에 `flex:1` 추가해, 카드 4개가 패널 높이 전체를 균등 분할하며 채우도록 수정(gap:10px 고정).
+- **2026-05-29** — 대시보드 레이아웃·스크롤 3건 개선. ① `.content`를 flex 컬럼으로 변경 + 스크롤바 hover 시에만 노출(평상시 투명). ② `#view-dashboard.active`를 `flex:1` 컬럼으로 변경해 하단 grid-4가 남은 뷰포트를 자동 채움. ③ grid-4 패널에 내부 스크롤(`overflow-y:auto` + `min-height:0` + hover 시에만 4px 스크롤바) 추가. ④ 1400px 미디어쿼리에서 `grid-template-rows:auto` 리셋. ⑤ 하단 4개 카드 진입 애니메이션(dashFadeUp 0.5~0.71s) 추가. 기존 죽은 코드(`grid-3:nth-child(4)`) → `grid-4` 셀렉터로 수정.
+- **2026-05-29** — 헤더 구분선(tb-divider) 정렬 수정. `display: block; align-self: center; flex-shrink: 0;` 명시적 추가로 flex 컨테이너 내 수직 중앙 정렬 보장.
+- **2026-05-29** — AI Agent 상세 패널 스크롤바 개선. `.ai-right-detail`에 투명 스크롤바 설정 + 호버 시만 얇게(4px) 노출. `scrollbar-width: thin; scrollbar-color: transparent` + webkit 커스텀 스크롤바 적용.
+- **2026-05-29** — [내 업무 현황] · 알림 팝업 동시 노출 버그 수정. 알림 버튼 클릭 시 내 업무 현황 팝업을 먼저 닫도록 수정(기존엔 내 업무→알림 방향만 처리됐고 반대 방향은 누락). 두 팝업이 항상 상호 배타적으로 동작.
 - **2026-05-29** — AI Agent 분석 단계 로딩 애니메이션 추가. 추천 질문 클릭 시 현재 진행 중인 단계 번호 주위에 파란 호(arc)가 도는 스피너 표시. conic-gradient + mask로 꼬리가 부드럽게 페이드되는 원호 효과. 단계 완료 시 스피너 사라지고 다음 단계로 이동. 마지막(6번) 완료 시 전체 스피너 제거.
+- **2026-05-29** — 하단 grid-4 카드 상단 여백 축소. 위험 자산 TOP5·최근 이슈·계약/점검 일정 흰 박스 상단 패딩 18→9px, 자산 노후도 분석의 총 노후 자산/분기 교체 권고 박스 상단 패딩 16→8px.
+- **2026-05-29** — 사이드바 로고 폰트 14.5→19px, 로고 이미지 22×18→30×24px으로 확대.
+- **2026-05-29** — 사이드바 로고 레이아웃 수정. 1행(아이콘+NH 고정자산관리), 2행(Fixed Asset Management) 2단 구조로 변경(원본 디자인 일치).
+- **2026-05-29** — 자산 노후도 분석 패널 높이 정렬. panel-body에 card-white 추가해 단일 흰 박스로 통합, aging-bars·aging-stats 개별 배경 제거. 좌측 3개 카드와 높이 일치.
+- **2026-05-29** — KPI 카드 마우스오버 효과 추가. 호버한 카드는 1.04배 확대+그림자 강조, 나머지 카드는 0.96배 축소+흐림. 순수 CSS(:has() + transition)으로 구현.
