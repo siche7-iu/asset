@@ -75,24 +75,26 @@ body {
 
 /* 사이드바 접힌 상태 */
 .sidebar.collapsed { width: 70px; }
-.sidebar.collapsed .brand-text { display: none; }
+.sidebar.collapsed .brand-title { display: none; }
+.sidebar.collapsed .brand-sub { display: none; }
 .sidebar.collapsed .nav-group-label { display: none; }
 .sidebar.collapsed .nav-item { justify-content: center; padding: 9px 6px; }
 .sidebar.collapsed .nav-item-label { display: none; }
 .sidebar.collapsed .side-foot-text { display: none; }
 .sidebar.collapsed .sidebar-toggle svg { transform: rotate(180deg); }
-.sidebar.collapsed .brand { justify-content: center; padding: 46px 6px 14px; }
+.sidebar.collapsed .brand { align-items: center; padding: 46px 6px 14px; }
 
-.brand { display: flex; align-items: center; gap: 11px; padding: 46px 6px 16px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 16px; }
+.brand { display: flex; flex-direction: column; gap: 6px; padding: 46px 6px 16px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 16px; }
+.brand-top { display: flex; align-items: center; gap: 11px; }
 .brand .logo {
-  width: 24px; height: 24px; flex-shrink: 0;
+  width: 32px; height: 32px; flex-shrink: 0;
   background: transparent; border-radius: 0;
   display: flex; align-items: center; justify-content: center;
 }
-.brand .logo img { width: 22px; height: 18px; }
-.brand-text strong { display: block; color: #fff; font-size: 14.5px; font-weight: 700; letter-spacing: -.3px; }
-.brand-text strong b { font-weight: 900; }
-.brand-text small { color: #7b97c2; font-size: 10px; letter-spacing: .2px; margin-top: 1px; display: block; }
+.brand .logo img { width: 30px; height: 24px; }
+.brand-title { color: #fff; font-size: 19px; font-weight: 700; letter-spacing: -.3px; }
+.brand-title b { font-weight: 900; }
+.brand-sub { color: #7b97c2; font-size: 10px; letter-spacing: .2px; padding-left: 43px; }
 
 nav { flex: 1; }
 .nav-group { margin-bottom: 18px; }
@@ -335,7 +337,11 @@ nav { flex: 1; }
   background: var(--c-surface); border: 1px solid #EDF0F4; border-radius: var(--radius-card);
   padding: 16px 18px; box-shadow: var(--shadow-soft);
   display: flex; flex-direction: column; gap: 12px; min-height: 132px;
+  transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, opacity .25s;
+  will-change: transform;
 }
+.kpi-row:has(.kpi-card:hover) .kpi-card { transform: scale(.96); opacity: .75; }
+.kpi-row .kpi-card:hover { transform: scale(1.04) !important; box-shadow: 0 8px 28px rgba(0,30,80,.13); opacity: 1 !important; z-index: 2; position: relative; }
 .kpi-label { color: var(--c-muted); font-size: 13px; font-weight: 500; }
 .kpi-main { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 1; }
 .kpi-main.with-gauge { justify-content: space-between; }
@@ -500,7 +506,7 @@ nav { flex: 1; }
 /* 자산 노후도 분석 */
 .aging-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .aging-bars { display: flex; flex-direction: column; gap: 16px; background: #fff; border-radius: 14px; padding: 16px; box-shadow: var(--shadow-soft); }
-.aging-stats { background: #fff; border-radius: 14px; padding: 16px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: center; gap: 0; }
+.aging-stats { background: #fff; border-radius: 14px; padding: 8px 16px 16px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: center; gap: 0; }
 .ab-row .ab-top { display: flex; justify-content: space-between; margin-bottom: 7px; }
 .ab-row .ab-label { font-size: 12.5px; color: #475569; }
 .ab-row .ab-pct { font-size: 14px; font-weight: 800; color: #1f2937; }
@@ -1171,6 +1177,10 @@ table { width: 100%; border-collapse: collapse; }
 }
 /* 하단 카드 내부 스크롤 */
 #view-dashboard .grid-4 .panel { min-height: 0; }
+#view-dashboard .grid-4 .panel-body.card-white { padding-top: 9px; }
+/* 자산 노후도 분석: card-white 안에서 개별 흰 박스 제거 */
+#view-dashboard .grid-4 .panel-body.card-white .aging-bars { background: none; border-radius: 0; box-shadow: none; padding: 4px 0 12px; border-bottom: 1px solid #EEF1F5; }
+#view-dashboard .grid-4 .panel-body.card-white .aging-stats { background: none; border-radius: 0; box-shadow: none; padding: 0; margin-top: 0; }
 #view-dashboard .grid-4 .panel-body {
   min-height: 0;
   overflow-y: auto;
