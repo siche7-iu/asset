@@ -1063,9 +1063,32 @@
       return;
     }
 
-    // 더보기 / 전체 알림 보기 → 팝업 닫기
-    if (e.target.closest('.np-more-btn') || e.target.closest('.np-view-all')) {
+    // 더보기 → 해당 항목 이동
+    var moreBtn = e.target.closest('.np-more-btn');
+    if (moreBtn) {
       popup.hidden = true;
+      location.hash = '#/list';
+      return;
+    }
+
+    // 전체 알림 보기 → 닫기
+    if (e.target.closest('.np-view-all')) {
+      popup.hidden = true;
+      return;
+    }
+
+    // 알림 항목 클릭 → 해당 화면으로 이동 + 읽음 처리
+    var npItem = e.target.closest('.np-item[data-nav]');
+    if (npItem && !e.target.closest('button')) {
+      var nav = npItem.getAttribute('data-nav');
+      npItem.classList.add('np-item-read');
+      npItem.classList.remove('np-item-focused');
+      var btns = npItem.querySelector('.np-item-btns');
+      if (btns) btns.remove();
+      count = Math.max(0, count - 1);
+      updateBadge();
+      popup.hidden = true;
+      location.hash = '#' + nav;
     }
   });
 
