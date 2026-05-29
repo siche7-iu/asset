@@ -1163,11 +1163,63 @@ table { width: 100%; border-collapse: collapse; }
 .detail-ai-note .ain-body { font-size: 12.5px; color: #374151; line-height: 1.55; }
 .detail-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-/* 좁은 화면 보완 */
+/* ===== AI Agent — 뷰포트 고정 레이아웃 (외부 스크롤 없음) ===== */
+/* view-ai-agent 전체가 content 영역 높이를 꽉 채우고, 내부에서만 스크롤 */
+#view-ai-agent.active {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 20px - var(--header-h) - 32px);
+  min-height: 0;
+  overflow: hidden;
+}
+#view-ai-agent .ai-page-head { flex-shrink: 0; }
+#view-ai-agent .ai-layout {
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: 1fr;  /* 단일 행이 남은 높이를 모두 채움 */
+  margin-bottom: 0;
+}
+/* 3열 모두 행 높이를 꽉 채우고, 자체 영역을 벗어나지 않음 */
+#view-ai-agent .ai-side,
+#view-ai-agent .ai-chat-card,
+#view-ai-agent .ai-right {
+  min-height: 0;
+  overflow: hidden;
+}
+/* 좌측 패널 — 내부 스크롤 */
+#view-ai-agent .ai-side {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+#view-ai-agent .ai-side:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
+#view-ai-agent .ai-side::-webkit-scrollbar { width: 4px; }
+#view-ai-agent .ai-side::-webkit-scrollbar-track { background: transparent; }
+#view-ai-agent .ai-side::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+#view-ai-agent .ai-side:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
+/* 중앙 채팅 — min-height 고정값 해제, 헤더·입력창 고정, 본문만 스크롤 */
+#view-ai-agent .ai-chat-card { min-height: 0; }
+#view-ai-agent .ai-chat-head { flex-shrink: 0; }
+#view-ai-agent .ai-chat-body { flex: 1; min-height: 0; }
+#view-ai-agent .ai-chat-input { flex-shrink: 0; }
+/* 우측 요약 패널 — 내부 스크롤 (detail 패널은 absolute inset:0으로 자체 스크롤 유지) */
+#view-ai-agent .ai-right-summary {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+#view-ai-agent .ai-right-summary:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
+#view-ai-agent .ai-right-summary::-webkit-scrollbar { width: 4px; }
+#view-ai-agent .ai-right-summary::-webkit-scrollbar-track { background: transparent; }
+#view-ai-agent .ai-right-summary::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+#view-ai-agent .ai-right-summary:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
+
+/* 좁은 화면 보완 — 고정 레이아웃 모드에서는 min-height 대신 overflow로 처리 */
 @media (max-width: 1200px) {
-  .ai-layout { grid-template-columns: 1fr; }
-  .ai-right { min-height: 600px; }
-  .ai-chat-card { min-height: 580px; }
+  #view-ai-agent .ai-layout { grid-template-columns: 1fr; grid-template-rows: auto; }
+  #view-ai-agent .ai-right,
+  #view-ai-agent .ai-chat-card { min-height: 400px; overflow-y: auto; }
 }
 
 /* ===== AI Agent 진입 애니메이션 ===== */
@@ -1217,10 +1269,10 @@ table { width: 100%; border-collapse: collapse; }
   min-height: 0;
   height: calc(100vh - 20px - var(--header-h) - 32px); /* layout 20px + content padding 22+10px */
 }
-/* 배너·KPI는 크기 고정, 중간·하단 그리드가 남은 공간을 3:2 비율로 분할 */
+/* 배너·KPI는 크기 고정, 중간·하단 그리드가 남은 공간을 2:3 비율로 분할 */
 #view-dashboard .ai-banner,
 #view-dashboard .kpi-section { flex-shrink: 0; }
-#view-dashboard .grid-3 { flex: 3 1 0; min-height: 0; }
+#view-dashboard .grid-3 { flex: 2 1 0; min-height: 0; }
 #view-dashboard .grid-3 .panel { min-height: 0; }
 #view-dashboard .grid-3 .panel-body { min-height: 0; overflow-y: auto; }
 /* 지도 패널: 말풍선 overflow 해제 + 상하좌우 중앙 정렬 */
@@ -1236,7 +1288,7 @@ table { width: 100%; border-collapse: collapse; }
   width: 100%;
 }
 #view-dashboard .grid-4 {
-  flex: 2 1 0; min-height: 0;
+  flex: 3 1 0; min-height: 0;
   grid-template-rows: 1fr;
 }
 /* 하단 카드 내부 스크롤 */
