@@ -164,15 +164,6 @@ nav { flex: 1; }
   padding: 9px 16px; font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit;
 }
 .btn-outline:hover { background: #f5f8ff; border-color: var(--c-primary); color: var(--c-primary); }
-.btn-mywork {
-  display: flex; align-items: center; gap: 6px;
-  background: #fff; color: var(--c-navy);
-  border: 1.5px solid var(--c-navy); border-radius: var(--radius-ctrl);
-  padding: 8px 14px; font-size: 13.5px; font-weight: 700;
-  cursor: pointer; font-family: inherit; transition: background .15s;
-}
-.btn-mywork:hover { background: #EEF2FF; }
-.btn-mywork svg { opacity: .7; flex-shrink: 0; }
 .btn { border: none; border-radius: var(--radius-ctrl); padding: 9px 16px; font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
 .btn-primary { background: var(--c-primary); color: #fff; }
 .btn-primary:hover { background: var(--c-primary-strong); }
@@ -908,6 +899,9 @@ table { width: 100%; border-collapse: collapse; }
 }
 .thinking-label .dots i:nth-child(2) { animation-delay: .2s; }
 .thinking-label .dots i:nth-child(3) { animation-delay: .4s; }
+@keyframes stepSpin {
+  to { transform: rotate(360deg); }
+}
 @keyframes thinkDot {
   0%, 100% { opacity: .25; }
   40%      { opacity: 1; }
@@ -1007,8 +1001,28 @@ table { width: 100%; border-collapse: collapse; }
   font-size: 11px; font-weight: 700; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   transition: background .2s, color .2s;
+  position: relative;
 }
 .step-item.active .step-num { background: var(--c-primary); color: #fff; }
+.step-item.loading .step-num { background: var(--c-primary); color: #fff; }
+.step-item.loading .step-num::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.1) 8%,
+    var(--c-primary) 35%,
+    var(--c-primary) 78%,
+    transparent 100%
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black calc(100% - 3px));
+  animation: stepSpin 0.75s linear infinite;
+  pointer-events: none;
+}
 .step-title { font-size: 12.5px; font-weight: 600; color: var(--c-muted); }
 .step-sub { font-size: 11px; color: var(--c-faint); }
 .step-item.active .step-title { color: #111827; }

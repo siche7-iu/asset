@@ -582,6 +582,7 @@
     // 우측 단계 카드 초기화
     Array.prototype.forEach.call(document.querySelectorAll('#step-list .step-item'), function (el) {
       el.classList.remove('active');
+      el.classList.remove('loading');
     });
     document.getElementById('related-empty').style.display = '';
     document.getElementById('related-chips').style.display = 'none';
@@ -639,8 +640,15 @@
   }
 
   function _activateStep(n) {
+    // 이전 loading 단계를 완료(active만) 상태로 전환
+    Array.prototype.forEach.call(document.querySelectorAll('#step-list .step-item.loading'), function (el) {
+      el.classList.remove('loading');
+    });
     var el = document.querySelector('#step-list .step-item[data-step="' + n + '"]');
-    if (el) el.classList.add('active');
+    if (el) {
+      el.classList.add('active');
+      el.classList.add('loading');
+    }
   }
 
   function _renderAnswerCard(script) {
@@ -768,6 +776,10 @@
       _removeThinkingBubble();
       _renderAnswerCard(script);
       _renderRightAfterAnswer(script);
+      // 마지막 단계 로딩 스피너 제거 (모든 단계 완료 상태로)
+      Array.prototype.forEach.call(document.querySelectorAll('#step-list .step-item.loading'), function (el) {
+        el.classList.remove('loading');
+      });
       _aiSeq = null;
     }, 2100));
     _aiSeq = t;
