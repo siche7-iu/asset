@@ -337,11 +337,11 @@ nav { flex: 1; }
   background: var(--c-surface); border: 1px solid #EDF0F4; border-radius: var(--radius-card);
   padding: 16px 18px; box-shadow: var(--shadow-soft);
   display: flex; flex-direction: column; gap: 12px; min-height: 132px;
-  transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, opacity .25s;
-  will-change: transform;
+  transition: transform .3s cubic-bezier(0.34,1.2,0.64,1), box-shadow .28s ease, opacity .28s ease;
+  will-change: transform; position: relative;
 }
-.kpi-row:has(.kpi-card:hover) .kpi-card { transform: scale(.96); opacity: .75; }
-.kpi-row .kpi-card:hover { transform: scale(1.04) !important; box-shadow: 0 8px 28px rgba(0,30,80,.13); opacity: 1 !important; z-index: 2; position: relative; }
+.kpi-card.kpi-dimmed { transform: scale(.95); opacity: .68; }
+.kpi-card:hover { transform: scale(1.05); box-shadow: 0 8px 28px rgba(0,30,80,.14); opacity: 1; z-index: 2; }
 .kpi-label { color: var(--c-muted); font-size: 13px; font-weight: 500; }
 .kpi-main { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 1; }
 .kpi-main.with-gauge { justify-content: space-between; }
@@ -1182,12 +1182,14 @@ table { width: 100%; border-collapse: collapse; }
   min-height: 0;
   height: calc(100vh - 20px - var(--header-h) - 62px); /* layout 20px + content padding 22+40px */
 }
-/* 배너·KPI·중간 그리드는 크기 고정, 하단 grid-4가 나머지 채움 */
+/* 배너·KPI는 크기 고정, 중간·하단 그리드가 남은 공간을 3:2 비율로 분할 */
 #view-dashboard .ai-banner,
-#view-dashboard .kpi-section,
-#view-dashboard .grid-3 { flex-shrink: 0; }
+#view-dashboard .kpi-section { flex-shrink: 0; }
+#view-dashboard .grid-3 { flex: 3 1 0; min-height: 0; }
+#view-dashboard .grid-3 .panel { min-height: 0; }
+#view-dashboard .grid-3 .panel-body { min-height: 0; overflow-y: auto; }
 #view-dashboard .grid-4 {
-  flex: 1; min-height: 0;
+  flex: 2 1 0; min-height: 0;
   grid-template-rows: 1fr;
 }
 /* 하단 카드 내부 스크롤 */

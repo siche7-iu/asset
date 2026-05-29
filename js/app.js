@@ -174,6 +174,16 @@
         '<div class="kpi-label">' + k.label + '</div>' + main +
         '<span class="kpi-badge ' + k.tone + '">' + bi + k.badge + '</span></div>';
     }).join("");
+    // KPI 카드 hover: 호버된 카드 확대, 나머지 축소 (JS 이벤트 방식 — 브라우저 호환)
+    var kpiCards = document.querySelectorAll('#kpi-row .kpi-card');
+    kpiCards.forEach(function (card) {
+      card.addEventListener('mouseenter', function () {
+        kpiCards.forEach(function (c) { if (c !== card) c.classList.add('kpi-dimmed'); });
+      });
+      card.addEventListener('mouseleave', function () {
+        kpiCards.forEach(function (c) { c.classList.remove('kpi-dimmed'); });
+      });
+    });
   }
 
   function renderRiskDonut() {
