@@ -422,20 +422,20 @@ nav { flex: 1; }
 .risk-formula { margin-top: 16px; font-size: 11.5px; color: var(--c-faint); }
 
 /* 교체 시기 도래 (타임라인) */
-.repl-timeline { list-style: none; position: relative; padding-left: 22px; flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 6px; padding-bottom: 6px; }
+.repl-timeline { list-style: none; position: relative; padding-left: 22px; flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; padding-top: 6px; padding-bottom: 6px; }
 .repl-timeline::before { content: ""; position: absolute; left: 5px; top: 10px; bottom: 10px; width: 2px; background: repeating-linear-gradient(to bottom, #CBD5E1 0px, #CBD5E1 5px, transparent 5px, transparent 10px); }
-.repl-timeline li { position: relative; flex: 1; display: flex; flex-direction: column; }
+.repl-timeline li { position: relative; flex: 1; min-height: 0; max-height: 72px; display: flex; flex-direction: column; }
 .repl-timeline li::before { content: ""; position: absolute; left: -22px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; border-radius: 50%; background: var(--dot); border: 3px solid #fff; box-shadow: 0 0 0 1px #e2e6ee; }
 .repl-card {
   flex: 1; display: flex; align-items: center; justify-content: space-between;
-  background: #fff; border-radius: 12px; padding: 14px 18px; box-shadow: var(--shadow-soft);
-  border-left: 4px solid var(--dot);
+  background: #fff; border-radius: 12px; padding: 8px 14px; box-shadow: var(--shadow-soft);
+  border-left: 4px solid var(--dot); overflow: hidden;
 }
 .repl-card .r-label { font-size: 14px; font-weight: 600; color: #1f2937; }
 .repl-card .r-right { display: flex; align-items: center; gap: 14px; }
 .repl-card .r-value { font-size: 12.5px; color: var(--c-faint); }
 .repl-card .r-count { font-size: 19px; font-weight: 800; color: var(--c-navy); }
-.repl-total { margin-top: 4px; background: #E9ECF2; border-radius: 12px; padding: 18px; text-align: center; line-height: 1.6; }
+.repl-total { margin-top: 4px; background: #E9ECF2; border-radius: 12px; padding: 12px 14px; text-align: center; line-height: 1.5; flex-shrink: 0; }
 .repl-total .rt-main { font-size: 15px; font-weight: 600; color: #374151; }
 .repl-total .rt-sub { font-size: 13px; color: var(--c-muted); }
 .repl-total b { color: #DC2626; font-weight: 800; }
@@ -1269,26 +1269,36 @@ table { width: 100%; border-collapse: collapse; }
   min-height: 0;
   height: calc(100vh - 20px - var(--header-h) - 32px); /* layout 20px + content padding 22+10px */
 }
-/* 배너·KPI는 크기 고정, 중간·하단 그리드가 남은 공간을 2:3 비율로 분할 */
+/* 배너·KPI는 크기 고정, 중간·하단 그리드가 남은 공간을 1:1 비율로 분할 */
 #view-dashboard .ai-banner,
 #view-dashboard .kpi-section { flex-shrink: 0; }
-#view-dashboard .grid-3 { flex: 2 1 0; min-height: 0; }
-#view-dashboard .grid-3 .panel { min-height: 0; }
+#view-dashboard .grid-3 { flex: 1 1 0; min-height: 0; grid-template-rows: 1fr; }
+#view-dashboard .grid-3 .panel { min-height: 0; overflow: hidden; }
 #view-dashboard .grid-3 .panel-body { min-height: 0; overflow-y: auto; }
-/* 지도 패널: 말풍선 overflow 해제 + 상하좌우 중앙 정렬 */
-#view-dashboard .grid-3 .panel:last-child,
+/* 타임라인 패널(2번째): 카드가 자연 높이를 유지하므로 스크롤 불필요 */
+#view-dashboard .grid-3 .panel:nth-child(2) .panel-body { overflow: hidden; }
+/* 지도 패널: 말풍선 overflow 해제 + 지도 이미지 패널 채움 */
+#view-dashboard .grid-3 .panel:last-child { overflow: visible; }
 #view-dashboard .grid-3 .panel:last-child .panel-body,
 #view-dashboard .grid-3 .panel:last-child .panel-body.card-white { overflow: visible; }
 #view-dashboard .grid-3 .panel:last-child .panel-body.card-white {
   padding: 10px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 #view-dashboard .grid-3 .panel:last-child .panel-body.card-white .map-box {
-  flex: none;
+  flex: 1;
+  min-height: 0;
   width: 100%;
+  overflow: visible;
+}
+#view-dashboard .grid-3 .panel:last-child .map-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 #view-dashboard .grid-4 {
-  flex: 3 1 0; min-height: 0;
+  flex: 1 1 0; min-height: 0;
   grid-template-rows: 1fr;
 }
 /* 하단 카드 내부 스크롤 */
