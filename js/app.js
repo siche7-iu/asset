@@ -172,10 +172,13 @@
         '" stroke-dashoffset="' + (-offset) + '" transform="rotate(-90 84 84)"></circle>';
       offset += len; return a;
     }).join("");
+    // 중앙 텍스트를 SVG 내부 <text>로 렌더링 → 도넛 축소 시 텍스트도 함께 축소됨
     document.getElementById("risk-donut").innerHTML =
-      '<svg viewBox="0 0 168 168" width="100%" height="100%">' + arcs + '</svg>' +
-      '<div class="center"><span class="c-cap">Total</span><span class="c-total">' + r.centerTotal +
-      '</span><span class="c-sub">' + r.centerSub + '</span></div>';
+      '<svg viewBox="0 0 168 168" width="100%" height="100%">' + arcs +
+      '<text x="84" y="72" text-anchor="middle" font-size="11" fill="#9CA3AF">Total</text>' +
+      '<text x="84" y="93" text-anchor="middle" font-size="20" font-weight="800" fill="#002B6C">' + r.centerTotal + '</text>' +
+      '<text x="84" y="108" text-anchor="middle" font-size="9.5" fill="#6B7280">' + r.centerSub + '</text>' +
+      '</svg>';
     document.getElementById("risk-legend").innerHTML = r.segments.map(function (s) {
       return '<li><span class="sq" style="background:' + s.color + '"></span><div>' +
         '<div class="lg-key"><b>' + s.key + '</b> <span>' + (s.note ? "(" + s.note + ")" : "") + '</span></div>' +
@@ -953,9 +956,11 @@
     else { badge.hidden = false; badge.textContent = count; }
   }
 
-  // 팝업 열기 / 닫기
+  // 팝업 열기 / 닫기 (내 업무 현황 팝업은 함께 닫음)
   btnNotify.addEventListener('click', function (e) {
     e.stopPropagation();
+    var myworkPopup = document.getElementById('mywork-popup');
+    if (myworkPopup) myworkPopup.hidden = true;
     popup.hidden = !popup.hidden;
   });
 
