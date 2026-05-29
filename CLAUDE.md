@@ -105,6 +105,8 @@ TODO.md           다음에 할 일 목록(체크리스트).
 - **2026-05-29** — 사이드바 로고 폰트 14.5→19px, 로고 이미지 22×18→30×24px으로 확대.
 - **2026-05-29** — 사이드바 로고 레이아웃 수정. 1행(아이콘+NH 고정자산관리), 2행(Fixed Asset Management) 2단 구조로 변경(원본 디자인 일치).
 - **2026-05-29** — 자산 노후도 분석 패널 높이 정렬. panel-body에 card-white 추가해 단일 흰 박스로 통합, aging-bars·aging-stats 개별 배경 제거. 좌측 3개 카드와 높이 일치.
-- **2026-05-29** — 하단 카드 높이 문제 수정. overflow-y:auto 컨테이너 안에서 flex:1 체인이 grid-4까지 전달 안 되던 문제 → #view-dashboard.active에 height:calc(100vh-20px-var(--header-h)-62px) 명시적 지정으로 해결. grid-4가 사이드바 바닥까지 채움.
+- **2026-05-29** — 하단 카드 높이 문제 수정. grid-3이 flex-shrink:0으로 427px를 점유해 grid-4에 31px만 남던 문제 → grid-3:grid-4를 flex 3:2 비율 분할로 변경(grid-3≈275px, grid-4≈183px). content padding-bottom 40→10px 축소, dashboard 명시적 height 조정 → grid-4 bottom이 사이드바 bottom과 10px 차이로 거의 일치.
+- **2026-05-29** — AI INSIGHT 배너 호버 애니메이션 추가. 마우스오버 시 흰색 광택(::before)이 왼→오로 흐르는 shimmer 효과(2s infinite) + 파란색 box-shadow 등장. skewX(-20deg)로 대각선 광택 연출.
 - **2026-05-29** — KPI 카드 마우스오버 효과 추가. 호버한 카드는 1.04배 확대+그림자 강조, 나머지 카드는 0.96배 축소+흐림. 순수 CSS(:has() + transition)으로 구현.
 - **2026-05-29** — 노후 위험도 분포(도넛) · 2차 시기 도래 자산(타임라인) 마우스오버 툴팁 추가. 검정 말풍선으로 라벨·수치 표시, 화면 끝 경계 체크 포함.
+- **2026-05-29** — KPI 카드 hover scale 버그 수정. animation-fill-mode: both→backwards 변경. both가 애니 종료 후 transform:none을 frozen 유지해 hover scale을 덮어쓰던 문제 해결. JS mouseenter/mouseleave 방식으로 형제 카드 축소(kpi-dimmed) 확실히 동작.
