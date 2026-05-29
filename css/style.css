@@ -416,6 +416,7 @@ nav { flex: 1; }
   align-items: center;
   z-index: 10;
   cursor: pointer;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.38));
 }
 
 /* 말풍선 공통 */
@@ -424,7 +425,6 @@ nav { flex: 1; }
   color: #fff;
   border-radius: 12px;
   position: relative;
-  box-shadow: 0 6px 20px rgba(0,0,0,.3);
 }
 /* 말풍선 꼬리 (아래 삼각형) */
 .callout::after {
