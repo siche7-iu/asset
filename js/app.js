@@ -1012,7 +1012,6 @@
   btnMywork.addEventListener('click', function (e) {
     e.stopPropagation();
     var isHidden = myworkPopup.hidden;
-    // 알림 팝업 닫기
     if (notifyPopup) notifyPopup.hidden = true;
     myworkPopup.hidden = !isHidden;
   });
@@ -1021,6 +1020,15 @@
     if (!myworkPopup.hidden && !myworkPopup.contains(e.target) && e.target !== btnMywork) {
       myworkPopup.hidden = true;
     }
+  });
+})();
+
+// ===== 마이페이지 (아바타) =====
+(function () {
+  var btnAvatar = document.getElementById('btn-avatar');
+  if (!btnAvatar) return;
+  btnAvatar.addEventListener('click', function () {
+    alert('마이페이지 준비 중입니다.');
   });
 })();
 

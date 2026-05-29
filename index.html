@@ -81,6 +81,63 @@
           <button class="tab" data-view="soon" data-title="현장 점검">현장 점검</button>
         </nav>
         <div class="topbar-right">
+          <!-- 내 업무 현황 버튼 + 팝업 -->
+          <div class="mywork-wrapper">
+            <button class="btn-outline" id="btn-mywork">내 업무 현황</button>
+            <div id="mywork-popup" class="mywork-popup" hidden>
+              <div class="mwp-arrow"></div>
+              <div class="mwp-head">
+                <span class="mwp-title">내 업무 현황</span>
+                <span class="mwp-sub">김철수 · IT자산팀</span>
+              </div>
+              <div class="mwp-body">
+                <div class="mwp-section-label">나의 할 일</div>
+                <ul class="mwp-list">
+                  <li class="mwp-item mwp-item-urgent">
+                    <span class="mwp-dot"></span>
+                    <div class="mwp-item-body">
+                      <span class="mwp-item-text">강원 ATM 점검 결과 등록</span>
+                      <span class="mwp-item-date urgent">오늘 마감</span>
+                    </div>
+                  </li>
+                  <li class="mwp-item">
+                    <span class="mwp-dot"></span>
+                    <div class="mwp-item-body">
+                      <span class="mwp-item-text">3분기 예산 검토 완료</span>
+                      <span class="mwp-item-date">05.30 마감</span>
+                    </div>
+                  </li>
+                  <li class="mwp-item mwp-item-done">
+                    <span class="mwp-dot done"></span>
+                    <div class="mwp-item-body">
+                      <span class="mwp-item-text done">영남 차량 보험 갱신 확인</span>
+                      <span class="mwp-item-date">완료</span>
+                    </div>
+                  </li>
+                </ul>
+                <div class="mwp-section-label" style="margin-top:10px">결재 목록</div>
+                <ul class="mwp-list">
+                  <li class="mwp-item">
+                    <span class="mwp-dot blue"></span>
+                    <div class="mwp-item-body">
+                      <span class="mwp-item-text">자산 반납 요청 3건</span>
+                      <span class="mwp-item-date">대기중</span>
+                    </div>
+                  </li>
+                  <li class="mwp-item">
+                    <span class="mwp-dot blue"></span>
+                    <div class="mwp-item-body">
+                      <span class="mwp-item-text">보험 만기 알림 2건</span>
+                      <span class="mwp-item-date">확인 필요</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="mwp-footer">
+                <button class="mwp-view-all">전체 업무 보기</button>
+              </div>
+            </div>
+          </div>
           <button class="btn-outline" id="btn-report">리포트 생성</button>
           <span class="tb-divider"></span>
           <button class="icon-btn" id="btn-notify" title="알림">
@@ -123,63 +180,9 @@
               <button class="np-view-all">전체 알림 보기</button>
             </div>
           </div>
-          <button class="avatar" id="btn-mywork" title="내 업무 현황">
+          <button class="avatar" id="btn-avatar" title="마이페이지">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
           </button>
-          <!-- 내 업무 현황 팝업 -->
-          <div id="mywork-popup" class="mywork-popup" hidden>
-            <div class="mwp-arrow"></div>
-            <div class="mwp-head">
-              <span class="mwp-title">내 업무 현황</span>
-              <span class="mwp-sub">김철수 · IT자산팀</span>
-            </div>
-            <div class="mwp-body">
-              <div class="mwp-section-label">나의 할 일</div>
-              <ul class="mwp-list">
-                <li class="mwp-item mwp-item-urgent">
-                  <span class="mwp-dot"></span>
-                  <div class="mwp-item-body">
-                    <span class="mwp-item-text">강원 ATM 점검 결과 등록</span>
-                    <span class="mwp-item-date urgent">오늘 마감</span>
-                  </div>
-                </li>
-                <li class="mwp-item">
-                  <span class="mwp-dot"></span>
-                  <div class="mwp-item-body">
-                    <span class="mwp-item-text">3분기 예산 검토 완료</span>
-                    <span class="mwp-item-date">05.30 마감</span>
-                  </div>
-                </li>
-                <li class="mwp-item mwp-item-done">
-                  <span class="mwp-dot done"></span>
-                  <div class="mwp-item-body">
-                    <span class="mwp-item-text done">영남 차량 보험 갱신 확인</span>
-                    <span class="mwp-item-date">완료</span>
-                  </div>
-                </li>
-              </ul>
-              <div class="mwp-section-label" style="margin-top:10px">결재 목록</div>
-              <ul class="mwp-list">
-                <li class="mwp-item">
-                  <span class="mwp-dot blue"></span>
-                  <div class="mwp-item-body">
-                    <span class="mwp-item-text">자산 반납 요청 3건</span>
-                    <span class="mwp-item-date">대기중</span>
-                  </div>
-                </li>
-                <li class="mwp-item">
-                  <span class="mwp-dot blue"></span>
-                  <div class="mwp-item-body">
-                    <span class="mwp-item-text">보험 만기 알림 2건</span>
-                    <span class="mwp-item-date">확인 필요</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="mwp-footer">
-              <button class="mwp-view-all">전체 업무 보기</button>
-            </div>
-          </div>
         </div>
       </header>
 
