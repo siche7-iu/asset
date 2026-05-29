@@ -320,28 +320,33 @@ nav { flex: 1; }
   border-radius: 40px;
   padding: 12px 20px; margin-bottom: 20px;
   position: relative; overflow: hidden;
-  transition: box-shadow 0.4s ease;
+  transition: box-shadow 0.3s ease, filter 0.3s ease;
 }
 .ai-banner:hover {
-  box-shadow: 0 6px 28px rgba(59,130,246,0.22);
+  box-shadow: 0 4px 40px rgba(59,130,246,0.45), 0 0 0 2px rgba(99,148,255,0.28);
+  filter: brightness(1.04);
 }
 /* 호버 시 왼→오 흐르는 광택 */
 .ai-banner::before {
   content: '';
   position: absolute;
   top: -50%; left: 0;
-  width: 55%; height: 200%;
-  background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
-  transform: translateX(-130%) skewX(-20deg);
+  width: 70%; height: 200%;
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(255,255,255,0.18) 25%,
+    rgba(255,255,255,0.88) 50%,
+    rgba(255,255,255,0.18) 75%,
+    transparent 100%);
+  transform: translateX(-140%) skewX(-20deg);
   pointer-events: none;
-  border-radius: inherit;
 }
 .ai-banner:hover::before {
-  animation: aiBannerShimmer 2s ease-in-out infinite;
+  animation: aiBannerShimmer 1.1s linear infinite;
 }
 @keyframes aiBannerShimmer {
-  0%   { transform: translateX(-130%) skewX(-20deg); }
-  100% { transform: translateX(290%) skewX(-20deg); }
+  0%   { transform: translateX(-140%) skewX(-20deg); }
+  100% { transform: translateX(250%) skewX(-20deg); }
 }
 .ai-ico { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .ai-ico img { width: 40px; height: 40px; display: block; }
@@ -1211,6 +1216,10 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard .grid-3 { flex: 3 1 0; min-height: 0; }
 #view-dashboard .grid-3 .panel { min-height: 0; }
 #view-dashboard .grid-3 .panel-body { min-height: 0; overflow-y: auto; }
+/* 지도 패널: 말풍선이 패널 경계를 넘어 표시되도록 overflow 해제 (지도는 3번째=마지막 패널) */
+#view-dashboard .grid-3 .panel:last-child,
+#view-dashboard .grid-3 .panel:last-child .panel-body,
+#view-dashboard .grid-3 .panel:last-child .panel-body.card-white { overflow: visible; }
 #view-dashboard .grid-4 {
   flex: 2 1 0; min-height: 0;
   grid-template-rows: 1fr;
