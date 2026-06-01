@@ -137,13 +137,21 @@
     });
   });
 
-  // 로고(브랜드) 클릭 → 대시보드로 이동
+  // 로고(브랜드) 클릭 → 대시보드 이동 or 새로고침
   var brandEl = document.querySelector('.brand');
   if (brandEl) {
     brandEl.style.cursor = 'pointer';
     brandEl.addEventListener('click', function () {
-      navigate('dashboard');
-      _renderView(location.hash);
+      var cur = (location.hash || '').replace(/^#\//, '').split('/')[0] || 'dashboard';
+      if (cur === 'dashboard') {
+        // 이미 대시보드: 맨 위로 스크롤 + 애니메이션 재실행
+        var contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+        triggerDashboardAnimations();
+      } else {
+        navigate('dashboard');
+        _renderView(location.hash);
+      }
     });
   }
 
@@ -1145,7 +1153,8 @@
   }
 
   function _buildVehicleInsReport() {
-    var vehicles = window.APP_DATA.aiAgent.scripts['본점영업부에서 보험 만료 예정인 차량 목록 조회해줘'].assets;
+    var scriptData = window.APP_DATA.aiAgent.scripts['본점영업부에서 보험 만료 예정인 차량 목록 조회해줘'];
+    var vehicles = (scriptData && scriptData.assets) ? scriptData.assets : [];
     var totalPremium = vehicles.reduce(function(s, v) { return s + v.insurance.annualPremium; }, 0);
     var manualRenew  = vehicles.filter(function(v) { return !v.insurance.autoRenew; }).length;
     var urgent       = vehicles.filter(function(v) { return v.dDay <= 7; }).length;
