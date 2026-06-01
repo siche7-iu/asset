@@ -437,6 +437,12 @@
 
   // ===== 대시보드 진입 애니메이션 트리거 =====
   function triggerDashboardAnimations() {
+    // CSS 애니메이션 리셋: active 클래스를 잠깐 제거 → reflow → 다시 추가
+    var dashView = document.getElementById('view-dashboard');
+    dashView.classList.remove('active');
+    void dashView.offsetWidth; // 강제 reflow (애니메이션 초기화)
+    dashView.classList.add('active');
+
     // ① KPI 게이지 원호: 0 리셋 → 성장
     var gauges = document.querySelectorAll('.kpi-gauge circle[data-len]');
     gauges.forEach(function(el) {
@@ -1146,9 +1152,9 @@
     return '<div class="rd-toolbar">' +
       '<div class="rd-tab active">Agent 자동 작성</div><div class="rd-tab">수정</div>' +
       '<div class="rd-toolbar-right">' +
-        '<button class="btn-outline btn-sm">✏ 편집</button>' +
-        '<button class="btn-outline btn-sm">🖨 PDF</button>' +
-        '<button class="btn-primary btn-sm">📨 전자결재 상신</button>' +
+        '<button class="btn-answer-outline">✏ 편집</button>' +
+        '<button class="btn-answer-outline">🖨 PDF</button>' +
+        '<button class="btn-answer-primary">📨 전자결재 상신</button>' +
       '</div></div>' +
       '<div class="rd-meta"><span>📅 보고일자 2026-06-01</span><span>✍ 작성인 AI Agent (담당자: 정보부-상)</span></div>';
   }
