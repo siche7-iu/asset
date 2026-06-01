@@ -464,9 +464,7 @@ nav { flex: 1; }
   opacity: 0;
   pointer-events: all;
   cursor: pointer;
-  transition: opacity 0.18s ease;
 }
-.prov-hit:hover, .prov-hit.prov-active { opacity: 0.2; }
 .panel-body.card-white .map-box { flex: 1; }
 
 /* 지역 마커 — 크기=핀(20×20px) 고정, transform은 항상 핀 크기 기준 → 말풍선 크기에 무관 */

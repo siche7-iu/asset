@@ -340,9 +340,6 @@
         if (exp) exp.classList.toggle('is-active', i === idx);
         if (cmp) cmp.style.display = (i === idx) ? 'none' : 'flex';
       });
-      document.querySelectorAll('.prov-hit').forEach(function(p) {
-        p.classList.toggle('prov-active', +p.dataset.r === idx);
-      });
     }
 
     function showRegion(idx) {
