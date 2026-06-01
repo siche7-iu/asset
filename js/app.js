@@ -9,7 +9,7 @@
   var navItems = document.querySelectorAll(".nav-item");
   var tabs = document.querySelectorAll(".tab");
   var soonTitle = document.getElementById("soon-title");
-  var sectionIds = ["dashboard", "list", "detail", "soon", "ai-agent"];
+  var sectionIds = ["dashboard", "list", "detail", "soon", "ai-agent", "report"];
 
   // ===== 차트 공용 툴팁 =====
   var _tipEl = null;
@@ -97,6 +97,13 @@
       activateTab(null);
       return;
     }
+    if (view === "report") {
+      showSection("report");
+      activateSidebar("ai-agent");
+      activateTab(null);
+      renderReportPage();
+      return;
+    }
     showSection(view);
     activateSidebar(view);
     activateTab(view);
@@ -129,6 +136,16 @@
       t.classList.add("active");
     });
   });
+
+  // 로고(브랜드) 클릭 → 대시보드로 이동
+  var brandEl = document.querySelector('.brand');
+  if (brandEl) {
+    brandEl.style.cursor = 'pointer';
+    brandEl.addEventListener('click', function () {
+      navigate('dashboard');
+      _renderView(location.hash);
+    });
+  }
 
   // ===== 작은 아이콘(인라인 SVG) =====
   function icon(name) {
@@ -770,7 +787,10 @@
       '<div class="answer-meta">' + script.meta + '</div>' +
       assetsHtml +
       '<div class="answer-action-text">조치 안내: ' + script.actionText + '</div>' +
-      '<div class="answer-actions">' + btnsHtml + '</div>' +
+      '<div class="answer-actions">' +
+        btnsHtml +
+        '<button class="btn-report-draft" onclick="showReportDraft(\'' + script.resultType + '\')">📄 보고서 작성</button>' +
+      '</div>' +
     '</div>';
     body.appendChild(div);
     body.scrollTop = body.scrollHeight;
@@ -836,8 +856,46 @@
     al.style.display = '';
   }
 
+  function _findMatchingScript(question) {
+    if (!question) return null;
+    var keys = Object.keys(AI.scripts);
+
+    // 1단계: 완전 일치
+    if (AI.scripts[question]) return { script: AI.scripts[question], key: question };
+
+    // 정규화: 공백 전부 제거 + 소문자
+    var norm = function(s) { return s.replace(/\s+/g, '').toLowerCase(); };
+    var normQ = norm(question);
+
+    // 2단계: 공백 제거 후 완전 일치 (띄어쓰기 오류 처리)
+    for (var i = 0; i < keys.length; i++) {
+      if (norm(keys[i]) === normQ) return { script: AI.scripts[keys[i]], key: keys[i] };
+    }
+
+    // 3단계: 키워드 포함 스코어링 (오타·부분 입력 처리)
+    // 각 스크립트 키의 단어들이 정규화된 입력 안에 몇 개나 포함되는지 비율 계산
+    var getWords = function(s) {
+      return s.toLowerCase().split(/\s+/).filter(function(w) { return w.length >= 2; });
+    };
+    var bestScore = 0, bestKey = null;
+    for (var j = 0; j < keys.length; j++) {
+      var kWords = getWords(keys[j]);
+      var matched = 0;
+      for (var k = 0; k < kWords.length; k++) {
+        if (normQ.indexOf(norm(kWords[k])) !== -1) matched++;
+      }
+      var score = kWords.length > 0 ? matched / kWords.length : 0;
+      if (score > bestScore) { bestScore = score; bestKey = keys[j]; }
+    }
+
+    // 키워드 20% 이상 포함 시 매칭
+    if (bestScore >= 0.2 && bestKey) return { script: AI.scripts[bestKey], key: bestKey };
+    return null;
+  }
+
   function askAgent(question) {
-    if (!question || !AI.scripts[question]) {
+    var matched = _findMatchingScript((question || '').trim());
+    if (!question || !matched) {
       // 매칭 안 되는 질문 — 기본 응답
       _appendUserBubble(question || '');
       var body = document.getElementById('ai-chat-body');
@@ -850,9 +908,9 @@
       return;
     }
     clearAgentTimers();
-    var script = AI.scripts[question];
+    var script = matched.script;
     _aiCurrentScript = script;
-    _highlightSuggestion(question);
+    _highlightSuggestion(matched.key);
     document.getElementById('ai-chat-text').value = '';
 
     // 단계 카드 + 우측 결과 초기화
@@ -1015,6 +1073,196 @@
     }
   });
 
+  // ===== 보고서 화면 =====
+  var _reportContext = 'vehicle';
+
+  function showReportDraft(resultType) {
+    _reportContext = resultType || 'vehicle';
+    navigate('report');
+    _renderView('#/report');
+  }
+
+  var _reportTypeMap = {
+    vehicle: [
+      { id: 'vehicle-ins', icon: '🛡', title: '차량 보험 만료 현황 보고서', sub: '만료 임박 차량 현황 + 갱신 우선순위 분석' },
+      { id: 'budget',      icon: '💰', title: '분기 교체 예산 보고서',     sub: '2026년 2분기 예상 교체비용 산출 + 예산 영향 분석' },
+      { id: 'fault',       icon: '⚠',  title: '반복 장애 자산 보고서',     sub: '최근 6개월 장애 3회 이상 자산 + 근본원인 분석' },
+      { id: 'audit',       icon: '🔍', title: '감사 대응 점검누락 보고서', sub: '정기점검일 실시·증빙 누락 자산 + 보험 조회' }
+    ],
+    pc: [
+      { id: 'aging',  icon: '🔄', title: '노후 자산 현황 보고서',     sub: '5년 이상 자산 운용·자산별 분류 + 교체 우선순위' },
+      { id: 'budget', icon: '💰', title: '분기 교체 예산 보고서',     sub: '2026년 2분기 예상 교체비용 산출 + 예산 영향 분석' },
+      { id: 'fault',  icon: '⚠',  title: '반복 장애 자산 보고서',     sub: '최근 6개월 장애 3회 이상 자산 + 근본원인 분석' },
+      { id: 'audit',  icon: '🔍', title: '감사 대응 점검누락 보고서', sub: '정기점검일 실시·증빙 누락 자산 + 보험 조회' }
+    ]
+  };
+
+  var _selectedReportType = null;
+
+  function renderReportPage() {
+    var types = _reportTypeMap[_reportContext] || _reportTypeMap.vehicle;
+    _selectedReportType = types[0].id;
+    var cardsHtml = types.map(function(t, i) {
+      return '<div class="report-type-card' + (i === 0 ? ' active' : '') + '" data-report-id="' + t.id + '" onclick="selectReportType(\'' + t.id + '\')">' +
+        '<div class="rtc-icon">' + t.icon + '</div>' +
+        '<div class="rtc-title">' + t.title + '</div>' +
+        '<div class="rtc-sub">' + t.sub + '</div>' +
+      '</div>';
+    }).join('');
+    document.getElementById('report-type-cards').innerHTML = cardsHtml;
+    document.getElementById('report-content-area').innerHTML =
+      '<div class="report-loading"><div class="report-loading-spin"></div><span>AI Agent가 보고서를 작성하고 있습니다...</span></div>';
+    setTimeout(function() { renderReportContent(_selectedReportType); }, 1800);
+  }
+
+  function selectReportType(typeId) {
+    _selectedReportType = typeId;
+    Array.prototype.forEach.call(document.querySelectorAll('.report-type-card'), function(c) {
+      c.classList.toggle('active', c.dataset.reportId === typeId);
+    });
+    document.getElementById('report-content-area').innerHTML =
+      '<div class="report-loading"><div class="report-loading-spin"></div><span>AI Agent가 보고서를 작성하고 있습니다...</span></div>';
+    setTimeout(function() { renderReportContent(typeId); }, 1500);
+  }
+
+  function renderReportContent(typeId) {
+    var html = '';
+    if (typeId === 'vehicle-ins') html = _buildVehicleInsReport();
+    else if (typeId === 'aging')   html = _buildAgingReport();
+    else                           html = _buildGenericReport(typeId);
+    document.getElementById('report-content-area').innerHTML = html;
+  }
+
+  function _rdToolbar() {
+    return '<div class="rd-toolbar">' +
+      '<div class="rd-tab active">Agent 자동 작성</div><div class="rd-tab">수정</div>' +
+      '<div class="rd-toolbar-right">' +
+        '<button class="btn-outline btn-sm">✏ 편집</button>' +
+        '<button class="btn-outline btn-sm">🖨 PDF</button>' +
+        '<button class="btn-primary btn-sm">📨 전자결재 상신</button>' +
+      '</div></div>' +
+      '<div class="rd-meta"><span>📅 보고일자 2026-06-01</span><span>✍ 작성인 AI Agent (담당자: 정보부-상)</span></div>';
+  }
+
+  function _buildVehicleInsReport() {
+    var vehicles = window.APP_DATA.aiAgent.scripts['본점영업부에서 보험 만료 예정인 차량 목록 조회해줘'].assets;
+    var totalPremium = vehicles.reduce(function(s, v) { return s + v.insurance.annualPremium; }, 0);
+    var manualRenew  = vehicles.filter(function(v) { return !v.insurance.autoRenew; }).length;
+    var urgent       = vehicles.filter(function(v) { return v.dDay <= 7; }).length;
+
+    var tableRows = vehicles.map(function(v) {
+      var autoHtml = v.insurance.autoRenew
+        ? '<span class="tag-badge green">자동갱신</span>'
+        : '<span class="tag-badge red">미설정 ⚠</span>';
+      return '<tr>' +
+        '<td>' + v.id + '</td>' +
+        '<td>' + v.name + '<br><small class="text-muted">' + v.model + '</small></td>' +
+        '<td>' + v.vehicleNo + '</td>' +
+        '<td>' + v.insurance.company + '</td>' +
+        '<td>' + v.insurance.endDate + '</td>' +
+        '<td><span class="tag-badge ' + v.statusTone + '">D-' + v.dDay + '</span></td>' +
+        '<td>' + autoHtml + '</td>' +
+        '<td class="text-right">' + (v.insurance.annualPremium / 10000).toLocaleString('ko-KR') + '만원</td>' +
+      '</tr>';
+    }).join('');
+
+    var priorityItems = vehicles.filter(function(v) { return !v.insurance.autoRenew; }).map(function(v, i) {
+      return '<li><b>' + (i + 1) + '순위:</b> ' + v.id + ' ' + v.name +
+        ' — D-' + v.dDay + ' 이내 ' + v.insurance.company + ' 갱신 처리 필요 (담당: ' + v.owner + ')</li>';
+    }).join('') +
+    '<li><b>' + (manualRenew + 1) + '순위:</b> AST-2022-0220 임원차량 1호 — 자동갱신 설정이나 보장 범위(대물 10억·자차·자손) 적정성 재검토 권고</li>';
+
+    return '<div class="report-doc">' +
+      _rdToolbar() +
+      '<h2 class="rd-title">차량 보험 만료 현황 보고서</h2>' +
+      '<p class="rd-desc">본 보고서는 본점영업부 소속 차량 ' + vehicles.length + '대를 대상으로 보험 만료 현황 및 갱신 우선순위를 분석한 결과이다.</p>' +
+      '<div class="rd-kpi-row">' +
+        '<div class="rd-kpi"><div class="rd-kpi-num">' + vehicles.length + '건</div><div class="rd-kpi-label">만료 임박 차량</div></div>' +
+        '<div class="rd-kpi"><div class="rd-kpi-num">' + manualRenew + '건</div><div class="rd-kpi-label">수동 갱신 필요</div></div>' +
+        '<div class="rd-kpi"><div class="rd-kpi-num">' + (totalPremium / 10000).toLocaleString('ko-KR') + '만원</div><div class="rd-kpi-label">연간 보험료 합계</div></div>' +
+        '<div class="rd-kpi"><div class="rd-kpi-num">' + urgent + '건</div><div class="rd-kpi-label">D-7 이내 긴급</div></div>' +
+      '</div>' +
+      '<div class="rd-section"><div class="rd-section-title">1. 요약</div>' +
+        '<p>전체 차량 ' + vehicles.length + '대 중 보험 만료 임박 차량이 ' + vehicles.length + '건이며, 이 중 <b>' + manualRenew + '건</b>은 자동 갱신이 미설정되어 있어 보험 공백 발생 위험이 있음.</p>' +
+        '<p>특히 <b>AST-2021-0205(영업차량 3호)</b>는 D-7 이내로 즉시 갱신 처리가 필요하며, <b>AST-2022-0118(영업차량 1호)</b>는 D-12로 긴급 조치 대상임.</p>' +
+        '<p>자동 갱신 설정 차량 4건은 갱신 보험료 확인 후 정상 처리 가능하나, 임원차량(G80)의 경우 보장 범위 재검토를 권고함.</p>' +
+      '</div>' +
+      '<div class="rd-section"><div class="rd-section-title">2. 주요 현황</div>' +
+        '<div class="rd-table-wrap"><table class="rd-table">' +
+          '<thead><tr><th>자산번호</th><th>차명</th><th>차량번호</th><th>보험사</th><th>만료일</th><th>D-day</th><th>자동갱신</th><th>연간보험료</th></tr></thead>' +
+          '<tbody>' + tableRows + '</tbody>' +
+        '</table></div>' +
+      '</div>' +
+      '<div class="rd-section"><div class="rd-section-title">3. 위험 분석</div>' +
+        '<ul class="rd-list">' +
+          '<li><b>보험 공백 위험 2건:</b> AST-2021-0205(D-7), AST-2022-0118(D-12) — 자동갱신 미설정, 만료 시 사고 발생 시 보상 불가 위험</li>' +
+          '<li><b>임원차량(제네시스 G80):</b> 자동갱신 설정되어 있으나 보장 범위(대물 10억·자차·자손) 재검토 및 갱신 보험료 협의 필요</li>' +
+          '<li><b>리스차량(카니발 KA4):</b> 리스 계약 종료일과 보험 갱신 시점 불일치 가능성 — 리스사 별도 확인 필요</li>' +
+          '<li><b>전사 현황:</b> 차량 보험 자동갱신 미설정 비율 33.3% — 전 차량 자동갱신 일괄 점검 권고</li>' +
+        '</ul>' +
+      '</div>' +
+      '<div class="rd-section"><div class="rd-section-title">4. 예산 영향</div>' +
+        '<p>2026년 상반기 만료 차량 보험료 합계: <b>' + (totalPremium / 10000).toLocaleString('ko-KR') + '만원/년</b></p>' +
+        '<p>전년 대비 보험료 변동폭: 평균 +3~5% 예상 (손해율 상승 및 물가 반영). 예상 증가액 약 <b>27~45만원</b></p>' +
+        '<p>임원차량 재협상 또는 보장 범위 조정 시 연간 약 <b>30~50만원</b> 절감 가능.</p>' +
+      '</div>' +
+      '<div class="rd-section"><div class="rd-section-title">5. 우선 조치 대상</div>' +
+        '<ul class="rd-list rd-priority">' + priorityItems + '</ul>' +
+      '</div>' +
+      '<div class="rd-section"><div class="rd-section-title">6. 결론 및 권고</div>' +
+        '<ul class="rd-list">' +
+          '<li>D-7 이내 만료 차량(영업차량 3호)에 대한 <b>즉각적인 보험 갱신 처리</b>가 필요함</li>' +
+          '<li>자동갱신 미설정 차량(D-7, D-12) 담당자에게 <b>금일 내 처리 요청</b> 필요</li>' +
+          '<li>전 차량에 대해 자동갱신 설정을 일괄 점검하고, 미설정 차량 관리 체계 구축 권고</li>' +
+          '<li>분기별 정기 보험 만료 현황 보고 체계 수립 및 전자결재 시스템 연계 검토</li>' +
+        '</ul>' +
+      '</div>' +
+      '<div class="rd-footer">※ 본 보고서는 당행 자산관리시스템의 데이터를 기반으로 AI Agent가 자동 작성하였으며, 참고 데이터는 시연용 샘플이므로 실제 데이터와 다를 수 있습니다.</div>' +
+    '</div>';
+  }
+
+  function _buildAgingReport() {
+    return '<div class="report-doc">' +
+      _rdToolbar() +
+      '<h2 class="rd-title">노후 자산 현황 보고서</h2>' +
+      '<p class="rd-desc">본 보고서는 당행 자산 고정자산 1,247건을 대상으로 사용연도 5년 이상 노후 자산 187건의 현황과 교체 우선순위를 분석한 결과이다.</p>' +
+      '<div class="rd-kpi-row">' +
+        '<div class="rd-kpi"><div class="rd-kpi-num">187건</div><div class="rd-kpi-label">노후 자산 수</div></div>' +
+        '<div class="rd-kpi"><div class="rd-kpi-num">15.0%</div><div class="rd-kpi-label">전체 대비 비율</div></div>' +
+        '<div class="rd-kpi"><div class="rd-kpi-num">12.4억원</div><div class="rd-kpi-label">예상 교체비(총)</div></div>' +
+        '<div class="rd-kpi"><div class="rd-kpi-num">42건</div><div class="rd-kpi-label">2분기 시사 최적</div></div>' +
+      '</div>' +
+      '<div class="rd-section"><div class="rd-section-title">1. 요약</div>' +
+        '<p>전체 자산 1,247건 중 노후 자산 187건(15.0%) 식별. 노후 자산 중 즉시 교체 권고는 42건(PC·복사기 86건, 모니터링 59건). 유형별로는 PC·노트북·ATM 순으로 노후 비율이 높음.</p>' +
+      '</div>' +
+      '<div class="rd-section"><div class="rd-section-title">2. 주요 현황</div>' +
+        '<div class="rd-table-wrap"><table class="rd-table">' +
+          '<thead><tr><th>유형</th><th>총 자산</th><th>노후 자산</th><th>비율</th><th>예상 교체비</th></tr></thead>' +
+          '<tbody>' +
+            '<tr><td>PC</td><td>312</td><td>61</td><td>19.6%</td><td>9,150만원</td></tr>' +
+            '<tr><td>노트북</td><td>184</td><td>38</td><td>20.7%</td><td>6,840만원</td></tr>' +
+            '<tr><td>복사기</td><td>92</td><td>22</td><td>23.9%</td><td>7,700만원</td></tr>' +
+            '<tr><td>ATM</td><td>78</td><td>14</td><td>17.9%</td><td>6.3억원</td></tr>' +
+            '<tr><td>대형목적장비</td><td>104</td><td>18</td><td>17.3%</td><td>8,100만원</td></tr>' +
+          '</tbody>' +
+        '</table></div>' +
+      '</div>' +
+      '<div class="rd-footer">※ 본 보고서는 시연용 샘플 데이터 기반으로 자동 작성되었습니다.</div>' +
+    '</div>';
+  }
+
+  function _buildGenericReport(typeId) {
+    var titles = { budget: '분기 교체 예산 보고서', fault: '반복 장애 자산 보고서', audit: '감사 대응 점검누락 보고서' };
+    return '<div class="report-doc">' +
+      _rdToolbar() +
+      '<h2 class="rd-title">' + (titles[typeId] || '보고서') + '</h2>' +
+      '<div class="rd-section" style="padding:40px 0;text-align:center;color:#9CA3AF;">' +
+        '<div style="font-size:40px;margin-bottom:12px;">🚧</div>' +
+        '<div>해당 보고서 유형은 시연 프로토타입에서 준비 중입니다.</div>' +
+      '</div>' +
+    '</div>';
+  }
+
   // 전역 노출 (onclick 핸들러용)
   window.askAgent = askAgent;
   window.openAiDetail = openAiDetail;
@@ -1022,6 +1270,9 @@
   window.resetAgent = resetAgent;
   window.submitAgentInput = submitAgentInput;
   window.aiAnswerAction = aiAnswerAction;
+  window.showReportDraft = showReportDraft;
+  window.selectReportType = selectReportType;
+  window.renderReportPage = renderReportPage;
 
   // ===== 시작 =====
   renderDashboard();

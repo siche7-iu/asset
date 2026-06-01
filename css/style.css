@@ -623,10 +623,29 @@ nav { flex: 1; }
   background: linear-gradient(135deg, #4C8DF6, #2563EB);
   box-shadow: 0 10px 26px rgba(37,99,235,.45);
   display: flex; align-items: center; justify-content: center;
-  transition: transform .15s;
+  overflow: hidden;
+  transition: transform .15s, box-shadow .2s;
 }
-.fab svg { width: 30px; height: 30px; }
-.fab:hover { transform: translateY(-3px) scale(1.04); }
+.fab svg { width: 30px; height: 30px; position: relative; z-index: 1; }
+/* 호버 시 왼→오 흐르는 광택 (AI INSIGHT 배너와 동일 계열) */
+.fab::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: 0;
+  width: 50%; height: 200%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.42) 50%, transparent 100%);
+  transform: translateX(-160%) skewX(-20deg);
+  pointer-events: none;
+}
+.fab:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 8px 32px rgba(37,99,235,.65), 0 0 0 3px rgba(99,148,255,.28);
+}
+.fab:hover::before { animation: fabShimmer 1.0s linear infinite; }
+@keyframes fabShimmer {
+  from { transform: translateX(-160%) skewX(-20deg); }
+  to   { transform: translateX(300%) skewX(-20deg); }
+}
 
 /* ===== 카드(공용) ===== */
 .card {
@@ -1062,7 +1081,7 @@ table { width: 100%; border-collapse: collapse; }
 }
 .answer-action-text b { color: var(--c-primary); font-weight: 700; }
 
-.answer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.answer-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
 .btn-answer-primary, .btn-answer-outline {
   border-radius: 8px; padding: 8px 14px; font-size: 12.5px; font-weight: 700;
   cursor: pointer; font-family: inherit; border: none;
@@ -1071,6 +1090,13 @@ table { width: 100%; border-collapse: collapse; }
 .btn-answer-primary:hover { background: var(--c-primary-strong); }
 .btn-answer-outline { background: #fff; color: var(--c-primary); border: 1.5px solid var(--c-primary); }
 .btn-answer-outline:hover { background: #EFF6FF; }
+.btn-report-draft {
+  margin-left: auto; background: var(--c-navy); color: #fff;
+  border: none; border-radius: 8px; padding: 8px 16px;
+  font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-report-draft:hover { background: #033072; }
 
 /* 입력창 */
 .ai-chat-input {
