@@ -295,6 +295,16 @@
 
     var mapImgHtml = '<img class="map-bg-img" src="images/korea-map.png" alt="한국 지도">';
 
+    // 도(道) 별 투명 SVG 히트 영역 — 지도 이미지 위에 겹쳐 마우스오버 감지용
+    var svgPaths = PROVINCES.map(function(p) {
+      return '<path data-r="'+p.r+'" d="'+p.d+'" fill="'+p.fill+'" class="prov-hit"/>';
+    }).join('');
+    var svgSIslands = S_ISLANDS.map(function(c) {
+      return '<circle data-r="'+c.ri+'" cx="'+c.cx+'" cy="'+c.cy+'" r="'+c.r+'" class="prov-hit"/>';
+    }).join('');
+    var mapSvgHtml = '<svg class="map-overlay-svg" viewBox="0 0 480 580" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+      svgPaths + svgSIslands + '</svg>';
+
     // 핀 아이콘
     var pinIco = '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.4-3.6-8-8-8z" fill="currentColor"/><circle cx="12" cy="10" r="3.5" fill="#fff" opacity=".85"/></svg>';
 
@@ -318,21 +328,44 @@
       '</div>';
     }).join('');
 
-    document.getElementById('map-box').innerHTML = mapImgHtml + markersHtml;
+    document.getElementById('map-box').innerHTML = mapImgHtml + mapSvgHtml + markersHtml;
+
+    var hideTimer = null;
 
     function setActive(idx) {
       activeIdx = idx;
       regions.forEach(function(_, i) {
         var exp = document.getElementById('callout-exp-'+i);
         var cmp = document.getElementById('callout-cmp-'+i);
-        if (exp) exp.style.display = (i===idx) ? 'block' : 'none';
-        if (cmp) cmp.style.display = (i===idx) ? 'none' : 'flex';
+        if (exp) exp.classList.toggle('is-active', i === idx);
+        if (cmp) cmp.style.display = (i === idx) ? 'none' : 'flex';
+      });
+      document.querySelectorAll('.prov-hit').forEach(function(p) {
+        p.classList.toggle('prov-active', +p.dataset.r === idx);
       });
     }
 
+    function showRegion(idx) {
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+      setActive(idx);
+    }
+
+    function hideRegionDelayed() {
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(function() {
+        hideTimer = null;
+        setActive(-1);
+      }, 500);
+    }
+
     document.querySelectorAll('.region-marker').forEach(function(m) {
-      m.addEventListener('mouseenter', function() { setActive(+m.dataset.i); });
-      m.addEventListener('mouseleave', function() { setActive(-1); });
+      m.addEventListener('mouseenter', function() { showRegion(+m.dataset.i); });
+      m.addEventListener('mouseleave', function() { hideRegionDelayed(); });
+    });
+
+    document.querySelectorAll('.prov-hit').forEach(function(p) {
+      p.addEventListener('mouseenter', function() { showRegion(+p.dataset.r); });
+      p.addEventListener('mouseleave', function() { hideRegionDelayed(); });
     });
 
     setActive(-1);

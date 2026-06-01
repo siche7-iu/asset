@@ -451,6 +451,22 @@ nav { flex: 1; }
 .map-bg-img { display: block; width: 100%; height: auto; border-radius: 10px; }
 .map-box { position: relative; width: 100%; overflow: visible; }
 .map-box svg { display: block; width: 100%; height: auto; }
+/* 도(道) 히트 영역 SVG 오버레이 */
+.map-overlay-svg {
+  position: absolute !important;
+  top: 0; left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  z-index: 5;
+}
+.prov-hit {
+  opacity: 0;
+  pointer-events: all;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+.prov-hit:hover, .prov-hit.prov-active { opacity: 0.2; }
 .panel-body.card-white .map-box { flex: 1; }
 
 /* 지역 마커 — 크기=핀(20×20px) 고정, transform은 항상 핀 크기 기준 → 말풍선 크기에 무관 */
@@ -519,12 +535,21 @@ nav { flex: 1; }
   transform: none !important;
 }
 
-/* 확장형 말풍선 (선택된 지역) */
+/* 확장형 말풍선 (선택된 지역) — opacity 전환으로 스르륵 등장·소멸 */
 .callout-exp {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease; /* 숨길 때: 느리게 */
   padding: 13px 15px;
   min-width: 162px;
   margin-bottom: 0;
+}
+.callout-exp.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.15s ease, visibility 0.15s ease; /* 보일 때: 빠르게 */
 }
 .callout-exp .cb-name { font-size: 12px; color: #94A3B8; margin-bottom: 2px; }
 .callout-exp .cb-num  { font-size: 26px; font-weight: 900; letter-spacing: -.5px; line-height: 1.1; margin-bottom: 10px; }
