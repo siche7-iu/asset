@@ -620,50 +620,13 @@ nav { flex: 1; }
 .fab {
   position: fixed; right: 28px; bottom: 28px; width: 62px; height: 62px; border-radius: 50%;
   border: none; cursor: pointer; z-index: 50;
-  background: linear-gradient(145deg, #5B9CF6 0%, #2563EB 58%, #1D4ED8 100%);
+  background: linear-gradient(135deg, #4C8DF6, #2563EB);
   box-shadow: 0 10px 26px rgba(37,99,235,.45);
   display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  transition: transform .2s ease;
+  transition: transform .15s;
 }
-.fab svg { width: 30px; height: 30px; position: relative; z-index: 1; }
-/* 회전하는 빛의 호(arc) — hover 시 conic-gradient가 시계방향으로 돌며 빛이 스치는 효과 */
-.fab::before {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 200%; height: 200%;
-  transform: translate(-50%, -50%) rotate(0deg);
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    transparent    0deg,
-    rgba(255,255,255,.0)  18deg,
-    rgba(255,255,255,.48) 36deg,
-    rgba(255,255,255,.0)  54deg,
-    transparent   54deg
-  );
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity .25s ease;
-}
-.fab:hover {
-  transform: translateY(-3px) scale(1.04);
-  animation: fabGlow 2.4s ease-in-out infinite;
-}
-.fab:hover::before {
-  opacity: 1;
-  animation: fabSpin 2.4s linear infinite;
-}
-/* 빛의 호가 버튼을 시계방향으로 한 바퀴 */
-@keyframes fabSpin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
-/* 외부 glow가 회전과 같은 주기로 맥박 */
-@keyframes fabGlow {
-  0%, 100% { box-shadow: 0 8px 28px rgba(37,99,235,.55); }
-  50%       { box-shadow: 0 10px 42px rgba(37,99,235,.82), 0 0 22px rgba(120,160,255,.20); }
-}
+.fab svg { width: 30px; height: 30px; }
+.fab:hover { transform: translateY(-3px) scale(1.04); }
 
 /* ===== 카드(공용) ===== */
 .card {
