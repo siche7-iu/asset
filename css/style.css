@@ -620,31 +620,42 @@ nav { flex: 1; }
 .fab {
   position: fixed; right: 28px; bottom: 28px; width: 62px; height: 62px; border-radius: 50%;
   border: none; cursor: pointer; z-index: 50;
-  background: linear-gradient(135deg, #4C8DF6, #2563EB);
+  background: linear-gradient(145deg, #5B9CF6 0%, #2563EB 58%, #1D4ED8 100%);
   box-shadow: 0 10px 26px rgba(37,99,235,.45);
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
-  transition: transform .15s, box-shadow .2s;
+  transition: transform .2s ease;
 }
 .fab svg { width: 30px; height: 30px; position: relative; z-index: 1; }
-/* 호버 시 왼→오 흐르는 광택 (AI INSIGHT 배너와 동일 계열) */
+/* 상단-좌측 반사광 orb — 유리구슬 광택 효과 */
 .fab::before {
   content: '';
   position: absolute;
-  top: -50%; left: 0;
-  width: 50%; height: 200%;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.42) 50%, transparent 100%);
-  transform: translateX(-160%) skewX(-20deg);
+  width: 68%; height: 68%;
+  top: 4%; left: 6%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 38%, rgba(255,255,255,.58) 0%, rgba(255,255,255,.10) 52%, transparent 72%);
   pointer-events: none;
+  opacity: 0;
+  transition: opacity .28s ease;
 }
 .fab:hover {
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 8px 32px rgba(37,99,235,.65), 0 0 0 3px rgba(99,148,255,.28);
+  transform: translateY(-3px) scale(1.05);
+  animation: fabBreath 2.2s ease-in-out infinite;
 }
-.fab:hover::before { animation: fabShimmer 0.55s linear infinite; }
-@keyframes fabShimmer {
-  from { transform: translateX(-160%) skewX(-20deg); }
-  to   { transform: translateX(300%) skewX(-20deg); }
+.fab:hover::before {
+  opacity: 1;
+  animation: fabGleam 2.2s ease-in-out infinite;
+}
+/* 외부 glow가 맥박처럼 조용히 강해졌다 약해짐 */
+@keyframes fabBreath {
+  0%, 100% { box-shadow: 0 8px 28px rgba(37,99,235,.58); }
+  50%       { box-shadow: 0 10px 44px rgba(37,99,235,.84), 0 0 24px rgba(120,160,255,.20); }
+}
+/* 반사광 orb가 살짝 이동하며 밝아짐 */
+@keyframes fabGleam {
+  0%, 100% { opacity: .68; transform: scale(1)    translate(0,   0); }
+  50%       { opacity: 1;   transform: scale(1.12) translate(5%, 4%); }
 }
 
 /* ===== 카드(공용) ===== */
