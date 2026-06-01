@@ -144,7 +144,8 @@
     brandEl.addEventListener('click', function () {
       var cur = (location.hash || '').replace(/^#\//, '').split('/')[0] || 'dashboard';
       if (cur === 'dashboard') {
-        // 이미 대시보드: 맨 위로 스크롤 + 애니메이션 재실행
+        // 이미 대시보드: DOM 전체 재렌더 → 스크롤 맨 위 → 진입 애니메이션 재실행
+        renderDashboard();
         var contentEl = document.querySelector('.content');
         if (contentEl) contentEl.scrollTop = 0;
         triggerDashboardAnimations();
