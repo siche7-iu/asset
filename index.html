@@ -22,6 +22,7 @@
         <small class="brand-sub">Fixed Asset Management</small>
       </div>
 
+      <div class="nav-scroll-wrap">
       <nav id="nav">
         <div class="nav-group">
           <div class="nav-group-label">WORKSPACE</div>
@@ -61,6 +62,7 @@
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="nav-item-label">시스템관리</span></button>
         </div>
       </nav>
+      </div>
 
       <div class="side-foot">
         <span class="side-foot-text"><b>v0.9.3 · NH Demo Build</b><br>
@@ -208,77 +210,69 @@
             <div class="kpi-row" id="kpi-row"></div>
           </div>
 
-          <!-- 2열 구조: 좌(~67%) + 우(~33%) -->
-          <div class="dash-cols">
+          <!-- 3열 균등 그리드: KPI 6칸과 2칸씩 정렬 -->
+          <div class="dash-grid">
 
-            <!-- 좌측 영역 -->
-            <div class="dash-left">
-
-              <!-- 좌상단: 노후 위험도 + 타임라인 -->
-              <div class="dash-left-top">
-                <div class="panel">
-                  <div class="panel-head">
-                    <h3 class="panel-title">노후 위험도 분포</h3>
-                    <label class="mini-select"><span>자산 유형 :</span>
-                      <select id="risk-type"><option>ATM</option><option>서버</option><option>네트워크</option><option>전체</option></select>
-                    </label>
-                  </div>
-                  <div class="panel-body card-white">
-                    <div class="risk-wrap">
-                      <div class="risk-donut" id="risk-donut"></div>
-                      <ul class="risk-legend" id="risk-legend"></ul>
-                    </div>
-                    <p class="risk-formula" id="risk-formula"></p>
-                  </div>
-                </div>
-
-                <div class="panel">
-                  <div class="panel-head"><h3 class="panel-title">교체 시기 도래 자산 (Timeline)</h3></div>
-                  <div class="panel-body">
-                    <ul class="repl-timeline" id="repl-timeline"></ul>
-                    <div class="repl-total" id="repl-total"></div>
-                  </div>
-                </div>
+            <!-- Row 1 col 1: 노후 위험도 분포 -->
+            <div class="panel dg-donut">
+              <div class="panel-head">
+                <h3 class="panel-title">노후 위험도 분포</h3>
+                <label class="mini-select"><span>자산 유형 :</span>
+                  <select id="risk-type"><option>ATM</option><option>서버</option><option>네트워크</option><option>전체</option></select>
+                </label>
               </div>
-
-              <!-- 좌하단: 위험자산 TOP5 + 이슈 + 일정 -->
-              <div class="dash-left-bot">
-                <div class="panel">
-                  <div class="panel-head"><h3 class="panel-title">위험 자산 TOP 5</h3><span class="dots">⋮</span></div>
-                  <div class="panel-body card-white"><ul class="rank-list" id="top5-list"></ul></div>
+              <div class="panel-body card-white">
+                <div class="risk-wrap">
+                  <div class="risk-donut" id="risk-donut"></div>
+                  <ul class="risk-legend" id="risk-legend"></ul>
                 </div>
-                <div class="panel">
-                  <div class="panel-head"><h3 class="panel-title">최근 이슈 내역</h3>
-                    <span class="dots"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 12h2M10 12h10M4 17h7M15 17h5"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="13" cy="17" r="2"/></svg></span>
-                  </div>
-                  <div class="panel-body card-white"><ul class="issue-list" id="issue-list"></ul></div>
-                </div>
-                <div class="panel">
-                  <div class="panel-head"><h3 class="panel-title">계약/점검 일정</h3><span class="dots">⋮</span></div>
-                  <div class="panel-body card-white"><ul class="sched-list" id="sched-list"></ul></div>
-                </div>
+                <p class="risk-formula" id="risk-formula"></p>
               </div>
+            </div>
 
-            </div><!-- /dash-left -->
-
-            <!-- 우측 영역: 지도(상) + 노후도분석(하) -->
-            <div class="dash-right">
-              <div class="panel">
-                <div class="panel-head"><h3 class="panel-title">지역별 관리 현황</h3></div>
-                <div class="panel-body card-white">
-                  <div class="map-box" id="map-box"></div>
-                </div>
+            <!-- Row 1 col 2: 교체 시기 도래 자산 -->
+            <div class="panel dg-timeline">
+              <div class="panel-head"><h3 class="panel-title">교체 시기 도래 자산 (Timeline)</h3></div>
+              <div class="panel-body">
+                <ul class="repl-timeline" id="repl-timeline"></ul>
+                <div class="repl-total" id="repl-total"></div>
               </div>
-              <div class="panel">
-                <div class="panel-head"><h3 class="panel-title">자산 노후도 분석</h3></div>
-                <div class="panel-body card-white">
-                  <div class="aging-bars" id="aging-bars"></div>
-                  <div class="aging-stats" id="aging-stats"></div>
-                </div>
-              </div>
-            </div><!-- /dash-right -->
+            </div>
 
-          </div><!-- /dash-cols -->
+            <!-- Col 3 rows 1-2: 지역별 관리 현황 + 자산 노후도 분석 -->
+            <div class="panel dg-right">
+              <div class="panel-head"><h3 class="panel-title">지역별 관리 현황</h3></div>
+              <div class="dr-map-card">
+                <div class="map-box" id="map-box"></div>
+              </div>
+              <div class="panel-head dr-aging-head"><h3 class="panel-title">자산 노후도 분석</h3></div>
+              <div class="dr-aging-wrap">
+                <div class="aging-bars" id="aging-bars"></div>
+                <div class="aging-stats" id="aging-stats"></div>
+              </div>
+            </div>
+
+            <!-- Row 2 col 1: 위험 자산 TOP 5 -->
+            <div class="panel dg-top5">
+              <div class="panel-head"><h3 class="panel-title">위험 자산 TOP 5</h3><span class="dots">⋮</span></div>
+              <div class="panel-body card-white"><ul class="rank-list" id="top5-list"></ul></div>
+            </div>
+
+            <!-- Row 2 col 2: 최근 이슈 내역 -->
+            <div class="panel dg-issues">
+              <div class="panel-head"><h3 class="panel-title">최근 이슈 내역</h3>
+                <span class="dots"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 12h2M10 12h10M4 17h7M15 17h5"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="13" cy="17" r="2"/></svg></span>
+              </div>
+              <div class="panel-body card-white"><ul class="issue-list" id="issue-list"></ul></div>
+            </div>
+
+            <!-- 계약/점검 일정: JS 오류 방지용 DOM 유지, 그리드에서 숨김 -->
+            <div class="panel dg-sched">
+              <div class="panel-head"><h3 class="panel-title">계약/점검 일정</h3><span class="dots">⋮</span></div>
+              <div class="panel-body card-white"><ul class="sched-list" id="sched-list"></ul></div>
+            </div>
+
+          </div><!-- /dash-grid -->
 
         </section>
 

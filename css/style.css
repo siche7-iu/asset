@@ -1373,57 +1373,60 @@ table { width: 100%; border-collapse: collapse; }
   min-height: 0;
   height: calc(100vh - 20px - var(--header-h) - 32px); /* layout 20px + content padding 22+10px */
 }
-/* 배너·KPI 고정, dash-cols가 남은 세로 공간 전부 차지 */
+/* 배너·KPI 고정, dash-grid가 남은 세로 공간 전부 차지 */
 #view-dashboard .ai-banner,
 #view-dashboard .kpi-section { flex-shrink: 0; }
 
-/* ── 2열 구조 기본 ── */
-.dash-cols {
+/* ── 3열 균등 그리드 (KPI gap=14px 과 동일 → 열 정렬 일치) ── */
+.dash-grid {
   display: grid;
-  grid-template-columns: 1074fr 513fr; /* Figma 실측 비율 ~67:33 */
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
 }
-.dash-left  { display: flex; flex-direction: column; gap: 16px; }
-.dash-right { display: flex; flex-direction: column; gap: 16px; }
-.dash-left-top { display: grid; grid-template-columns: 1fr 1fr;      gap: 16px; }
-.dash-left-bot { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+#view-dashboard .dash-grid { flex: 1 1 0; min-height: 0; }
 
-/* ── 대시보드 컨텍스트: 높이 배분 ── */
-#view-dashboard .dash-cols   { flex: 1 1 0; min-height: 0; }
-#view-dashboard .dash-left   { min-height: 0; }
-#view-dashboard .dash-right  { min-height: 0; }
+/* 우측 패널: col 3, rows 1-2 전체 점유 */
+.dg-right { grid-column: 3; grid-row: 1 / 3; overflow: visible; }
 
-/* 좌측: 상단(도넛+타임라인) 5/8, 하단(TOP5+이슈+일정) 3/8 */
-#view-dashboard .dash-left-top { flex: 1 1 0; min-height: 0; grid-template-rows: 1fr; }
-#view-dashboard .dash-left-bot { flex: 1 1 0; min-height: 0; grid-template-rows: 1fr; }
+/* 계약/점검 일정: DOM 유지(JS 오류 방지), 그리드에서 숨김 */
+.dg-sched { display: none; }
 
-/* 좌상단 패널 */
-#view-dashboard .dash-left-top .panel { min-height: 0; overflow: hidden; }
-#view-dashboard .dash-left-top .panel-body { min-height: 0; overflow-y: auto; }
-/* 타임라인 패널: 스크롤 불필요 */
-#view-dashboard .dash-left-top .panel:nth-child(2) .panel-body { overflow: hidden; }
+/* 상단 2개 패널 (도넛·타임라인) */
+#view-dashboard .dg-donut,
+#view-dashboard .dg-timeline { min-height: 0; overflow: hidden; }
+#view-dashboard .dg-donut .panel-body,
+#view-dashboard .dg-timeline .panel-body { min-height: 0; overflow-y: auto; }
+#view-dashboard .dg-timeline .panel-body { overflow: hidden; }
 
-/* 좌하단 패널: 내부 스크롤 */
-#view-dashboard .dash-left-bot .panel { min-height: 0; min-width: 0; overflow: hidden; }
-#view-dashboard .dash-left-bot .panel-body {
+/* 우측 패널 내부 */
+#view-dashboard .dg-right { min-height: 0; }
+
+/* 하단 2개 패널 (TOP5·이슈): 내부 스크롤 */
+#view-dashboard .dg-top5,
+#view-dashboard .dg-issues { min-height: 0; min-width: 0; overflow: hidden; }
+#view-dashboard .dg-top5 .panel-body,
+#view-dashboard .dg-issues .panel-body {
   min-height: 0; overflow-y: auto;
   scrollbar-width: thin; scrollbar-color: transparent transparent;
 }
-#view-dashboard .dash-left-bot .panel-body:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
-#view-dashboard .dash-left-bot .panel-body::-webkit-scrollbar { width: 4px; }
-#view-dashboard .dash-left-bot .panel-body::-webkit-scrollbar-track { background: transparent; }
-#view-dashboard .dash-left-bot .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
-#view-dashboard .dash-left-bot .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
+#view-dashboard .dg-top5 .panel-body:hover,
+#view-dashboard .dg-issues .panel-body:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
+#view-dashboard .dg-top5 .panel-body::-webkit-scrollbar,
+#view-dashboard .dg-issues .panel-body::-webkit-scrollbar { width: 4px; }
+#view-dashboard .dg-top5 .panel-body::-webkit-scrollbar-track,
+#view-dashboard .dg-issues .panel-body::-webkit-scrollbar-track { background: transparent; }
+#view-dashboard .dg-top5 .panel-body::-webkit-scrollbar-thumb,
+#view-dashboard .dg-issues .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
+#view-dashboard .dg-top5 .panel-body:hover::-webkit-scrollbar-thumb,
+#view-dashboard .dg-issues .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
 
-/* 우측: 지역별+노후도 단일 패널 */
-#view-dashboard .dash-right .panel { flex: 1 1 0; min-height: 0; overflow: visible; }
-
-/* 지도 카드 — 카드 자체를 정사각형으로 맞춰 상/하 여백 제거 */
+/* 지도 카드 — 우측 패널 높이의 60%를 차지하고, 내부 map-box가 정사각형으로 자동 조정 */
 .dr-map-card {
   container-type: size;
-  flex: none;
+  flex: 3 1 0;
+  min-height: 0;
   width: 100%;
-  aspect-ratio: 1 / 1;
   background: #fff;
   border-radius: 14px;
   padding: 5px;
@@ -1489,15 +1492,13 @@ table { width: 100%; border-collapse: collapse; }
   animation-fill-mode: both;
   animation-delay: .30s;
 }
-/* 좌상단: 도넛(1) / 타임라인(2) */
-#view-dashboard.active .dash-left-top > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .36s; }
-#view-dashboard.active .dash-left-top > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .43s; }
-/* 우측: 단일 패널 */
-#view-dashboard.active .dash-right > .panel { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
-/* 좌하단: TOP5(1) / 이슈(2) / 일정(3) */
-#view-dashboard.active .dash-left-bot > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
-#view-dashboard.active .dash-left-bot > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .57s; }
-#view-dashboard.active .dash-left-bot > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .64s; }
+/* 상단: 도넛(1) / 타임라인(2) / 지역별+노후도(3) */
+#view-dashboard.active .dg-donut    { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .36s; }
+#view-dashboard.active .dg-timeline { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .43s; }
+#view-dashboard.active .dg-right    { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
+/* 하단: TOP5(4) / 이슈(5) */
+#view-dashboard.active .dg-top5    { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
+#view-dashboard.active .dg-issues   { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .57s; }
 
 /* aging 바 성장 트랜지션 */
 .ab-fill { transition: width .9s cubic-bezier(.4,0,.2,1); }
@@ -1529,12 +1530,9 @@ table { width: 100%; border-collapse: collapse; }
   .kpi-gauge { width: 44px; height: 44px; }
   .kpi-section { margin-bottom: 8px; }
 
-  /* 대시보드 그리드 간격 축소 */
-  #view-dashboard .dash-cols     { gap: 12px; }
-  #view-dashboard .dash-left     { gap: 12px; }
-  #view-dashboard .dash-right    { gap: 12px; }
-  #view-dashboard .dash-left-top { gap: 12px; }
-  #view-dashboard .dash-left-bot { gap: 12px; }
+  /* 대시보드 그리드 간격 축소 (kpi-row도 동일하게 줄여 열 정렬 유지) */
+  #view-dashboard .kpi-row  { gap: 12px; }
+  #view-dashboard .dash-grid { gap: 12px; }
 
   /* 패널 내부 여백·헤더 하단 여백 축소 */
   .panel { padding: 12px 14px; }
@@ -1545,26 +1543,19 @@ table { width: 100%; border-collapse: collapse; }
   #view-dashboard.active {
     height: auto;
   }
-  /* dash-cols 와 좌/우 컬럼이 flex-shrink 되지 않도록 */
-  #view-dashboard .dash-cols  { flex: none; }
-  #view-dashboard .dash-left  { flex: none; }
-  #view-dashboard .dash-right { flex: none; }
-
-  /* 좌상단(도넛+타임라인): 340px — 도넛 상/하 여백을 절반으로 줄임 */
-  #view-dashboard .dash-left-top {
+  /* dash-grid가 flex-shrink 되지 않도록 + 행 높이 자연값으로 */
+  #view-dashboard .dash-grid {
     flex: none;
-    min-height: 340px;
+    grid-template-rows: auto auto;
   }
-  /* 좌하단(TOP5·이슈·일정): 줄어든 상단 공간을 채워 좌 컬럼 빈 공간 없애기 */
-  #view-dashboard .dash-left-bot {
-    flex: 1 1 0;
-    min-height: 340px;
-  }
-  /* 우측 단일 패널: 지역별+노후도 합산 최소 높이 */
-  #view-dashboard .dash-right .panel {
-    flex: none;
-    min-height: 800px;
-  }
+  /* 상단 패널 최소 높이 */
+  #view-dashboard .dg-donut,
+  #view-dashboard .dg-timeline { min-height: 340px; }
+  /* 하단 패널 최소 높이 */
+  #view-dashboard .dg-top5,
+  #view-dashboard .dg-issues { min-height: 340px; }
+  /* 우측 패널: 지역별+노후도 합산 최소 높이 (rows 1-2 전체 점유) */
+  #view-dashboard .dg-right { min-height: 800px; }
 }
 
 /* ===== 보고서 화면 ===== */
