@@ -1404,7 +1404,7 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard .dash-left-top .panel:nth-child(2) .panel-body { overflow: hidden; }
 
 /* 좌하단 패널: 내부 스크롤 */
-#view-dashboard .dash-left-bot .panel { min-height: 0; }
+#view-dashboard .dash-left-bot .panel { min-height: 0; min-width: 0; overflow: hidden; }
 #view-dashboard .dash-left-bot .panel-body {
   min-height: 0; overflow-y: auto;
   scrollbar-width: thin; scrollbar-color: transparent transparent;
