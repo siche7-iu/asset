@@ -4,11 +4,13 @@
 (async function () {
   // Supabase에서 자산 데이터 로드 — 실패 시 로컬 샘플 데이터로 자동 폴백
   var assets = window.APP_DATA.assets;  // 기본값: 로컬 샘플 데이터
+  var _dbSource = 'local';
   try {
     var loaded = await window.DB.loadAssets();
     if (loaded && loaded.length > 0) {
       assets = loaded;
-      window.APP_DATA.assets = assets;  // saveNewAsset 등 글로벌 함수에서도 동일 배열 참조
+      window.APP_DATA.assets = assets;
+      _dbSource = 'supabase';
     }
   } catch (e) {
     console.warn('[DB] Supabase 로드 실패, 로컬 데이터 사용:', e.message);
@@ -1324,6 +1326,13 @@
   renderDashboard();
   renderListView();
   renderAgentInit();
+  // DB 연결 상태 토스트
+  setTimeout(function () {
+    var msg = _dbSource === 'supabase'
+      ? '🟢 Supabase DB 연결됨 · 자산 ' + assets.length + '건 로드'
+      : '🟡 오프라인 모드 · 로컬 샘플 데이터 사용 중';
+    showDbToast(msg, _dbSource === 'supabase' ? 'ok' : 'warn');
+  }, 400);
   // 해시가 있으면 그 화면으로, 없으면 대시보드를 기본으로
   if (location.hash && location.hash.length > 2) {
     _renderView(location.hash);
@@ -1531,4 +1540,17 @@ function saveNewAsset() {
 // ===== 사이드바 토글 =====
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+// ===== DB 연결 상태 토스트 =====
+function showDbToast(msg, tone) {
+  var t = document.getElementById('db-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.className = 'db-toast db-toast-' + (tone || 'ok') + ' db-toast-in';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function () {
+    t.classList.remove('db-toast-in');
+    t.classList.add('db-toast-out');
+  }, 3000);
 }
