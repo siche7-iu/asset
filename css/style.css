@@ -1365,8 +1365,8 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard .dash-right  { min-height: 0; }
 
 /* 좌측: 상단(도넛+타임라인) 5/8, 하단(TOP5+이슈+일정) 3/8 */
-#view-dashboard .dash-left-top { flex: 5 1 0; min-height: 0; grid-template-rows: 1fr; }
-#view-dashboard .dash-left-bot { flex: 3 1 0; min-height: 0; grid-template-rows: 1fr; }
+#view-dashboard .dash-left-top { flex: 1 1 0; min-height: 0; grid-template-rows: 1fr; }
+#view-dashboard .dash-left-bot { flex: 1 1 0; min-height: 0; grid-template-rows: 1fr; }
 
 /* 좌상단 패널 */
 #view-dashboard .dash-left-top .panel { min-height: 0; overflow: hidden; }
@@ -1387,8 +1387,8 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard .dash-left-bot .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
 
 /* 우측: 지도 7/10, 노후도분석 3/10 */
-#view-dashboard .dash-right .panel:first-child { flex: 7 1 0; overflow: visible; }
-#view-dashboard .dash-right .panel:last-child  { flex: 3 1 0; min-height: 0; }
+#view-dashboard .dash-right .panel:first-child { flex: 3 1 0; overflow: visible; }
+#view-dashboard .dash-right .panel:last-child  { flex: 2 1 0; min-height: 0; }
 
 /* 지도 패널: 말풍선 overflow 해제 */
 #view-dashboard .dash-right .panel:first-child .panel-body,
