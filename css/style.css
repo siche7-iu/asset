@@ -1639,3 +1639,28 @@ table { width: 100%; border-collapse: collapse; }
 .rd-priority li:last-child { border-bottom: none; }
 
 .rd-footer { padding: 12px 24px; font-size: 12px; color: var(--c-faint); background: #F9FAFB; border-top: 1px solid var(--c-border); border-radius: 0 0 12px 12px; }
+
+/* ===== DB 로딩 오버레이 ===== */
+.db-loading-overlay {
+  position: fixed; inset: 0;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.db-loading-overlay[hidden] { display: none; }
+.db-loading-card {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  background: #fff; border-radius: 16px;
+  padding: 40px 56px;
+  box-shadow: 0 8px 32px rgba(30, 41, 59, 0.12);
+}
+.db-spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #EEF1F5;
+  border-top-color: #2563EB;
+  border-radius: 50%;
+  animation: dbSpin 0.7s linear infinite;
+}
+@keyframes dbSpin { to { transform: rotate(360deg); } }
+.db-loading-text { font-size: 14px; color: #64748b; margin: 0; }

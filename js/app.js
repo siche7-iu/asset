@@ -1,8 +1,21 @@
 // 고정자산관리시스템 (시연용) - 화면 동작
 // data.js 가 먼저 읽혀서 window.APP_DATA 에 자산 목록(assets)과 대시보드 요약(dashboard)이 들어 있습니다.
 
-(function () {
-  var assets = window.APP_DATA.assets;
+(async function () {
+  // Supabase에서 자산 데이터 로드 — 실패 시 로컬 샘플 데이터로 자동 폴백
+  var assets = window.APP_DATA.assets;  // 기본값: 로컬 샘플 데이터
+  try {
+    var loaded = await window.DB.loadAssets();
+    if (loaded && loaded.length > 0) {
+      assets = loaded;
+      window.APP_DATA.assets = assets;  // saveNewAsset 등 글로벌 함수에서도 동일 배열 참조
+    }
+  } catch (e) {
+    console.warn('[DB] Supabase 로드 실패, 로컬 데이터 사용:', e.message);
+  } finally {
+    var _dbOverlay = document.getElementById('db-loading');
+    if (_dbOverlay) _dbOverlay.hidden = true;
+  }
   var DASH = window.APP_DATA.dashboard;
   function won(n) { return n.toLocaleString("ko-KR") + "원"; }
 
@@ -1318,7 +1331,11 @@
     history.replaceState(null, "", "#/dashboard"); // hashchange 없이 URL만 교체
     _renderView("#/dashboard");
   }
-})();
+})().catch(function (e) {
+  console.error('[App] 초기화 오류:', e);
+  var el = document.getElementById('db-loading');
+  if (el) el.hidden = true;
+});
 
 // ===== 알림 팝업 =====
 (function () {
@@ -1503,6 +1520,12 @@ function saveNewAsset() {
   closeRegisterModal();
   location.hash = '#/list';
   if (window._assetApplyFilter) { window._assetApplyFilter(); }
+  // Supabase에 비동기 저장 (실패해도 화면에는 이미 반영됨)
+  if (window.DB && window.DB.insertAsset) {
+    window.DB.insertAsset(newAsset).catch(function (e) {
+      console.warn('[DB] 자산 등록 저장 실패 (화면에는 표시됨):', e.message);
+    });
+  }
 }
 
 // ===== 사이드바 토글 =====
