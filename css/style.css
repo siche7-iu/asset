@@ -1418,11 +1418,12 @@ table { width: 100%; border-collapse: collapse; }
 /* 우측: 지역별+노후도 단일 패널 */
 #view-dashboard .dash-right .panel { flex: 1 1 0; min-height: 0; overflow: visible; }
 
-/* 지도 카드 — container query로 정사각형이 카드에 딱 맞게 (빈 흰 공간 없음) */
+/* 지도 카드 — 카드 자체를 정사각형으로 맞춰 상/하 여백 제거 */
 .dr-map-card {
   container-type: size;
-  flex: 3 1 0;
-  min-height: 0;
+  flex: none;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   background: #fff;
   border-radius: 14px;
   padding: 5px;
