@@ -363,8 +363,10 @@
       regions.forEach(function(_, i) {
         var exp = document.getElementById('callout-exp-'+i);
         var cmp = document.getElementById('callout-cmp-'+i);
+        var marker = document.querySelector('.region-marker[data-i="'+i+'"]');
         if (exp) exp.classList.toggle('is-active', i === idx);
         if (cmp) cmp.style.display = (i === idx) ? 'none' : 'flex';
+        if (marker) { marker.style.zIndex = (i === idx) ? '20' : '10'; marker.classList.toggle('is-active', i === idx); }
       });
     }
 

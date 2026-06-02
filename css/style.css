@@ -533,12 +533,13 @@ nav { flex: 1; }
   transform: none !important;
 }
 
-/* 확장형 말풍선 (선택된 지역) — opacity 전환으로 스르륵 등장·소멸 */
+/* 확장형 말풍선 (선택된 지역) — opacity+translate 전환으로 스르륵 등장·소멸 */
 .callout-exp {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.35s ease, visibility 0.35s ease; /* 숨길 때: 느리게 */
+  translate: 0 6px; /* 숨김 상태: 6px 아래 */
+  transition: opacity 0.28s ease, visibility 0.28s ease, translate 0.28s ease;
   padding: 13px 15px;
   min-width: 162px;
   margin-bottom: 0;
@@ -547,7 +548,8 @@ nav { flex: 1; }
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition: opacity 0.15s ease, visibility 0.15s ease; /* 보일 때: 빠르게 */
+  translate: 0 0; /* 활성 상태: 제자리 */
+  transition: opacity 0.16s ease, visibility 0.16s ease, translate 0.16s ease;
 }
 .callout-exp .cb-name { font-size: 12px; color: #94A3B8; margin-bottom: 2px; }
 .callout-exp .cb-num  { font-size: 26px; font-weight: 900; letter-spacing: -.5px; line-height: 1.1; margin-bottom: 10px; }
@@ -572,7 +574,8 @@ nav { flex: 1; }
 
 /* 핀 아이콘 */
 .cb-pin { color: #1E2A3A; line-height: 1; }
-.region-marker:hover .cb-pin { color: var(--c-primary); }
+.region-marker:hover .cb-pin,
+.region-marker.is-active .cb-pin { color: var(--c-primary); }
 
 /* 위험 자산 TOP 5 */
 .rank-list, .issue-list, .sched-list { list-style: none; }
@@ -620,12 +623,13 @@ nav { flex: 1; }
 .fab {
   position: fixed; right: 28px; bottom: 28px; width: 62px; height: 62px; border-radius: 50%;
   border: none; cursor: pointer; z-index: 50;
-  background: linear-gradient(135deg, #4C8DF6, #2563EB);
-  box-shadow: 0 10px 26px rgba(37,99,235,.45);
+  background: transparent;
+  box-shadow: 0 10px 26px rgba(13,72,161,.45);
   display: flex; align-items: center; justify-content: center;
   transition: transform .15s;
+  padding: 0;
 }
-.fab svg { width: 30px; height: 30px; }
+.fab img { width: 62px; height: 62px; display: block; }
 .fab:hover { transform: translateY(-3px) scale(1.04); }
 
 /* ===== 카드(공용) ===== */
@@ -1434,6 +1438,40 @@ table { width: 100%; border-collapse: collapse; }
 .ab-fill { transition: width .9s cubic-bezier(.4,0,.2,1); }
 /* KPI 게이지 원호 트랜지션 */
 .kpi-gauge circle[data-len] { transition: stroke-dasharray .85s cubic-bezier(.4,0,.2,1); }
+
+/* ===== 1080p 대응: 세로 1100px 이하에서 고정 요소 압축 ===== */
+/*
+ * 1920×1080 환경(브라우저 포함 실제 viewport ~950px)에서
+ * ai-banner + kpi-section 이 flex-shrink:0 으로 237px를 점유해
+ * grid 패널들이 너무 납작해지는 문제 해소.
+ * 고정 요소 압축으로 약 60px를 grid 영역으로 돌려준다.
+ */
+@media (max-height: 1100px) {
+  /* AI 인사이트 배너: 상하 패딩·하단 여백 축소 */
+  .ai-banner {
+    padding: 7px 16px;
+    margin-bottom: 10px;
+  }
+
+  /* KPI 카드: 최소 높이·내부 패딩·간격 축소
+   * 게이지 카드가 CSS 그리드 행 높이를 결정(현재 ~150px)하므로
+   * 게이지도 함께 축소해야 실질적인 높이 절감이 된다. */
+  .kpi-card {
+    min-height: 110px;
+    padding: 11px 14px;
+    gap: 8px;
+  }
+  .kpi-gauge { width: 44px; height: 44px; }
+  .kpi-section { margin-bottom: 8px; }
+
+  /* 대시보드 그리드 간격·하단 여백 축소 */
+  #view-dashboard .grid-3 { gap: 12px; margin-bottom: 8px; }
+  #view-dashboard .grid-4 { gap: 12px; }
+
+  /* 패널 내부 여백·헤더 하단 여백 축소 */
+  .panel { padding: 12px 14px; }
+  .panel-head { margin-bottom: 8px; }
+}
 
 /* ===== 보고서 화면 ===== */
 #view-report.active { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
