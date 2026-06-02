@@ -185,14 +185,18 @@ var DASHBOARD = {
   issues: [
     { time: "14:20", title: "경기 용인 지점 CCTV 망 장애 복구...", sub: "현장 점검팀: 김철수 과장" },
     { time: "11:05", title: "본사 공조 시스템 소음 민원 접수",      sub: "유지보수 업체: (주)그레이엔지니어링" },
-    { time: "09:12", title: "신규 자산 12건 등록 완료 (영남 지역)",  sub: "자산 분류: 사무용 기기" }
+    { time: "09:12", title: "신규 자산 12건 등록 완료 (영남 지역)",  sub: "자산 분류: 사무용 기기" },
+    { time: "08:34", title: "제주 지점 UPS 배터리 용량 경보 발생",   sub: "조치 담당: 전기안전팀 이민호 대리" },
+    { time: "07:50", title: "전국 사무용 PC 보안 패치 배포 완료 (132대)", sub: "패치 분류: 윈도우 긴급 보안 업데이트" }
   ],
 
   // 계약/점검 일정
   schedule: [
-    { tag: "MAINTENANCE", date: "5/24 (수)", title: "서울 지역 전력 설비 점검",   sub: "대상: 본사 외 3개 지점" },
-    { tag: "CONTRACT",    date: "5/28 (월)", title: "데이터센터 임대 계약 갱신", sub: "협력사: KT 클라우드 서비스" },
-    { tag: "MAINTENANCE", date: "6/2 (금)",  title: "영남 지역 네트워크 장비 점검", sub: "대상: 부산 외 2개 지점" }
+    { tag: "MAINTENANCE", date: "5/24 (수)", title: "서울 지역 전력 설비 점검",      sub: "대상: 본사 외 3개 지점" },
+    { tag: "CONTRACT",    date: "5/28 (월)", title: "데이터센터 임대 계약 갱신",     sub: "협력사: KT 클라우드 서비스" },
+    { tag: "MAINTENANCE", date: "6/2 (화)",  title: "영남 지역 네트워크 장비 점검",  sub: "대상: 부산 외 2개 지점" },
+    { tag: "CONTRACT",    date: "6/5 (금)",  title: "복합기 임대 계약 갱신 (전국)",  sub: "협력사: (주)리코코리아" },
+    { tag: "INSPECTION",  date: "6/12 (금)", title: "소방 설비 정기 안전 점검",      sub: "대상: 본사·강남·영등포 지점" }
   ],
 
   // 자산 노후도 분석
