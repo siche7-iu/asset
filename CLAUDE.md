@@ -166,3 +166,5 @@ TODO.md           다음에 할 일 목록(체크리스트).
 - **2026-06-02** — Vercel 배포 완료. Vercel CLI 설치 후 `vercel --prod`로 첫 배포. 접속 주소: https://atg-asset.vercel.app. GitHub 저장소와 자동 연결되어 이후 `git push` 시 자동 배포됨.
 - **2026-06-02** — 최근 이슈 내역 2건(제주 UPS 경보·전국 PC 보안 패치) + 계약/점검 일정 2건(복합기 계약 갱신·소방 설비 점검) 추가. 항목 세로 여백 13→9px 줄여 5건이 스크롤 없이 표시되도록 최적화.
 - **2026-06-02** — Supabase 연동 1단계 완료. `supabase/schema.sql`(테이블 생성), `supabase/seed.html`(샘플 71건 삽입 도구), `js/db.js`(Supabase 클라이언트·로드·저장 함수) 추가. `app.js` IIFE를 async로 변환해 Supabase 데이터 우선 로드, 실패 시 로컬 데이터로 자동 폴백. 자산 등록 모달이 화면+DB 동시 저장. DB 로딩 중 스피너 오버레이 표시.
+- **2026-06-02** — DB 연결 상태 토스트 추가. 앱 시작 시 Supabase 연결 성공 시 🟢 "Supabase에 연결됐어요", 실패(오프라인) 시 🟡 "오프라인 모드로 실행 중" 토스트가 화면 우측 하단에 3초간 표시됨.
+- **2026-06-02** — HANDOFF.md·TODO.md 현행화. Supabase 연동 완료 기준으로 현재 동작 화면·파일 구조·실행 방법 전면 업데이트. TODO의 Supabase 연동 항목 완료(✅) 처리. `.gitignore`에 `.vercel` 추가.
