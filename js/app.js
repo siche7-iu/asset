@@ -177,6 +177,7 @@
     renderList3("top5-list", DASH.top5, top5Row);
     renderList3("issue-list", DASH.issues, issueRow);
     renderList3("sched-list", DASH.schedule, schedRow);
+    attachEllipsisTips();
     renderAging();
   }
 
@@ -410,6 +411,20 @@
   }
   function renderList3(id, rows, rowFn) {
     document.getElementById(id).innerHTML = rows.map(rowFn).join("");
+  }
+  function attachEllipsisTips() {
+    var sel = '#top5-list .rk-title, #top5-list .rk-sub,' +
+              '#issue-list .is-title, #issue-list .is-sub,' +
+              '#sched-list .sc-title, #sched-list .sc-sub';
+    document.querySelectorAll(sel).forEach(function (el) {
+      el.addEventListener('mouseenter', function (e) {
+        if (el.scrollWidth > el.clientWidth) showTip(e.clientX, e.clientY, el.textContent);
+      });
+      el.addEventListener('mousemove', function (e) {
+        if (el.scrollWidth > el.clientWidth) showTip(e.clientX, e.clientY, el.textContent);
+      });
+      el.addEventListener('mouseleave', hideTip);
+    });
   }
 
   function renderAging() {

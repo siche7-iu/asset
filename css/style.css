@@ -57,8 +57,35 @@ body {
   position: sticky;
   top: 10px;
   height: calc(100vh - 20px);
-  overflow-y: auto;
+  overflow: hidden;
   border-radius: 18px;
+}
+
+/* 메뉴 영역 이너스크롤 */
+.nav-scroll-wrap {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  margin: 0 -4px;
+  padding: 0 4px;
+}
+.nav-scroll-wrap::-webkit-scrollbar {
+  width: 4px;
+}
+.nav-scroll-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+.nav-scroll-wrap::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.18);
+  border-radius: 99px;
+}
+.nav-scroll-wrap::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,.35);
+}
+.nav-scroll-wrap {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.18) transparent;
 }
 
 /* 사이드바 토글 버튼 */
@@ -99,7 +126,7 @@ body {
 .brand-title b { font-weight: 900; }
 .brand-sub { color: #7b97c2; font-size: 10px; letter-spacing: .2px; padding-left: 43px; margin-top: -4px; }
 
-nav { flex: 1; }
+nav { flex: none; }
 .nav-group { margin-bottom: 18px; }
 .nav-group-label { font-size: 10.5px; font-weight: 700; letter-spacing: .8px; color: #6f86ac; padding: 0 10px 8px; }
 .nav-item {
@@ -583,8 +610,9 @@ nav { flex: 1; }
 .rank-list li:hover, .issue-list li:hover, .sched-list li:hover { background: #F4F8FF; padding-left: 8px; padding-right: 8px; }
 .rank-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 2px; border-bottom: 1px solid #EEF1F5; }
 .rank-list li:last-child { border-bottom: none; }
-.rank-list .rk-title { font-size: 14px; font-weight: 700; color: #1f2937; }
-.rank-list .rk-sub { font-size: 12px; color: var(--c-muted); margin-top: 3px; }
+.rank-list li > div { min-width: 0; overflow: hidden; }
+.rank-list .rk-title { font-size: 14px; font-weight: 700; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rank-list .rk-sub { font-size: 12px; color: var(--c-muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tag-badge { flex-shrink: 0; font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 7px; }
 .tag-badge.red { background: var(--c-red-bg); color: var(--c-red-fg); }
 .tag-badge.amber { background: #FEF0DC; color: #C2620A; }
@@ -593,8 +621,9 @@ nav { flex: 1; }
 .issue-list li { display: flex; gap: 14px; padding: 13px 2px; border-bottom: 1px solid #EEF1F5; }
 .issue-list li:last-child { border-bottom: none; }
 .issue-list .is-time { font-size: 13px; color: var(--c-faint); font-weight: 600; flex-shrink: 0; width: 40px; }
-.issue-list .is-title { font-size: 14px; font-weight: 600; color: #1f2937; }
-.issue-list .is-sub { font-size: 12px; color: var(--c-muted); margin-top: 3px; }
+.issue-list li > div { min-width: 0; overflow: hidden; }
+.issue-list .is-title { font-size: 14px; font-weight: 600; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.issue-list .is-sub { font-size: 12px; color: var(--c-muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* 계약/점검 일정 */
 .sched-list li { padding: 13px 2px; border-bottom: 1px solid #EEF1F5; }
@@ -602,13 +631,13 @@ nav { flex: 1; }
 .sched-list .sc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 .sched-list .sc-tag { font-size: 10.5px; font-weight: 700; letter-spacing: .5px; color: var(--c-faint); }
 .sched-list .sc-date { font-size: 12.5px; color: var(--c-muted); }
-.sched-list .sc-title { font-size: 14px; font-weight: 600; color: #1f2937; }
-.sched-list .sc-sub { font-size: 12px; color: var(--c-muted); margin-top: 2px; }
+.sched-list .sc-title { font-size: 14px; font-weight: 600; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sched-list .sc-sub { font-size: 12px; color: var(--c-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* 자산 노후도 분석 */
 .aging-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.aging-bars { display: flex; flex-direction: column; gap: 16px; background: #fff; border-radius: 14px; padding: 16px; box-shadow: var(--shadow-soft); }
-.aging-stats { background: #fff; border-radius: 14px; padding: 8px 16px 16px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: center; gap: 0; }
+.aging-bars { display: flex; flex-direction: column; gap: 16px; background: #fff; border-radius: 14px; padding: 18px 16px 16px; box-shadow: var(--shadow-soft); }
+.aging-stats { background: #fff; border-radius: 14px; padding: 18px 16px 16px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: flex-start; gap: 0; }
 .ab-row .ab-top { display: flex; justify-content: space-between; margin-bottom: 7px; }
 .ab-row .ab-label { font-size: 12.5px; color: #475569; }
 .ab-row .ab-pct { font-size: 14px; font-weight: 800; color: #1f2937; }
@@ -1386,40 +1415,49 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard .dash-left-bot .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
 #view-dashboard .dash-left-bot .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
 
-/* 우측: 지도 7/10, 노후도분석 3/10 */
-#view-dashboard .dash-right .panel:first-child { flex: 3 1 0; overflow: visible; }
-#view-dashboard .dash-right .panel:last-child  { flex: 2 1 0; min-height: 0; }
+/* 우측: 지역별+노후도 단일 패널 */
+#view-dashboard .dash-right .panel { flex: 1 1 0; min-height: 0; overflow: visible; }
 
-/* 지도 패널: 말풍선 overflow 해제 */
-#view-dashboard .dash-right .panel:first-child .panel-body,
-#view-dashboard .dash-right .panel:first-child .panel-body.card-white { overflow: visible; }
-#view-dashboard .dash-right .panel:first-child .panel-body.card-white {
-  padding: 10px; align-items: center; justify-content: center;
+/* 지도 카드 — container query로 정사각형이 카드에 딱 맞게 (빈 흰 공간 없음) */
+.dr-map-card {
+  container-type: size;
+  flex: 3 1 0;
+  min-height: 0;
+  background: #fff;
+  border-radius: 14px;
+  padding: 5px;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
 }
-/* map-box: 정사각형 비율 유지 */
-#view-dashboard .dash-right .panel:first-child .panel-body.card-white .map-box {
-  flex: none; height: 100%; width: auto; aspect-ratio: 1 / 1; overflow: visible;
+.dr-map-card .map-box {
+  flex: none;
+  overflow: visible;
+  aspect-ratio: 1 / 1;
+  width: min(calc(100cqw - 10px), calc(100cqh - 10px));
+  height: auto;
 }
-#view-dashboard .dash-right .panel:first-child .map-bg-img { width: 100%; height: auto; }
 
-/* 노후도 분석 패널 */
-#view-dashboard .dash-right .panel:last-child .panel-body.card-white { padding-top: 9px; }
-#view-dashboard .dash-right .panel:last-child .panel-body.card-white .aging-bars {
-  background: none; border-radius: 0; box-shadow: none;
-  padding: 4px 0 12px; border-bottom: 1px solid #EEF1F5;
+/* 노후도 섹션 구분 헤더 */
+.dr-aging-head {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--c-border);
+  margin-bottom: 10px;
 }
-#view-dashboard .dash-right .panel:last-child .panel-body.card-white .aging-stats {
-  background: none; border-radius: 0; box-shadow: none; padding: 0; margin-top: 0;
+
+/* 노후도 영역 — 좌(막대차트) / 우(통계표) 2열 */
+.dr-aging-wrap {
+  flex: 2 1 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 10px;
+  overflow: hidden;
 }
-#view-dashboard .dash-right .panel:last-child .panel-body {
-  min-height: 0; overflow-y: auto;
-  scrollbar-width: thin; scrollbar-color: transparent transparent;
-}
-#view-dashboard .dash-right .panel:last-child .panel-body:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
-#view-dashboard .dash-right .panel:last-child .panel-body::-webkit-scrollbar { width: 4px; }
-#view-dashboard .dash-right .panel:last-child .panel-body::-webkit-scrollbar-track { background: transparent; }
-#view-dashboard .dash-right .panel:last-child .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
-#view-dashboard .dash-right .panel:last-child .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
 
 /* AI 배너 — 왼쪽→오른쪽 와이프 */
 @keyframes dashRevealLeft {
@@ -1453,9 +1491,8 @@ table { width: 100%; border-collapse: collapse; }
 /* 좌상단: 도넛(1) / 타임라인(2) */
 #view-dashboard.active .dash-left-top > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .36s; }
 #view-dashboard.active .dash-left-top > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .43s; }
-/* 우측: 지도(상) / 노후도분석(하) */
-#view-dashboard.active .dash-right > .panel:first-child { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
-#view-dashboard.active .dash-right > .panel:last-child  { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .71s; }
+/* 우측: 단일 패널 */
+#view-dashboard.active .dash-right > .panel { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
 /* 좌하단: TOP5(1) / 이슈(2) / 일정(3) */
 #view-dashboard.active .dash-left-bot > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
 #view-dashboard.active .dash-left-bot > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .57s; }
@@ -1501,6 +1538,32 @@ table { width: 100%; border-collapse: collapse; }
   /* 패널 내부 여백·헤더 하단 여백 축소 */
   .panel { padding: 12px 14px; }
   .panel-head { margin-bottom: 8px; }
+
+  /* ── 1080p 스크롤 모드 ──
+   * 고정 높이를 제거해 콘텐츠 자연 높이로 전환 → .content 가 스크롤 처리 */
+  #view-dashboard.active {
+    height: auto;
+  }
+  /* dash-cols 와 좌/우 컬럼이 flex-shrink 되지 않도록 */
+  #view-dashboard .dash-cols  { flex: none; }
+  #view-dashboard .dash-left  { flex: none; }
+  #view-dashboard .dash-right { flex: none; }
+
+  /* 좌상단(도넛+타임라인): 340px — 도넛 상/하 여백을 절반으로 줄임 */
+  #view-dashboard .dash-left-top {
+    flex: none;
+    min-height: 340px;
+  }
+  /* 좌하단(TOP5·이슈·일정): 줄어든 상단 공간을 채워 좌 컬럼 빈 공간 없애기 */
+  #view-dashboard .dash-left-bot {
+    flex: 1 1 0;
+    min-height: 340px;
+  }
+  /* 우측 단일 패널: 지역별+노후도 합산 최소 높이 */
+  #view-dashboard .dash-right .panel {
+    flex: none;
+    min-height: 800px;
+  }
 }
 
 /* ===== 보고서 화면 ===== */
