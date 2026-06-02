@@ -1344,56 +1344,82 @@ table { width: 100%; border-collapse: collapse; }
   min-height: 0;
   height: calc(100vh - 20px - var(--header-h) - 32px); /* layout 20px + content padding 22+10px */
 }
-/* 배너·KPI는 크기 고정, 중간·하단 그리드가 남은 공간을 1:1 비율로 분할 */
+/* 배너·KPI 고정, dash-cols가 남은 세로 공간 전부 차지 */
 #view-dashboard .ai-banner,
 #view-dashboard .kpi-section { flex-shrink: 0; }
-#view-dashboard .grid-3 { flex: 1 1 0; min-height: 0; grid-template-rows: 1fr; }
-#view-dashboard .grid-3 .panel { min-height: 0; overflow: hidden; }
-#view-dashboard .grid-3 .panel-body { min-height: 0; overflow-y: auto; }
-/* 타임라인 패널(2번째): 카드가 자연 높이를 유지하므로 스크롤 불필요 */
-#view-dashboard .grid-3 .panel:nth-child(2) .panel-body { overflow: hidden; }
-/* 지도 패널: 말풍선 overflow 해제 + 지도 이미지 패널 채움 */
-#view-dashboard .grid-3 .panel:last-child { overflow: visible; }
-#view-dashboard .grid-3 .panel:last-child .panel-body,
-#view-dashboard .grid-3 .panel:last-child .panel-body.card-white { overflow: visible; }
-#view-dashboard .grid-3 .panel:last-child .panel-body.card-white {
-  padding: 10px;
-  align-items: center;
-  justify-content: center;
+
+/* ── 2열 구조 기본 ── */
+.dash-cols {
+  display: grid;
+  grid-template-columns: 1074fr 513fr; /* Figma 실측 비율 ~67:33 */
+  gap: 16px;
 }
-/* map-box를 이미지(1167×1157, 거의 정사각형)와 동일 비율로 고정 → letter-box 없음 */
-#view-dashboard .grid-3 .panel:last-child .panel-body.card-white .map-box {
-  flex: none;
-  height: 100%;
-  width: auto;
-  aspect-ratio: 1 / 1;
-  overflow: visible;
+.dash-left  { display: flex; flex-direction: column; gap: 16px; }
+.dash-right { display: flex; flex-direction: column; gap: 16px; }
+.dash-left-top { display: grid; grid-template-columns: 1fr 1fr;      gap: 16px; }
+.dash-left-bot { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+/* ── 대시보드 컨텍스트: 높이 배분 ── */
+#view-dashboard .dash-cols   { flex: 1 1 0; min-height: 0; }
+#view-dashboard .dash-left   { min-height: 0; }
+#view-dashboard .dash-right  { min-height: 0; }
+
+/* 좌측: 상단(도넛+타임라인) 5/8, 하단(TOP5+이슈+일정) 3/8 */
+#view-dashboard .dash-left-top { flex: 5 1 0; min-height: 0; grid-template-rows: 1fr; }
+#view-dashboard .dash-left-bot { flex: 3 1 0; min-height: 0; grid-template-rows: 1fr; }
+
+/* 좌상단 패널 */
+#view-dashboard .dash-left-top .panel { min-height: 0; overflow: hidden; }
+#view-dashboard .dash-left-top .panel-body { min-height: 0; overflow-y: auto; }
+/* 타임라인 패널: 스크롤 불필요 */
+#view-dashboard .dash-left-top .panel:nth-child(2) .panel-body { overflow: hidden; }
+
+/* 좌하단 패널: 내부 스크롤 */
+#view-dashboard .dash-left-bot .panel { min-height: 0; }
+#view-dashboard .dash-left-bot .panel-body {
+  min-height: 0; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: transparent transparent;
 }
-#view-dashboard .grid-3 .panel:last-child .map-bg-img {
-  width: 100%;
-  height: auto;
+#view-dashboard .dash-left-bot .panel-body:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
+#view-dashboard .dash-left-bot .panel-body::-webkit-scrollbar { width: 4px; }
+#view-dashboard .dash-left-bot .panel-body::-webkit-scrollbar-track { background: transparent; }
+#view-dashboard .dash-left-bot .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
+#view-dashboard .dash-left-bot .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
+
+/* 우측: 지도 7/10, 노후도분석 3/10 */
+#view-dashboard .dash-right .panel:first-child { flex: 7 1 0; overflow: visible; }
+#view-dashboard .dash-right .panel:last-child  { flex: 3 1 0; min-height: 0; }
+
+/* 지도 패널: 말풍선 overflow 해제 */
+#view-dashboard .dash-right .panel:first-child .panel-body,
+#view-dashboard .dash-right .panel:first-child .panel-body.card-white { overflow: visible; }
+#view-dashboard .dash-right .panel:first-child .panel-body.card-white {
+  padding: 10px; align-items: center; justify-content: center;
 }
-#view-dashboard .grid-4 {
-  flex: 1 1 0; min-height: 0;
-  grid-template-rows: 1fr;
+/* map-box: 정사각형 비율 유지 */
+#view-dashboard .dash-right .panel:first-child .panel-body.card-white .map-box {
+  flex: none; height: 100%; width: auto; aspect-ratio: 1 / 1; overflow: visible;
 }
-/* 하단 카드 내부 스크롤 */
-#view-dashboard .grid-4 .panel { min-height: 0; }
-#view-dashboard .grid-4 .panel-body.card-white { padding-top: 9px; }
-/* 자산 노후도 분석: card-white 안에서 개별 흰 박스 제거 */
-#view-dashboard .grid-4 .panel-body.card-white .aging-bars { background: none; border-radius: 0; box-shadow: none; padding: 4px 0 12px; border-bottom: 1px solid #EEF1F5; }
-#view-dashboard .grid-4 .panel-body.card-white .aging-stats { background: none; border-radius: 0; box-shadow: none; padding: 0; margin-top: 0; }
-#view-dashboard .grid-4 .panel-body {
-  min-height: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+#view-dashboard .dash-right .panel:first-child .map-bg-img { width: 100%; height: auto; }
+
+/* 노후도 분석 패널 */
+#view-dashboard .dash-right .panel:last-child .panel-body.card-white { padding-top: 9px; }
+#view-dashboard .dash-right .panel:last-child .panel-body.card-white .aging-bars {
+  background: none; border-radius: 0; box-shadow: none;
+  padding: 4px 0 12px; border-bottom: 1px solid #EEF1F5;
 }
-#view-dashboard .grid-4 .panel-body:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
-#view-dashboard .grid-4 .panel-body::-webkit-scrollbar { width: 4px; }
-#view-dashboard .grid-4 .panel-body::-webkit-scrollbar-track { background: transparent; }
-#view-dashboard .grid-4 .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
-#view-dashboard .grid-4 .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
+#view-dashboard .dash-right .panel:last-child .panel-body.card-white .aging-stats {
+  background: none; border-radius: 0; box-shadow: none; padding: 0; margin-top: 0;
+}
+#view-dashboard .dash-right .panel:last-child .panel-body {
+  min-height: 0; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: transparent transparent;
+}
+#view-dashboard .dash-right .panel:last-child .panel-body:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
+#view-dashboard .dash-right .panel:last-child .panel-body::-webkit-scrollbar { width: 4px; }
+#view-dashboard .dash-right .panel:last-child .panel-body::-webkit-scrollbar-track { background: transparent; }
+#view-dashboard .dash-right .panel:last-child .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
+#view-dashboard .dash-right .panel:last-child .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
 
 /* AI 배너 — 왼쪽→오른쪽 와이프 */
 @keyframes dashRevealLeft {
@@ -1424,15 +1450,16 @@ table { width: 100%; border-collapse: collapse; }
   animation-fill-mode: both;
   animation-delay: .30s;
 }
-/* 가운데 그리드 3개 패널 */
-#view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .36s; }
-#view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .43s; }
-#view-dashboard.active > .grid-3:nth-child(3) > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
-/* 하단 grid-4 패널 4개 */
-#view-dashboard.active > .grid-4 > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
-#view-dashboard.active > .grid-4 > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .57s; }
-#view-dashboard.active > .grid-4 > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .64s; }
-#view-dashboard.active > .grid-4 > .panel:nth-child(4) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .71s; }
+/* 좌상단: 도넛(1) / 타임라인(2) */
+#view-dashboard.active .dash-left-top > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .36s; }
+#view-dashboard.active .dash-left-top > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .43s; }
+/* 우측: 지도(상) / 노후도분석(하) */
+#view-dashboard.active .dash-right > .panel:first-child { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
+#view-dashboard.active .dash-right > .panel:last-child  { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .71s; }
+/* 좌하단: TOP5(1) / 이슈(2) / 일정(3) */
+#view-dashboard.active .dash-left-bot > .panel:nth-child(1) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .50s; }
+#view-dashboard.active .dash-left-bot > .panel:nth-child(2) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .57s; }
+#view-dashboard.active .dash-left-bot > .panel:nth-child(3) { animation: dashFadeUp .42s cubic-bezier(.22,1,.36,1) both .64s; }
 
 /* aging 바 성장 트랜지션 */
 .ab-fill { transition: width .9s cubic-bezier(.4,0,.2,1); }
@@ -1464,9 +1491,12 @@ table { width: 100%; border-collapse: collapse; }
   .kpi-gauge { width: 44px; height: 44px; }
   .kpi-section { margin-bottom: 8px; }
 
-  /* 대시보드 그리드 간격·하단 여백 축소 */
-  #view-dashboard .grid-3 { gap: 12px; margin-bottom: 8px; }
-  #view-dashboard .grid-4 { gap: 12px; }
+  /* 대시보드 그리드 간격 축소 */
+  #view-dashboard .dash-cols     { gap: 12px; }
+  #view-dashboard .dash-left     { gap: 12px; }
+  #view-dashboard .dash-right    { gap: 12px; }
+  #view-dashboard .dash-left-top { gap: 12px; }
+  #view-dashboard .dash-left-bot { gap: 12px; }
 
   /* 패널 내부 여백·헤더 하단 여백 축소 */
   .panel { padding: 12px 14px; }
