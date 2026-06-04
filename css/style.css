@@ -33,6 +33,54 @@
   --shadow-soft: 0 1px 2px rgba(16,24,40,0.05);
 }
 
+/* ===== 인트로 오버레이 ===== */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, #033072 0%, #002B6C 60%, #002257 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: introFadeIn .7s ease both;
+}
+#intro-overlay.hiding {
+  animation: introFadeOut .9s ease forwards;
+  pointer-events: none;
+}
+.intro-block {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 30px;
+  cursor: pointer;
+  user-select: none;
+}
+.intro-sub {
+  color: rgba(255,255,255,.65);
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: .12em;
+  animation: introSlideUp .7s .4s ease both;
+}
+.intro-title {
+  color: #ffffff;
+  font-size: 174px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.1;
+  animation: introSlideUp .7s .6s ease both;
+}
+.intro-date {
+  color: rgba(255,255,255,.5);
+  font-size: 45px;
+  text-align: right;
+  letter-spacing: .05em;
+  animation: introSlideUp .7s .85s ease both;
+}
+@keyframes introFadeIn  { from { opacity:0 } to { opacity:1 } }
+@keyframes introFadeOut { from { opacity:1 } to { opacity:0 } }
+@keyframes introSlideUp { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:translateY(0) } }
+
 body {
   font-family: "Pretendard", "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif;
   background: #CDD3DE;

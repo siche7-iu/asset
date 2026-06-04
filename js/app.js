@@ -1,6 +1,32 @@
 // 고정자산관리시스템 (시연용) - 화면 동작
 // data.js 가 먼저 읽혀서 window.APP_DATA 에 자산 목록(assets)과 대시보드 요약(dashboard)이 들어 있습니다.
 
+// ── 인트로 오버레이 ──────────────────────────────────────────────
+(function () {
+  var overlay = document.getElementById('intro-overlay');
+  var block   = overlay && overlay.querySelector('.intro-block');
+  if (!overlay || !block) return;
+
+  // intro가 있는 동안 대시보드를 완전히 숨겨둠 (display:none 상태 유지)
+  window._introActive = true;
+  var dashView = document.getElementById('view-dashboard');
+  if (dashView) dashView.classList.remove('active');
+
+  function dismiss() {
+    overlay.classList.add('hiding');
+    overlay.addEventListener('animationend', function () { overlay.style.display = 'none'; }, { once: true });
+  }
+
+  block.addEventListener('click', function () {
+    window._introActive = false;
+    dismiss();
+    // 페이드아웃(0.9s) 완료 후 → 빈 화면에서 대시보드 애니메이션 시작
+    setTimeout(function () {
+      if (typeof triggerDashboardAnimations === 'function') triggerDashboardAnimations();
+    }, 900);
+  });
+})();
+
 (async function () {
   // Supabase에서 자산 데이터 로드 — 실패 시 로컬 샘플 데이터로 자동 폴백
   var assets = window.APP_DATA.assets;  // 기본값: 로컬 샘플 데이터
@@ -45,11 +71,14 @@
   // ===== 화면(섹션) 보이기/숨기기 =====
   function showSection(name) {
     sectionIds.forEach(function (k) {
-      document.getElementById("view-" + k).classList.toggle("active", k === name);
+      // intro가 활성 중이면 dashboard는 active를 주지 않음 (intro 클릭 시 직접 처리)
+      var isActive = k === name;
+      if (isActive && k === 'dashboard' && window._introActive) isActive = false;
+      document.getElementById("view-" + k).classList.toggle("active", isActive);
     });
     var contentEl = document.querySelector('.content');
     if (contentEl) contentEl.scrollTop = 0;
-    if (name === 'dashboard') triggerDashboardAnimations();
+    if (name === 'dashboard' && !window._introActive) triggerDashboardAnimations();
     if (name === 'ai-agent') triggerAiAgentAnimations();
   }
   function activateSidebar(view) {
@@ -468,6 +497,7 @@
   }
 
   // ===== 대시보드 진입 애니메이션 트리거 =====
+  window.triggerDashboardAnimations = triggerDashboardAnimations;
   function triggerDashboardAnimations() {
     // CSS 애니메이션 리셋: active 클래스를 잠깐 제거 → reflow → 다시 추가
     var dashView = document.getElementById('view-dashboard');
@@ -736,6 +766,8 @@
       body.innerHTML = '';
       setTimeout(_appendGreetingBubble, 550);
     }
+    // 입력창 자동 타이핑 리스너 연결
+    setupAutoType();
     // 추천/즐겨찾기 항목 stagger 등장을 위해 ready 클래스 재토글
     view.classList.remove('anim-on');
     // reflow → 클래스 재부착으로 키프레임 재시작
@@ -1095,6 +1127,47 @@
     if (!v) return false;
     askAgent(v);
     return false;
+  }
+
+  // ===== AI Agent 입력창 자동 타이핑 =====
+  var _autoTypeQuery = '본점영업부에서 보험 만료 예정인 차량 목록 조회해줘';
+  var _autoTypeUsed  = false;   // 한 세션에서 한 번만 작동
+
+  function setupAutoType() {
+    var inp = document.getElementById('ai-chat-text');
+    if (!inp || inp._autoTypeBound) return;
+    inp._autoTypeBound = true;
+
+    inp.addEventListener('click', function onInputClick() {
+      if (_autoTypeUsed) return;
+      if (inp.value.trim()) return;   // 이미 타이핑된 내용 있으면 건드리지 않음
+      _autoTypeUsed = true;
+      inp.removeEventListener('click', onInputClick);
+
+      inp.readOnly = true;
+      inp.style.caretColor = 'transparent';   // 커서 깜빡임 숨김
+
+      var text = _autoTypeQuery;
+      var i = 0;
+      // 글자마다 35~65ms 사이 랜덤 딜레이 → 자연스러운 타이핑
+      function typeNext() {
+        if (i >= text.length) {
+          inp.readOnly = false;
+          inp.style.caretColor = '';
+          // 타이핑 완료 후 350ms 뒤 자동 전송
+          setTimeout(function () {
+            inp.readOnly = false;
+            askAgent(inp.value.trim());
+            inp.value = '';
+          }, 350);
+          return;
+        }
+        inp.value += text[i++];
+        var delay = 35 + Math.floor(Math.sin(i * 7.3) * 15 + 15);  // 35~65ms 패턴
+        setTimeout(typeNext, delay);
+      }
+      setTimeout(typeNext, 120);   // 클릭 후 약간의 준비 시간
+    });
   }
 
   function aiAnswerAction(action) {
