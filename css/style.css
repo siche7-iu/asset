@@ -1461,27 +1461,36 @@ table { width: 100%; border-collapse: collapse; }
 #view-dashboard .dg-top5,
 #view-dashboard .dg-issues,
 #view-dashboard .dg-sched { min-height: 0; min-width: 0; overflow: hidden; }
+/* panel-body는 흰 카드(시각적 컨테이너)만 담당, 스크롤 없음 */
 #view-dashboard .dg-top5 .panel-body,
 #view-dashboard .dg-issues .panel-body,
-#view-dashboard .dg-sched .panel-body {
-  min-height: 0; overflow-y: auto;
+#view-dashboard .dg-sched .panel-body { min-height: 0; overflow: hidden; }
+/* panel-scroll: 카드 padding 안쪽에서 실제 스크롤
+   margin-right 음수로 스크롤바를 카드 우측 가장자리 근처로 이동,
+   padding-right로 콘텐츠 우측 여백 복원 */
+#view-dashboard .dg-top5 .panel-scroll,
+#view-dashboard .dg-issues .panel-scroll,
+#view-dashboard .dg-sched .panel-scroll {
+  flex: 1; min-height: 0; overflow-y: auto;
+  margin-right: -14px;
+  padding-right: 14px;
   scrollbar-width: thin; scrollbar-color: transparent transparent;
 }
-#view-dashboard .dg-top5 .panel-body:hover,
-#view-dashboard .dg-issues .panel-body:hover,
-#view-dashboard .dg-sched .panel-body:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
-#view-dashboard .dg-top5 .panel-body::-webkit-scrollbar,
-#view-dashboard .dg-issues .panel-body::-webkit-scrollbar,
-#view-dashboard .dg-sched .panel-body::-webkit-scrollbar { width: 4px; }
-#view-dashboard .dg-top5 .panel-body::-webkit-scrollbar-track,
-#view-dashboard .dg-issues .panel-body::-webkit-scrollbar-track,
-#view-dashboard .dg-sched .panel-body::-webkit-scrollbar-track { background: transparent; }
-#view-dashboard .dg-top5 .panel-body::-webkit-scrollbar-thumb,
-#view-dashboard .dg-issues .panel-body::-webkit-scrollbar-thumb,
-#view-dashboard .dg-sched .panel-body::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
-#view-dashboard .dg-top5 .panel-body:hover::-webkit-scrollbar-thumb,
-#view-dashboard .dg-issues .panel-body:hover::-webkit-scrollbar-thumb,
-#view-dashboard .dg-sched .panel-body:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
+#view-dashboard .dg-top5 .panel-scroll:hover,
+#view-dashboard .dg-issues .panel-scroll:hover,
+#view-dashboard .dg-sched .panel-scroll:hover { scrollbar-color: rgba(0,0,0,.15) transparent; }
+#view-dashboard .dg-top5 .panel-scroll::-webkit-scrollbar,
+#view-dashboard .dg-issues .panel-scroll::-webkit-scrollbar,
+#view-dashboard .dg-sched .panel-scroll::-webkit-scrollbar { width: 4px; }
+#view-dashboard .dg-top5 .panel-scroll::-webkit-scrollbar-track,
+#view-dashboard .dg-issues .panel-scroll::-webkit-scrollbar-track,
+#view-dashboard .dg-sched .panel-scroll::-webkit-scrollbar-track { background: transparent; }
+#view-dashboard .dg-top5 .panel-scroll::-webkit-scrollbar-thumb,
+#view-dashboard .dg-issues .panel-scroll::-webkit-scrollbar-thumb,
+#view-dashboard .dg-sched .panel-scroll::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; transition: background .2s; }
+#view-dashboard .dg-top5 .panel-scroll:hover::-webkit-scrollbar-thumb,
+#view-dashboard .dg-issues .panel-scroll:hover::-webkit-scrollbar-thumb,
+#view-dashboard .dg-sched .panel-scroll:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
 
 /* 지도 카드 — 우측 패널 높이의 60%를 차지하고, 내부 map-box가 정사각형으로 자동 조정 */
 .dr-map-card {
