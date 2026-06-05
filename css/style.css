@@ -1829,6 +1829,7 @@ body.proj-mode .fab { display: none; }
 .pj-tl-open .pj-tl-dot { border-color: var(--c-green-fg); background: var(--c-green-fg); }
 .pj-tl-name { display: block; font-size: 11.5px; color: #4b5563; margin-top: 8px; line-height: 1.35; }
 .pj-tl-open .pj-tl-name { color: var(--c-green-fg); font-weight: 700; }
+.pj-tl-date { font-size: 10.5px; font-weight: 400; opacity: 0.75; }
 
 .pj-note { font-size: 12.5px; color: #4b5563; line-height: 1.6; background: #F9FAFB; border: 1px solid var(--c-border); border-radius: 8px; padding: 11px 14px; margin-top: 14px; }
 .pj-note b { color: var(--c-navy); }
