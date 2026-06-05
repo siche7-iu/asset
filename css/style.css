@@ -2266,7 +2266,15 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
   margin-bottom: 16px;
 }
 .fc-chart { width: 100%; overflow-x: auto; }
-.fc-chart svg { display: block; width: 100%; height: auto; }
+.fc-chart svg { display: block; width: 100%; height: auto; margin: 0 auto; }
+/* 뷰포트 세로 기준으로 각 차트 가로 최대폭 역산 (75vh 이하로 세로 유지) */
+#fc-lifecycle .fc-chart svg { max-width: min(100%, calc(75vh * 700 / 490)); }
+#fc-approval  .fc-chart svg { max-width: min(100%, calc(75vh * 860 / 400)); }
+#fc-api       .fc-chart svg { max-width: min(100%, calc(75vh * 720 / 440)); }
+#fc-aiagent   .fc-chart svg { max-width: min(100%, calc(75vh * 660 / 510)); }
+#fc-budget    .fc-chart svg { max-width: min(100%, calc(75vh * 860 / 220)); }
+#fc-contract  .fc-chart svg { max-width: min(100%, calc(75vh * 820 / 240)); }
+#fc-sitemap   .fc-chart svg { max-width: min(100%, calc(75vh * 720 / 340)); }
 .fc-legend {
   display: flex; gap: 14px; flex-wrap: wrap;
   margin-top: 12px;
