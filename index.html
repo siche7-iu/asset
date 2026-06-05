@@ -8,6 +8,32 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- 모바일 감지 — 렌더 전 실행으로 화면 깜빡임 없음 -->
+  <script>if(window.innerWidth<=767)document.body.classList.add('is-mobile');</script>
+
+  <!-- ===== 모바일 인증 화면 (767px 이하 기기 전용 — 첫 진입 시 표시) ===== -->
+  <div id="mobile-auth-screen" class="mobile-auth-screen">
+    <div class="m-auth-card">
+      <div class="m-auth-logo">
+        <img src="images/Icon.svg" alt="NH 로고">
+        <div class="m-auth-logo-text">
+          <span class="m-auth-logo-title">NH 고정자산관리</span>
+          <span class="m-auth-logo-sub">Fixed Asset Management</span>
+        </div>
+      </div>
+      <hr class="m-auth-divider">
+      <span class="m-auth-badge">🔒 내부 전용 워크스페이스</span>
+      <h2 class="m-auth-title">관리자 인증</h2>
+      <p class="m-auth-desc">프로젝트 관리 화면은 내부 전용입니다.<br>비밀번호를 입력하세요.</p>
+      <div class="m-auth-input-wrap">
+        <input type="password" id="m-pw-input" class="m-pw-input"
+               placeholder="비밀번호 입력" inputmode="numeric" autocomplete="off">
+        <p class="m-pw-error" id="m-pw-error" hidden>비밀번호가 올바르지 않습니다.</p>
+      </div>
+      <button id="m-pw-ok" class="m-auth-btn">확인</button>
+      <p class="m-auth-version">v0.9.3 · NH Demo Build</p>
+    </div>
+  </div>
 
   <!-- ===== 인트로 오버레이 ===== -->
   <div id="intro-overlay">
@@ -169,6 +195,14 @@
 
     <!-- ===== 본문 ===== -->
     <div class="main">
+      <!-- 모바일 전용 상단 바 (인증 후에만 표시) -->
+      <div id="mobile-topbar" class="mobile-topbar">
+        <button class="m-hamburger" id="m-hamburger" aria-label="메뉴 열기">
+          <span></span><span></span><span></span>
+        </button>
+        <span class="m-topbar-title">🔒 프로젝트 관리</span>
+        <button class="m-topbar-exit" id="m-topbar-exit">나가기</button>
+      </div>
       <header class="topbar">
         <nav class="tabs" id="header-tabs">
           <button class="tab active" data-view="dashboard">고정자산관리시스템</button>
@@ -1144,6 +1178,9 @@
     </button>
     <img id="pj-lightbox-img" src="" alt="화면 디자인 크게 보기">
   </div>
+
+  <!-- 모바일 드로어 배경 오버레이 -->
+  <div class="m-drawer-overlay" id="m-drawer-overlay"></div>
 
   <!-- 차트 공용 툴팁 (JS가 position:fixed로 위치 조정) -->
   <div id="chart-tooltip" class="chart-tooltip"></div>

@@ -1945,3 +1945,202 @@ code { font-family: ui-monospace, monospace; font-size: 11.5px; background: #eef
   background: rgba(255,255,255,.15); color: #fff; display: flex; align-items: center; justify-content: center;
 }
 .pj-lightbox-close:hover { background: rgba(255,255,255,.28); }
+
+/* =====================================================================
+   적응형 디자인 — 모바일 전용 (767px 이하)
+   body.is-mobile 클래스가 있을 때만 적용 → 데스크탑 완전 무영향
+   ===================================================================== */
+
+/* 모바일 전용 UI — 데스크탑에서 항상 숨김 */
+#mobile-auth-screen,
+.mobile-topbar,
+.m-drawer-overlay { display: none; }
+
+/* ────────────────────────────────────────────
+   미인증 상태: 레이아웃 전체 숨기고 인증 화면 표시
+   ──────────────────────────────────────────── */
+body.is-mobile .layout          { display: none !important; }
+body.is-mobile #mobile-auth-screen { display: flex; }
+
+/* ── 모바일 인증 화면 ── */
+body.is-mobile #mobile-auth-screen {
+  position: fixed; inset: 0; z-index: 9500;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 28px 24px;
+  background: linear-gradient(160deg, #033072 0%, #002B6C 50%, #001c55 100%);
+}
+
+.m-auth-card {
+  width: 100%; max-width: 340px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 14px; text-align: center;
+}
+
+.m-auth-logo { display: flex; align-items: center; gap: 12px; padding-bottom: 4px; }
+.m-auth-logo img { width: 32px; height: 26px; filter: brightness(0) invert(1); opacity: .9; }
+.m-auth-logo-text { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.m-auth-logo-title { color: #fff; font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+.m-auth-logo-sub   { color: rgba(255,255,255,.5); font-size: 9.5px; letter-spacing: .4px; }
+
+.m-auth-divider {
+  width: 100%; border: none;
+  border-top: 1px solid rgba(255,255,255,.15);
+  margin: 2px 0;
+}
+.m-auth-badge {
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.75); font-size: 12px; font-weight: 600;
+  padding: 5px 16px; border-radius: 20px; letter-spacing: .2px;
+}
+.m-auth-title { color: #fff; font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -.3px; }
+.m-auth-desc  { color: rgba(255,255,255,.6); font-size: 13.5px; line-height: 1.65; margin: 0; }
+
+.m-auth-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+
+.m-pw-input {
+  width: 100%; height: 54px;
+  background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.22);
+  border-radius: 14px; color: #fff; font-size: 20px; font-family: inherit;
+  text-align: center; letter-spacing: .2em; outline: none; padding: 0 16px;
+  transition: border-color .15s, background .15s; -webkit-appearance: none;
+}
+.m-pw-input::placeholder { color: rgba(255,255,255,.3); letter-spacing: normal; font-size: 14px; }
+.m-pw-input:focus { border-color: rgba(255,255,255,.55); background: rgba(255,255,255,.15); }
+
+.m-pw-error {
+  color: #fca5a5; font-size: 13px; text-align: center; margin: 0;
+  animation: mShake .4s ease both;
+}
+
+.m-auth-btn {
+  width: 100%; height: 52px; border: none; border-radius: 14px;
+  background: var(--c-primary); color: #fff; font-size: 16px; font-weight: 700;
+  cursor: pointer; font-family: inherit; letter-spacing: .1px;
+  transition: background .15s, transform .1s; -webkit-tap-highlight-color: transparent;
+}
+.m-auth-btn:active { background: var(--c-primary-strong); transform: scale(.98); }
+
+.m-auth-version { color: rgba(255,255,255,.28); font-size: 11px; margin: 4px 0 0; }
+
+@keyframes mShake {
+  0%,100% { transform: translateX(0) }
+  20%,60%  { transform: translateX(-7px) }
+  40%,80%  { transform: translateX(7px) }
+}
+
+/* ────────────────────────────────────────────
+   인증 후: 레이아웃 재구성
+   ──────────────────────────────────────────── */
+body.is-mobile.m-authed .layout {
+  display: flex !important;
+  flex-direction: column;
+  height: 100vh; overflow: hidden;
+  padding: 0; gap: 0;
+  background: var(--c-bg);
+}
+
+/* 사이드바 → 왼쪽 슬라이드 드로어 */
+body.is-mobile.m-authed .sidebar {
+  position: fixed; top: 0;
+  left: calc(-1 * var(--sidebar-w) - 20px); /* 완전히 화면 밖 */
+  width: var(--sidebar-w); height: 100vh;
+  border-radius: 0 16px 16px 0;
+  z-index: 700; overflow-y: auto;
+  transition: left .3s cubic-bezier(.4, 0, .2, 1);
+  padding-top: 16px;
+}
+body.is-mobile.m-authed .sidebar.drawer-open { left: 0; }
+
+/* 데스크탑 토글 버튼 숨김 */
+body.is-mobile .sidebar-toggle { display: none !important; }
+
+/* 드로어 배경 오버레이 */
+body.is-mobile.m-authed .m-drawer-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.45); z-index: 690;
+}
+body.is-mobile.m-authed .m-drawer-overlay.visible {
+  display: block; animation: mOverlayIn .25s ease both;
+}
+@keyframes mOverlayIn { from { opacity: 0 } to { opacity: 1 } }
+
+/* 본문 영역 */
+body.is-mobile.m-authed .main {
+  flex: 1; min-width: 0; height: 100vh;
+  border-radius: 0; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* 데스크탑 헤더 숨김 */
+body.is-mobile.m-authed .topbar { display: none !important; }
+
+/* ── 모바일 상단 바 ── */
+body.is-mobile.m-authed .mobile-topbar {
+  display: flex; align-items: center;
+  height: 56px; background: var(--c-navy);
+  padding: 0 16px; gap: 12px; flex-shrink: 0;
+  position: relative; z-index: 10;
+}
+
+.m-hamburger {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,.1); border: none; border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; cursor: pointer; flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent; transition: background .15s;
+}
+.m-hamburger:active { background: rgba(255,255,255,.2); }
+.m-hamburger span { display: block; width: 18px; height: 2px; background: rgba(255,255,255,.9); border-radius: 2px; }
+
+.m-topbar-title {
+  flex: 1; color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -.2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.m-topbar-exit {
+  color: rgba(255,255,255,.55); font-size: 13px; font-family: inherit;
+  background: none; border: none; cursor: pointer; padding: 8px 4px;
+  white-space: nowrap; -webkit-tap-highlight-color: transparent;
+}
+.m-topbar-exit:active { color: rgba(255,255,255,.85); }
+
+/* 콘텐츠 스크롤 영역 */
+body.is-mobile.m-authed .content {
+  flex: 1; min-height: 0;
+  overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 프로젝트 뷰 외 모든 뷰 숨김, 프로젝트 뷰만 표시 */
+body.is-mobile.m-authed .view                { display: none !important; }
+body.is-mobile.m-authed #view-project.active {
+  display: block !important; flex: none; height: auto; min-height: 100%;
+}
+
+/* ── 프로젝트 뷰 콘텐츠 모바일 최적화 ── */
+body.is-mobile .pj-hero           { padding: 20px 16px 14px; }
+body.is-mobile .pj-hero h1        { font-size: 18px; line-height: 1.35; }
+body.is-mobile .pj-hero p         { font-size: 13px; }
+body.is-mobile .pj-hero-meta      { flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+body.is-mobile .pj-sec            { padding: 16px 16px 4px; }
+body.is-mobile .pj-sec-title      { font-size: 15px; }
+
+body.is-mobile .pj-cards          { grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 420px) {
+  body.is-mobile .pj-cards        { grid-template-columns: 1fr; }
+}
+
+body.is-mobile .pj-screen         { flex-direction: column; }
+body.is-mobile .pj-shot,
+body.is-mobile .pj-screen-desc    { flex: none; }
+
+body.is-mobile .pj-table          { font-size: 12.5px; }
+body.is-mobile .pj-table td,
+body.is-mobile .pj-table th       { padding: 8px 10px; }
+
+body.is-mobile .pj-timeline       { flex-wrap: wrap; gap: 8px; }
+
+body.is-mobile .pj-screen-group-label { font-size: 13px; margin: 14px 0 8px; }
+
+/* 모바일에서 이미지 확대 힌트 항상 표시 (hover 없으므로) */
+body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
