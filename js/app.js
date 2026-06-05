@@ -2,10 +2,22 @@
 // data.js 가 먼저 읽혀서 window.APP_DATA 에 자산 목록(assets)과 대시보드 요약(dashboard)이 들어 있습니다.
 
 // ── 인트로 오버레이 ──────────────────────────────────────────────
+// INTRO_ENABLED: 인트로 화면 사용 여부 스위치.
+//   false → 사이트 진입 시 대시보드가 바로 보임(현재 기본값).
+//   true  → 진입 시 인트로 오버레이를 먼저 보여주고, 클릭하면 대시보드로 전환.
+//   (인트로 화면 HTML/CSS/JS는 그대로 보존돼 있어, 이 값만 true로 바꾸면 즉시 부활)
+var INTRO_ENABLED = false;
 (function () {
   var overlay = document.getElementById('intro-overlay');
   var block   = overlay && overlay.querySelector('.intro-block');
   if (!overlay || !block) return;
+
+  // 인트로 비활성: 오버레이를 숨기고 평소처럼 대시보드가 보이도록 둔다.
+  if (!INTRO_ENABLED) {
+    window._introActive = false;
+    overlay.style.display = 'none';
+    return;
+  }
 
   // intro가 있는 동안 대시보드를 완전히 숨겨둠 (display:none 상태 유지)
   window._introActive = true;
@@ -186,6 +198,7 @@
   if (brandEl) {
     brandEl.style.cursor = 'pointer';
     brandEl.addEventListener('click', function () {
+      if (window._projectMode) { exitProjectMode(); return; }
       var cur = (location.hash || '').replace(/^#\//, '').split('/')[0] || 'dashboard';
       if (cur === 'dashboard') {
         // 이미 대시보드: DOM 전체 재렌더 → 스크롤 맨 위 → 진입 애니메이션 재실행
@@ -198,6 +211,213 @@
         _renderView(location.hash);
       }
     });
+  }
+
+  // ===== 비밀 버튼 → 프로젝트 관리 모드 =====
+  // 보안 메모: 비밀번호 평문을 소스에 두지 않는다.
+  //  - 비밀번호 자체 대신 SHA-256 해시값(PW_HASH)만 저장한다.
+  //  - 입력값을 같은 방식(SALT+입력)으로 해시해 비교하므로, 소스/개발자도구에는
+  //    의미 없는 64자리 해시만 노출된다. (단방향이라 역산으로 원문 복구 불가)
+  //  - 서버·인터넷 없이 file:// 더블클릭 환경에서도 동작하도록 외부 라이브러리·
+  //    crypto.subtle 의존 없이 순수 JS SHA-256을 사용한다.
+  //  ※ 비밀번호를 바꾸려면: HASHGEN.md의 안내대로 새 해시를 생성해 PW_HASH만 교체.
+  var PW_SALT = "nh-fams-proj::";
+  var PW_HASH = "dd6f343d3df2a306dc9b8ea2a4b6510f01fbf1638b55f2696dcda9d066435802";
+
+  // 순수 JS SHA-256 (외부 의존 없음, 표준 SHA-256과 동일 결과)
+  function sha256(ascii) {
+    function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+    var mathPow = Math.pow, maxWord = mathPow(2, 32), result = '', words = [];
+    var asciiBitLength = ascii.length * 8;
+    var hash = sha256.h = sha256.h || [], k = sha256.k = sha256.k || [];
+    var primeCounter = k.length, isComposite = {};
+    for (var candidate = 2; primeCounter < 64; candidate++) {
+      if (!isComposite[candidate]) {
+        for (var i = 0; i < 313; i += candidate) { isComposite[i] = candidate; }
+        hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+        k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+      }
+    }
+    ascii += '\x80';
+    while (ascii.length % 64 - 56) ascii += '\x00';
+    for (var i = 0; i < ascii.length; i++) {
+      var j = ascii.charCodeAt(i);
+      if (j >> 8) return;
+      words[i >> 2] |= j << ((3 - i) % 4) * 8;
+    }
+    words[words.length] = ((asciiBitLength / maxWord) | 0);
+    words[words.length] = (asciiBitLength);
+    for (var j = 0; j < words.length;) {
+      var w = words.slice(j, j += 16), oldHash = hash;
+      hash = hash.slice(0, 8);
+      for (var i = 0; i < 64; i++) {
+        var w15 = w[i - 15], w2 = w[i - 2], a = hash[0], e = hash[4];
+        var temp1 = hash[7]
+          + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+          + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i]
+          + (w[i] = (i < 16) ? w[i] : (
+              w[i - 16]
+              + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+              + w[i - 7]
+              + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+            ) | 0);
+        var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+          + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+        hash = [(temp1 + temp2) | 0].concat(hash);
+        hash[4] = (hash[4] + temp1) | 0;
+      }
+      for (var i = 0; i < 8; i++) { hash[i] = (hash[i] + oldHash[i]) | 0; }
+    }
+    for (var i = 0; i < 8; i++) {
+      for (var j = 3; j + 1; j--) {
+        var b = (hash[i] >> (j * 8)) & 255;
+        result += ((b < 16) ? 0 : '') + b.toString(16);
+      }
+    }
+    return result;
+  }
+
+  var secretBtn = document.getElementById('secret-ver');
+  var pwModal = document.getElementById('pw-modal');
+  var pwInput = document.getElementById('pw-input');
+  var pwError = document.getElementById('pw-error');
+  var projectNav = document.getElementById('project-nav');
+  var mainNav = document.getElementById('nav');
+
+  function openPwModal() {
+    if (!pwModal) return;
+    pwError.hidden = true;
+    pwInput.value = '';
+    pwModal.classList.add('open');
+    setTimeout(function () { pwInput.focus(); }, 50);
+  }
+  function closePwModal() {
+    if (!pwModal) return;
+    pwModal.classList.remove('open');
+    pwInput.value = '';
+    pwError.hidden = true;
+    var d = pwModal.querySelector('.modal-dialog');
+    if (d) d.classList.remove('shake');
+  }
+  function submitPw() {
+    if (sha256(PW_SALT + pwInput.value.trim()) === PW_HASH) {
+      closePwModal();
+      enterProjectMode();
+    } else {
+      pwError.hidden = false;
+      var d = pwModal.querySelector('.modal-dialog');
+      if (d) { d.classList.remove('shake'); void d.offsetWidth; d.classList.add('shake'); }
+      pwInput.value = '';
+      pwInput.focus();
+    }
+  }
+  function enterProjectMode() {
+    window._projectMode = true;
+    document.body.classList.add('proj-mode');
+    if (mainNav) mainNav.hidden = true;
+    if (projectNav) projectNav.hidden = false;
+    sectionIds.forEach(function (k) {
+      var el = document.getElementById('view-' + k);
+      if (el) el.classList.remove('active');
+    });
+    var pv = document.getElementById('view-project');
+    if (pv) pv.classList.add('active');
+    var c = document.querySelector('.content');
+    if (c) c.scrollTop = 0;
+    // 비밀번호 인증 후 이미지 경로 주입 (HTML 소스에는 src="" — 크롤러에 URL 미노출)
+    document.querySelectorAll('.pj-shot-img[data-pskey]').forEach(function (img) {
+      var path = 'images/proj-screens/' + img.dataset.pskey + '.png';
+      img.src = path;
+      var btn = img.closest('.pj-shot');
+      if (btn) btn.dataset.full = path;
+    });
+    // 첫 진입: 첫 메뉴 활성 표시
+    if (projectNav) {
+      var links = projectNav.querySelectorAll('.pj-link');
+      links.forEach(function (a, i) { a.classList.toggle('active', i === 0); });
+    }
+  }
+  function exitProjectMode() {
+    window._projectMode = false;
+    document.body.classList.remove('proj-mode');
+    var pv = document.getElementById('view-project');
+    if (pv) pv.classList.remove('active');
+    if (projectNav) projectNav.hidden = true;
+    if (mainNav) mainNav.hidden = false;
+    navigate('dashboard');
+    _renderView(location.hash);
+  }
+  function showProjectSection(id) {
+    if (!id || !projectNav) return;
+    projectNav.querySelectorAll('.pj-link').forEach(function (a) {
+      a.classList.toggle('active', a.dataset.pj === id);
+    });
+    var sec = document.getElementById(id);
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  if (secretBtn) {
+    secretBtn.addEventListener('click', function () {
+      if (window._projectMode) exitProjectMode();
+      else openPwModal();
+    });
+  }
+  if (pwModal) {
+    pwModal.addEventListener('click', function (e) { if (e.target === pwModal) closePwModal(); });
+    var pwCloseBtn = document.getElementById('pw-close');
+    var pwCancelBtn = document.getElementById('pw-cancel');
+    var pwOkBtn = document.getElementById('pw-ok');
+    if (pwCloseBtn) pwCloseBtn.addEventListener('click', closePwModal);
+    if (pwCancelBtn) pwCancelBtn.addEventListener('click', closePwModal);
+    if (pwOkBtn) pwOkBtn.addEventListener('click', submitPw);
+    pwInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); submitPw(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && pwModal.classList.contains('open')) closePwModal();
+    });
+  }
+  if (projectNav) {
+    projectNav.querySelectorAll('.pj-group-head').forEach(function (h) {
+      h.addEventListener('click', function () { h.parentElement.classList.toggle('collapsed'); });
+    });
+    projectNav.querySelectorAll('.pj-link').forEach(function (a) {
+      a.addEventListener('click', function () {
+        // As-Is 상위 링크는 하위 트리도 펼침/접힘
+        if (a.classList.contains('pj-link-parent')) {
+          var sg = a.closest('.pj-subgroup');
+          if (sg) sg.classList.toggle('open');
+        }
+        showProjectSection(a.dataset.pj);
+      });
+    });
+  }
+
+  // ===== 화면 디자인 라이트박스 (크게 보기) =====
+  var lightbox = document.getElementById('pj-lightbox');
+  var lightboxImg = document.getElementById('pj-lightbox-img');
+  var lightboxClose = document.getElementById('pj-lightbox-close');
+  function openLightbox(src, alt) {
+    if (!lightbox || !src) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.hidden = false;
+  }
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.hidden = true;
+    lightboxImg.src = '';
+  }
+  document.querySelectorAll('.pj-shot').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var img = btn.querySelector('img');
+      openLightbox(btn.dataset.full, img ? img.alt : '');
+    });
+  });
+  if (lightbox) {
+    lightbox.addEventListener('click', function (e) { if (e.target !== lightboxImg) closeLightbox(); });
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lightbox.hidden) closeLightbox(); });
   }
 
   // ===== 작은 아이콘(인라인 SVG) =====
