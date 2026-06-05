@@ -347,10 +347,11 @@ var INTRO_ENABLED = false;
     navigate('dashboard');
     _renderView(location.hash);
   }
-  function showProjectSection(id) {
+  function showProjectSection(id, clickedEl) {
     if (!id || !projectNav) return;
     projectNav.querySelectorAll('.pj-link').forEach(function (a) {
-      a.classList.toggle('active', a.dataset.pj === id);
+      // clickedEl이 주어지면 해당 요소만 active, 아니면 data-pj 기준
+      a.classList.toggle('active', clickedEl ? a === clickedEl : a.dataset.pj === id);
     });
     var sec = document.getElementById(id);
     if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -388,7 +389,7 @@ var INTRO_ENABLED = false;
           var sg = a.closest('.pj-subgroup');
           if (sg) sg.classList.toggle('open');
         }
-        showProjectSection(a.dataset.pj);
+        showProjectSection(a.dataset.pj, a);
         // data-anchor 속성이 있으면 해당 차트 카드로 추가 스크롤
         if (a.dataset.anchor) {
           setTimeout(function () {
