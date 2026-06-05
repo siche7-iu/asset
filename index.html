@@ -141,11 +141,23 @@
             <div class="pj-subgroup">
               <a class="pj-link pj-link-parent" data-pj="pj-ai"><span class="pj-subcaret"></span><span class="nav-item-label">AI 에이전트 분석</span></a>
               <div class="pj-subitems">
-                <div class="pj-sub-label">① 서비스 플랫폼</div>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-platform-A"><span class="nav-item-label">MCP·앱스토어·Agent 개발</span></a>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-platform-B"><span class="nav-item-label">Chat UI·FLOW 빌더</span></a>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-platform-C"><span class="nav-item-label">Eval·모니터링·권한</span></a>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-platform-D"><span class="nav-item-label">외부모델 반입</span></a>
+                <div class="pj-sub-label">① 서비스 플랫폼 — MCP·Agent</div>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-platform-A"><span class="nav-item-label">MCP 추가/삭제·이력관리</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-svr"><span class="nav-item-label">서버목록·앱스토어</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-sagent"><span class="nav-item-label">단일 Agent 개발</span></a>
+                <div class="pj-sub-label">① 서비스 플랫폼 — Chat·Flow</div>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-chat"><span class="nav-item-label">자연어 Chat UI</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-uenv"><span class="nav-item-label">개별 에이전트 활용</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-flowenv"><span class="nav-item-label">FlowUI 구축 환경</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-block1"><span class="nav-item-label">FlowUI 액션 블록①</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-block2"><span class="nav-item-label">FlowUI 액션 블록②</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-sdk"><span class="nav-item-label">SDK 개발 환경</span></a>
+                <div class="pj-sub-label">① 서비스 플랫폼 — Eval·운영</div>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-auth"><span class="nav-item-label">권한 관리</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-dash"><span class="nav-item-label">Dashboard 평가</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-eval"><span class="nav-item-label">자동 평가·비교</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-monitor"><span class="nav-item-label">Agent 모니터링</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-ext"><span class="nav-item-label">외부 모델 반입</span></a>
                 <div class="pj-sub-label">② Multi Agent FW</div>
                 <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-multiagent-A"><span class="nav-item-label">역할·권한·연동</span></a>
                 <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-multiagent-B"><span class="nav-item-label">MCP연계·그룹관리</span></a>
@@ -869,13 +881,13 @@
                     <p>No-Code Agent 빌더·채팅 UI·평가(Datumo Eval) 영역. 우리 자산관리 AI Agent 화면과 직접 연결.</p>
                   </div>
                 </div>
-                <!-- 토픽 A: MCP 관리·앱스토어·단일 Agent 개발 -->
+                <!-- 토픽 A: MCP 추가/삭제·승인/이력 관리 -->
                 <div class="ai-topic" id="pjs-ai-platform-A">
                   <div class="ai-topic-header">
                     <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
-                    <h4>MCP 관리·앱스토어·단일 Agent 개발</h4>
-                    <p>No-Code로 외부 도구(MCP)를 등록·공유하고, 코딩 없이 AI 하나를 만드는 작업장.</p>
-                    <div class="pj-screen-meta">제안서 2.3 ①②③</div>
+                    <h4>MCP 추가/삭제·승인/이력 관리</h4>
+                    <p>MCP를 No-Code로 3가지 형태 관리(추가·삭제·이력)하며 통합 Registry·재사용 Asset 제공.</p>
+                    <div class="pj-screen-meta">제안서 2.3.1.1</div>
                   </div>
                   <div class="ai-slides">
                     <div class="ai-slide-card">
@@ -909,42 +921,307 @@
                   </div>
                 </div>
 
-                <!-- 토픽 B: 자연어 Chat UI·FLOW 빌더 -->
-                <div class="ai-topic" id="pjs-ai-platform-B">
+                <!-- 토픽: 서버 목록 관리 및 앱스토어 제공 -->
+                <div class="ai-topic" id="pjs-ai-svr">
                   <div class="ai-topic-header">
                     <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
-                    <h4>자연어 Chat UI·FLOW 빌더</h4>
-                    <p>말로 시키거나 블록을 드래그&amp;드롭해 AI 업무 흐름을 만드는 화면.</p>
-                    <div class="pj-screen-meta">제안서 2.3 ④⑤⑥</div>
+                    <h4>서버 목록 관리 및 앱스토어 제공</h4>
+                    <p>내부·외부 MCP 서버를 앱스토어 형태로 제공하고, 클릭 한 번으로 배포·모니터링.</p>
+                    <div class="pj-screen-meta">제안서 2.3.1.3</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-svr-00" alt="서버 목록·앱스토어 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — Repository 관리·배포 전체 그림</h5><p>내부/외부 서버 분리 관리, 클릭 자동 배포, MCP 모니터링 개념 슬라이드.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-svr-01" alt="MCP 앱스토어 카탈로그" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>MCP 앱스토어 — 카탈로그 목록</h5><p>등록된 MCP를 카드 형태로 탐색하고 원클릭 배포하는 앱스토어 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-svr-02" alt="MCP 서버 관리·모니터링" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>MCP 서버 관리 — 배포/모니터링</h5><p>실행 중인 컨테이너의 실시간 로그·상태 확인, lifecycle(create/start/stop/delete) 관리.</p></div>
+                    </div>
                   </div>
                 </div>
 
-                <!-- 토픽 C: Datumo Eval·권한·모니터링 -->
-                <div class="ai-topic" id="pjs-ai-platform-C">
+                <!-- 토픽: 플랫폼 제공 기능을 통해 단일 Agent 개발 -->
+                <div class="ai-topic" id="pjs-ai-sagent">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                    <h4>플랫폼 제공 기능을 통해 단일 Agent 개발</h4>
+                    <p>LLM·Tool·변수·인스트럭션 설정만으로 코딩 없이 전문 Agent 하나를 만드는 No-Code 작업장.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3.1</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-sagent-00" alt="단일 Agent 개발 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — 단일 Agent 개발 환경 전체 그림</h5><p>모델·인스트럭션·도구·변수 설정으로 Agent를 구성하는 플랫폼 기능 개요 슬라이드.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-sagent-01" alt="AI 에이전트 정보 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Agent 정보 설정 — 이름·모델·설명</h5><p>Agent 이름·LLM 모델 선택·설명을 입력해 기본 정보를 구성하는 설정 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-sagent-02" alt="도구 연동·변수·인스트럭션" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>도구 연동·변수·인스트럭션 설정</h5><p>MCP 도구를 연결하고 변수·인스트럭션으로 Agent의 응답 패턴을 정의하는 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-sagent-03" alt="Agent 테스트 및 배포" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Agent 테스트 및 배포</h5><p>제작한 Agent를 Playground에서 실시간 테스트하고 서비스에 배포하는 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-sagent-04" alt="Agent 목록 및 관리" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Agent 목록·상태 관리</h5><p>생성된 Agent 목록 확인, 수정·삭제·복제 및 배포 상태 일괄 관리 화면.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: 자연어 질의처리를 위한 Chat UI -->
+                <div class="ai-topic" id="pjs-ai-chat">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                    <h4>자연어 질의처리를 위한 Chat UI</h4>
+                    <p>원문 하이라이트·프리뷰·다운로드·대화 내보내기 등 업무 특화 Chat UI 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3.2.1</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-chat-00" alt="자연어 Chat UI 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Chat UI — 원문 하이라이트·답변 프리뷰</h5><p>질의 응답과 함께 관련 원문 구절을 하이라이트하고 문서 다운로드·복사 기능 제공.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: 일반 사용자 개별 에이전트 활용 환경 -->
+                <div class="ai-topic" id="pjs-ai-uenv">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                    <h4>일반 사용자가 활용할 수 있는 개별 에이전트 활용 환경</h4>
+                    <p>우리은행 AI 에이전트를 사용자 업무 흐름에 맞게 즉시 활용하는 포털 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3.2.1</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-uenv-00" alt="개별 에이전트 활용 환경 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — 업무 효율화 에이전트 포털</h5><p>업무별 전문 AI Agent를 모아 놓은 포털 개념과 주요 활용 시나리오 슬라이드.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-uenv-01" alt="AI 에이전트 활용 환경 화면①" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>에이전트 포털 — 업무 흐름 소개</h5><p>우리은행 AI Agent 플랫폼으로 업무 흐름을 극대화하는 서비스 소개 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-uenv-02" alt="AI 에이전트 활용 환경 화면②" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Agent 목록 — 모델·인스트럭션 설정 화면</h5><p>사용 가능한 AI Agent 목록과 각 Agent 설정(모델·인스트럭션·도구) 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-uenv-03" alt="AI 에이전트 활용 환경 화면③" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Agent 실행 — 변수 입력 및 결과 확인</h5><p>Agent에 필요한 변수를 입력하고 결과를 바로 확인하는 실행 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-uenv-04" alt="AI 에이전트 활용 환경 화면④" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Agent 히스토리 — 이력 및 결과 관리</h5><p>실행 이력과 결과를 저장·조회하고 재실행하는 이력 관리 화면.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: FlowUI 기반의 AI 에이전트 구축 환경 제공 -->
+                <div class="ai-topic" id="pjs-ai-flowenv">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                    <h4>FlowUI 기반의 AI 에이전트 구축 환경 제공</h4>
+                    <p>사용자 친화적 FlowUI로 블록을 연결해 에이전트를 설계·테스트하는 No-Code 빌더.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3.2.2</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-flowenv-00" alt="FlowUI 에이전트 구축 환경 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — FlowUI 에이전트 빌더 전체 그림</h5><p>Drag &amp; Drop 기반 개발 도구, 빠른 신규 기능 지원, 기존 개발 환경 연동 개요.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-flowenv-01" alt="FlowUI 에이전트 빌더 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>FlowUI 빌더 — 블록 연결 설계 화면</h5><p>시작→Agent 노드→응답 흐름을 Drag &amp; Drop으로 설계하는 에이전트 빌더 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-flowenv-02" alt="FlowUI 실시간 테스트 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>에이전트 실시간 테스트</h5><p>설계한 Flow에 대해 IN/OUT을 즉시 검증하는 실시간 테스트 화면.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: FlowUI 액션 블록 제공 ① -->
+                <div class="ai-topic" id="pjs-ai-block1">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                    <h4>FlowUI 기반 AI 에이전트 제작에 필요한 다양한 액션 블록 제공 ①</h4>
+                    <p>GUI 노드·답변 생성·조건 흐름 등 기본 Flow 블록 카탈로그와 설명.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3.2.2 (2/4)</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-block1-00" alt="액션 블록 개요 슬라이드" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>FLOW 개발 화면 및 액션 블록 종류</h5><p>Drag &amp; Drop 블록 팔레트와 GUI 노드·답변 생성·분기 등 기본 블록 종류 슬라이드.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-block1-01" alt="액션 블록 상세 목록" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>액션 블록 상세 — 연동·가져오기·변수</h5><p>연동하기/가져오기/변수 설정/내보내기 등 심화 블록 유형과 기능 설명 화면.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: FlowUI 액션 블록 제공 ② -->
+                <div class="ai-topic" id="pjs-ai-block2">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                    <h4>FlowUI 기반 AI 에이전트 제작에 필요한 다양한 액션 블록 제공 ②</h4>
+                    <p>RAG·LLM·MCP 도구 등 고급 블록과 플랫폼 기능을 통한 단일 Agent 개발 연계.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3.2.2 (4/4)</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-block2-00" alt="고급 액션 블록 슬라이드" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Click &amp; Drop 기반 고급 블록</h5><p>RAG·LLM·MCP 노드를 배치해 복잡한 AI 시나리오를 구성하는 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-block2-01" alt="단일 Agent 개발 환경 연계" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>단일 Agent 개발 환경 — Flow 연계 화면</h5><p>플랫폼 제공 기능으로 구축한 Agent를 Flow 빌더와 연계해 배포하는 화면.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: 제공된 가상환경 내 SDK를 통한 Asset 활용 및 개발 소스 -->
+                <div class="ai-topic" id="pjs-ai-sdk">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                    <h4>제공된 가상환경 내 SDK를 통한 Asset 활용 및 개발 소스</h4>
+                    <p>PRO CODE 가상환경 + CI/CD + Serving Agent로 이어지는 고급 개발 파이프라인.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3.2.3</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-sdk-00" alt="SDK 개발 환경 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — PRO CODE 가상환경·SDK 파이프라인</h5><p>플랫폼 SDK → CI/CD → Serving Agent 흐름과 FastAPI·LangChain 기반 개발 개요.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-sdk-01" alt="SDK 가상환경 개발 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>SDK 가상환경 — 코드 개발 화면</h5><p>플랫폼이 제공하는 가상환경 내 SDK로 코드를 작성하고 Asset API를 호출하는 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-sdk-02" alt="Serving Agent 배포 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Serving Agent 배포 — Low-Code 연계</h5><p>작성한 코드를 POD에 배포하고 Low-Code 환경에서 호출 가능하게 연계하는 화면.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: 플랫폼 자원을 사용자·프로젝트별로 권한을 부여하고 관리 -->
+                <div class="ai-topic" id="pjs-ai-auth">
                   <div class="ai-topic-header">
                     <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
-                    <h4>Datumo Eval·권한·모니터링</h4>
-                    <p>AI 답변 신뢰성 자동 채점, 부서별 권한 관리·사용량 관제 화면.</p>
-                    <div class="pj-screen-meta">제안서 2.3 ⑦⑧⑨⑩⑪</div>
+                    <h4>플랫폼 자원을 사용자·프로젝트별로 권한을 부여하고 관리</h4>
+                    <p>Agent·문서 등 자산에 대한 사용자·그룹 접근 권한을 세밀하게 설정·관리.</p>
+                    <div class="pj-screen-meta">제안서 2.3.5</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-auth-00" alt="권한 관리 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — 사용자·그룹별 권한 체계</h5><p>플랫폼 자원(Agent·문서)에 대한 사용자·그룹 권한 부여 및 세부적인 접근 관리 개요.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-auth-01" alt="권한 설정 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>권한 설정 — 보안·페이지 접근 관리</h5><p>보안도 설정과 페이지별 접근 권한을 구성하는 관리자 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-auth-02" alt="그룹·사용자 권한 부여 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>그룹·사용자 권한 부여</h5><p>세부적인 그룹 지정 접근 제어와 그룹별 Agent·서비스 권한을 설정하는 화면.</p></div>
+                    </div>
                   </div>
                 </div>
 
-                <!-- 토픽 D: 외부 AI 모델 반입 절차 -->
-                <div class="ai-topic" id="pjs-ai-platform-D">
+                <!-- 토픽: Dashboard를 통한 평가 결과 확인 -->
+                <div class="ai-topic" id="pjs-ai-dash">
                   <div class="ai-topic-header">
-                    <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
-                    <h4>외부 AI 모델 반입 절차</h4>
-                    <p>외부 모델 도입 시 담당자 승인 단계를 거치는 보안 결재 프로세스.</p>
-                    <div class="pj-screen-meta">제안서 2.3 ⑫</div>
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
+                    <h4>Dashboard를 통한 평가 결과 확인</h4>
+                    <p>Datumo Eval: 개별 평가 결과 KPI·차트와 고품질 데이터셋 자동 생성 Dashboard.</p>
+                    <div class="pj-screen-meta">제안서 2.3.6.1</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-dash-00" alt="평가 Dashboard 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — 맞춤형 평가 지표 및 결과 통합</h5><p>Use Case별 평가 지표 설계·데이터 중심 접근·평가 결과 통합 개념 슬라이드.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-dash-01" alt="Evaluation Dashboard 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Evaluation Dashboard — KPI·차트</h5><p>평가 점수 KPI(690/3503/4128), 추이 차트, 개별 평가 결과를 한눈에 보는 Dashboard.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: 자동 평가를 통한 효과적인 모델 검증·비교 -->
+                <div class="ai-topic" id="pjs-ai-eval">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
+                    <h4>자동 평가를 통한 효과적인 모델 검증·비교</h4>
+                    <p>복수 모델·지표 시각 비교, LLM/RAG 평가 지표(Relevance·Faithfulness) 자동 측정.</p>
+                    <div class="pj-screen-meta">제안서 2.3.6.1</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-eval-00" alt="자동 평가 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — 복수 모델·지표 시각 비교</h5><p>평가 지표별 통계 비교, 높은 자유도 평가, LLM/RAG 지표 슬라이드.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-eval-01" alt="모델 비교 평가 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>모델 비교 — 다색 막대/타일 차트</h5><p>여러 모델의 평가 지표를 나란히 시각화해 성능 차이를 즉시 파악하는 비교 화면.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: Agent 컴포넌트 모니터링 및 관리 -->
+                <div class="ai-topic" id="pjs-ai-monitor">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
+                    <h4>Agent 컴포넌트 모니터링 및 관리</h4>
+                    <p>Agent·사용자·LLM 사용량·리소스를 통합 Dashboard로 모니터링하고 관리.</p>
+                    <div class="pj-screen-meta">제안서 2.3.7.1</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-monitor-00" alt="Agent 모니터링 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — Agent 모니터링 대시보드 전체 그림</h5><p>Agent 컴포넌트·LLM 사용량·리소스·버전·배포 이력 통합 모니터링 개념 슬라이드.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-monitor-01" alt="모니터링 Dashboard 차트" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>모니터링 Dashboard — 추이 차트·도넛</h5><p>시간대별 사용량 추이, 모델별 비율 도넛, 실시간 리소스 현황 차트 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-monitor-02" alt="Agent 사용량 통계 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Agent 사용량 — 막대 통계·랭킹</h5><p>Agent별 사용량 막대 차트와 상위 사용 Agent 랭킹을 보여주는 통계 화면.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-monitor-03" alt="Agent 목록 관리 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>Agent 목록 — 상태 확인·설정 관리</h5><p>배포된 Agent 목록과 각 Agent의 상태·설정 정보를 관리하는 목록 화면.</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽: 외부망의 외부 모델 반입 프로세스 세부 절차 -->
+                <div class="ai-topic" id="pjs-ai-ext">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                    <h4>외부망의 외부 모델 반입 프로세스 세부 절차</h4>
+                    <p>외부 AI 모델 도입 시 책임자 승인 → 모델 사용 후 카탈로그 등록까지 5단계 절차.</p>
+                    <div class="pj-screen-meta">제안서 2.3.8</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-ext-00" alt="외부 모델 반입 절차 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>개요 — 5단계 책임자 승인 프로세스</h5><p>승인 요청→승인자 선택→승인자 확인 및 승인→카탈로그 확인 흐름 개요 슬라이드.</p></div>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-ext-01" alt="책임자 승인 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                      <div class="ai-slide-info"><h5>책임자 승인 화면 — 모델 반입 요청 폼</h5><p>모델 사용·메타 데이터 입력 후 승인 요청하는 외부 모델 반입 신청 화면.</p></div>
+                    </div>
                   </div>
                 </div>
               </div>
