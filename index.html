@@ -167,9 +167,13 @@
                 <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-test"><span class="nav-item-label">배포 전후 테스트</span></a>
                 <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-nocode"><span class="nav-item-label">No-Code 화면</span></a>
                 <div class="pj-sub-label">③ LLM Ops</div>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llmops-A"><span class="nav-item-label">모델카탈로그·학습</span></a>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llmops-B"><span class="nav-item-label">에이전트·모델배포</span></a>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llmops-C"><span class="nav-item-label">버전관리·GPU</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llm-reg"><span class="nav-item-label">모델 등록·버전관리</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llm-catalog"><span class="nav-item-label">모델 카탈로그</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llm-deploy"><span class="nav-item-label">모델 API 배포</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llm-agdeploy"><span class="nav-item-label">에이전트 API 배포</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llm-train"><span class="nav-item-label">모델 학습 최적화</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llm-gpu"><span class="nav-item-label">GPU 모니터링</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llm-pool"><span class="nav-item-label">GPU Pool 관리</span></a>
               </div>
             </div>
             <a class="pj-link" data-pj="pj-qna"><span class="nav-item-label">1차 질의 QnA</span></a>
@@ -1405,42 +1409,156 @@
                     <p>AI 모델·GPU 운영 인프라 관제. 시연 데모에는 포함되지 않으나 참고용으로 정리.</p>
                   </div>
                 </div>
-                <!-- 토픽 A: 통합 모델 카탈로그·학습 최적화 -->
-                <div class="ai-topic" id="pjs-ai-llmops-A">
+                <!-- 토픽 1: 모델 등록·배포·검색·버전관리 지원 -->
+                <div class="ai-topic" id="pjs-ai-llm-reg">
                   <div class="ai-topic-header">
                     <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
-                    <h4>통합 모델 카탈로그·학습 최적화</h4>
-                    <p>AI 모델을 등록·검색·버전관리하고 학습 효율을 높이는 인프라 화면.</p>
-                    <div class="pj-screen-meta">제안서 2.4 ①② — 인프라팀 대상</div>
+                    <h4>모델 등록·배포·검색·버전관리 지원</h4>
+                    <p>AI 모델을 등록하고 배포·검색·버전관리를 하나의 체계로 지원하는 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.4 ① — 인프라팀 대상</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-reg-00" alt="모델 등록·버전관리 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-reg-01" alt="모델 배포·검색 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-reg-02" alt="버전관리 상세" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
                   </div>
                 </div>
 
-                <!-- 토픽 B: 에이전트·모델 배포 절차 -->
-                <div class="ai-topic" id="pjs-ai-llmops-B">
+                <!-- 토픽 2: 모델 카탈로그 시스템 -->
+                <div class="ai-topic" id="pjs-ai-llm-catalog">
                   <div class="ai-topic-header">
                     <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
-                    <h4>에이전트·모델 배포 절차</h4>
-                    <p>만든 AI를 서비스로 출시, CPU/GPU·Replica·양자화 설정 배포 화면.</p>
-                    <div class="pj-screen-meta">제안서 2.4 ③④ — 인프라팀 대상</div>
+                    <h4>모델 버전관리·검색 — 모델 카탈로그 시스템</h4>
+                    <p>모델 버전관리와 검색 기능을 지원하는 통합 카탈로그 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.4 ② — 인프라팀 대상</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-catalog-00" alt="모델 카탈로그 목록" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-catalog-01" alt="모델 버전 비교" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-catalog-02" alt="모델 상세 및 검색" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
                   </div>
                 </div>
 
-                <!-- 토픽 C: GPUaaS 풀 관리·GPU 모니터링 -->
-                <div class="ai-topic" id="pjs-ai-llmops-C">
+                <!-- 토픽 3: 모델 API Endpoint 배포 절차 -->
+                <div class="ai-topic" id="pjs-ai-llm-deploy">
                   <div class="ai-topic-header">
                     <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
-                    <h4>GPUaaS 풀 관리·GPU 모니터링</h4>
-                    <p>GPU 자원을 프로젝트별로 배분하고 실시간 사용량을 감시하는 관제 화면.</p>
-                    <div class="pj-screen-meta">제안서 2.4 ⑤⑥⑦ — 인프라팀 대상</div>
+                    <h4>모델 API Endpoint 생성·배포 절차</h4>
+                    <p>AI 모델을 서비스로 출시하기 위한 API Endpoint 생성 및 배포 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.4 ③ — 인프라팀 대상</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-deploy-00" alt="모델 배포 절차 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-deploy-01" alt="API Endpoint 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-deploy-02" alt="배포 확인 및 상태" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽 4: 에이전트 API Endpoint 배포 절차 -->
+                <div class="ai-topic" id="pjs-ai-llm-agdeploy">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                    <h4>에이전트 API Endpoint 생성·배포 절차</h4>
+                    <p>AI 에이전트를 서비스로 출시하기 위한 API Endpoint 생성 및 배포 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.4 ④ — 인프라팀 대상</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-agdeploy-00" alt="에이전트 배포 절차 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-agdeploy-01" alt="에이전트 Endpoint 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-agdeploy-02" alt="에이전트 배포 상태" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽 5: 모델 학습 최적화 -->
+                <div class="ai-topic" id="pjs-ai-llm-train">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                    <h4>모델 학습 최적화 체계</h4>
+                    <p>학습 중단·상태 추적·결과 분석을 아우르는 모델 학습 최적화 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.4 ⑤ — 인프라팀 대상</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-train-00" alt="학습 최적화 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-train-01" alt="학습 결과 분석" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽 6: GPU Resource Monitoring 주요 화면 -->
+                <div class="ai-topic" id="pjs-ai-llm-gpu">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                    <h4>GPUaaS 기반 GPU Resource Monitoring</h4>
+                    <p>GPU 자원을 실시간으로 감시하는 GPUaaS 기반 모니터링 주요 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.4 ⑥ — 인프라팀 대상</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-gpu-00" alt="GPU 모니터링 대시보드" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-gpu-01" alt="GPU 사용량 현황" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-gpu-02" alt="GPU 리소스 상세" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-gpu-03" alt="GPU 알림·임계값" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-gpu-04" alt="GPU 이력 분석" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽 7: GPU Pool 관리 -->
+                <div class="ai-topic" id="pjs-ai-llm-pool">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                    <h4>GPUaaS GPU Pool 관리</h4>
+                    <p>GPU 자원을 프로젝트별로 배분하고 Pool을 관리하는 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.4 ⑦ — 인프라팀 대상</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-pool-00" alt="GPU Pool 목록" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-pool-01" alt="Pool 배분 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-pool-02" alt="프로젝트별 GPU 할당" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llm-pool-03" alt="GPU Pool 상세 관리" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
                   </div>
                 </div>
               </div>
