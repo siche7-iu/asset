@@ -222,7 +222,7 @@ var INTRO_ENABLED = false;
   //    crypto.subtle 의존 없이 순수 JS SHA-256을 사용한다.
   //  ※ 비밀번호를 바꾸려면: HASHGEN.md의 안내대로 새 해시를 생성해 PW_HASH만 교체.
   var PW_SALT = "nh-fams-proj::";
-  var PW_HASH = "dd6f343d3df2a306dc9b8ea2a4b6510f01fbf1638b55f2696dcda9d066435802";
+  var PW_HASH = "0be5e5c74b01a0c0f5cc881ffb74b8e6a0b52b99958c846f1d65b590b9493d23";
 
   // 순수 JS SHA-256 (외부 의존 없음, 표준 SHA-256과 동일 결과)
   function sha256(ascii) {
@@ -392,6 +392,83 @@ var INTRO_ENABLED = false;
       });
     });
   }
+
+  // ===== 적응형 디자인 — 모바일 인증 + 드로어 =====
+  // sha256·PW_HASH·PW_SALT·enterProjectMode 가 이 IIFE 스코프 안에 있어 그대로 사용
+  (function () {
+    if (!document.body.classList.contains('is-mobile')) return;
+
+    var mPwInput       = document.getElementById('m-pw-input');
+    var mPwError       = document.getElementById('m-pw-error');
+    var mPwOk          = document.getElementById('m-pw-ok');
+    var mHamburger     = document.getElementById('m-hamburger');
+    var mDrawerOverlay = document.getElementById('m-drawer-overlay');
+    var mTopbarExit    = document.getElementById('m-topbar-exit');
+    var mAuthScreen    = document.getElementById('mobile-auth-screen');
+    var sidebar        = document.getElementById('sidebar');
+
+    // ── 인증 처리 ──
+    function mobileAuthSubmit() {
+      if (!mPwInput) return;
+      if (mPwError) mPwError.hidden = true;
+      var val = mPwInput.value.trim();
+      if (sha256(PW_SALT + val) === PW_HASH) {
+        if (mAuthScreen) mAuthScreen.style.display = 'none';
+        document.body.classList.add('m-authed');
+        enterProjectMode();
+        if (mPwInput) mPwInput.value = '';
+      } else {
+        if (mPwError) {
+          mPwError.hidden = false;
+          // 오류 텍스트 흔들림 재실행
+          mPwError.style.animation = 'none';
+          void mPwError.offsetWidth;
+          mPwError.style.animation = '';
+        }
+        if (mPwInput) { mPwInput.value = ''; mPwInput.focus(); }
+      }
+    }
+
+    if (mPwOk)    mPwOk.addEventListener('click', mobileAuthSubmit);
+    if (mPwInput) {
+      mPwInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); mobileAuthSubmit(); }
+        if (mPwError && !mPwError.hidden) mPwError.hidden = true;
+      });
+    }
+
+    // ── 드로어 열기/닫기 ──
+    function openDrawer() {
+      if (sidebar)        sidebar.classList.add('drawer-open');
+      if (mDrawerOverlay) mDrawerOverlay.classList.add('visible');
+    }
+    function closeDrawer() {
+      if (sidebar)        sidebar.classList.remove('drawer-open');
+      if (mDrawerOverlay) mDrawerOverlay.classList.remove('visible');
+    }
+
+    // 햄버거 버튼
+    if (mHamburger) mHamburger.addEventListener('click', function () {
+      if (sidebar && sidebar.classList.contains('drawer-open')) closeDrawer();
+      else openDrawer();
+    });
+
+    // 드로어 오버레이 → 닫기
+    if (mDrawerOverlay) mDrawerOverlay.addEventListener('click', closeDrawer);
+
+    // 프로젝트 네비 링크 클릭 → 150ms 후 드로어 닫기 (스크롤 시작 후 닫힘)
+    var pjNav = document.getElementById('project-nav');
+    if (pjNav) {
+      pjNav.addEventListener('click', function (e) {
+        if (e.target.closest('.pj-link')) setTimeout(closeDrawer, 150);
+      });
+    }
+
+    // 나가기 → 페이지 새로고침으로 인증 초기화
+    if (mTopbarExit) mTopbarExit.addEventListener('click', function () {
+      location.reload();
+    });
+  })();
 
   // ===== 화면 디자인 라이트박스 (크게 보기) =====
   var lightbox = document.getElementById('pj-lightbox');
