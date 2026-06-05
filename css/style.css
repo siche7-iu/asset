@@ -1945,6 +1945,7 @@ code { font-family: ui-monospace, monospace; font-size: 11.5px; background: #eef
   border: none;
   border-bottom: 1px solid var(--c-border);
 }
+.ai-slide-card .pj-shot-img { object-position: top left; }
 .ai-slide-info {
   padding: 12px 14px;
   display: flex;
