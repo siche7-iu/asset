@@ -2075,7 +2075,7 @@
                       <rect x="450" y="57" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
                       <text x="510" y="75" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">집행 요청</text>
                       <!-- U-turn 화살표 Row1→Row2 -->
-                      <path d="M570,75 L600,75 L600,148 L570,148" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <path d="M570,75 L600,75 L600,148 L550,148" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
 
                       <!-- Row 2 (y=148): ← 자산집행 ← 집행승인 ← ◇잔여예산? -->
                       <rect x="430" y="130" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
@@ -2097,14 +2097,13 @@
                       <line x1="270" y1="75" x2="300" y2="75" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
                       <line x1="420" y1="75" x2="450" y2="75" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
                       <!-- 화살표 Row2 (right→left) -->
-                      <line x1="550" y1="148" x2="431" y2="148" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
                       <line x1="430" y1="148" x2="401" y2="148" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
-                      <line x1="280" y1="148" x2="217" y2="148" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
-                      <!-- 잔여? Yes → 이월 -->
-                      <line x1="124" y1="175" x2="100" y2="175" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
-                      <text x="112" y="166" text-anchor="middle" fill="#6B7280" font-size="10">Yes</text>
-                      <!-- 잔여? No → 완료 -->
-                      <line x1="170" y1="202" x2="110" y2="202" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <line x1="280" y1="148" x2="171" y2="148" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <!-- 잔여? Yes → 이월 (L자: 좌→상) -->
+                      <path d="M124,175 L100,175 L100,148" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <text x="112" y="170" text-anchor="middle" fill="#6B7280" font-size="10">Yes</text>
+                      <!-- 잔여? No → 완료 (L자: 하→좌) -->
+                      <path d="M170,202 L170,195 L111,195" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
                       <text x="154" y="213" text-anchor="middle" fill="#6B7280" font-size="10">No</text>
                     </svg>
                   </div>
