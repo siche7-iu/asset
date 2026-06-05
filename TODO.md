@@ -20,22 +20,13 @@
 
 ---
 
-## ⭐ 내일 이어서 (최우선 2) — 프로젝트 관리: "AI 에이전트 분석" 갤러리화
+## ✅ AI 에이전트 분석 갤러리화 — 완료 (2026-06-05)
 
-> **무엇**: 비밀 프로젝트 관리 화면(`#/`에서 사이드바 `v0.9.3` 클릭 → 비번 `78963`)의 **"AI 에이전트 분석 (우리은행 제안 참고)"** 섹션(`#pj-ai`)을, 방금 만든 **As-Is 갤러리와 똑같은 방식**(화면별 이미지 + 옆/아래 설명 카드)으로 확장한다.
->
-> **참고**: As-Is 갤러리 구현(`#pj-asis`)을 그대로 본떠서 진행하면 됨. 재사용 가능한 CSS·구조 이미 존재.
-
-- [ ] **원본 이미지 준비(자르기)** — 우리은행 AI에이전트 제안 3종은 `C:\Users\user\Pictures\Screenshots\`에 있음:
-  - `2.3 AI 서비스 플랫폼.png` (≈9976×28239), `2.3.3 Multi Agent FW.png` (≈11359×14671), `2.4 AI 모델 영역(LLM Ops).png` (≈13532×17136)
-  - ⚠️ **한 파일에 여러 화면이 세로로 쌓인 초대형 이미지** → As-Is처럼 단순 복사가 아니라 **화면(섹션) 단위로 crop** 해야 함. (PowerShell `System.Drawing`로 영역 잘라 저장 — 이전 세션에서 쓴 Crop 스크립트 방식)
-  - 자른 이미지는 `images/proj-screens/`에 `ai-*.png`로 저장(예: `ai-platform-mcp.png`, `ai-multiagent-role.png`, `ai-llmops-catalog.png` 등).
-- [ ] **설명문 작성** — 각 화면 설명은 이미 분석해 둔 **`AI_AGENT_제안분석.md`**(3계층·영역별 표) 내용을 옮겨 쓰면 됨. 우리 자산관리로 번역한 포인트도 함께.
-- [ ] **사이드바 2차 트리 확장** — `#project-nav`의 "AI 에이전트 분석" 링크를 As-Is처럼 `.pj-subgroup`(펼침형)으로 바꾸고, ① 서비스 플랫폼 ② Multi Agent FW ③ LLM Ops 3분류 + 화면별 `.pj-sublink`(data-pj=`pjs-ai-...`) 추가.
-- [ ] **본문 카드 추가** — `#pj-ai` 섹션에 `.pj-screen`(이미지 `.pj-shot` + 설명 `.pj-screen-desc`) 카드들을 화면별로 추가. **라이트박스·배지·반응형 스택은 기존 그대로 동작**(추가 CSS 불필요).
-- [ ] 완료 후 Playwright 테스트(`tests/project-secret.spec.js`)에 AI 갤러리 케이스 1~2개 추가.
-
-> 💡 핵심: As-Is 갤러리(`index.html`의 `#pjs-ps-*` 카드들 + `#project-nav`의 `.pj-subgroup`)를 **복붙·수정**하는 작업이라 빠르게 가능. 가장 손 많이 가는 건 "초대형 원본을 화면별로 잘라내기".
+- [x] **원본 이미지 크롭 스크립트** — `_crop-ai-images.ps1` 생성 (PowerShell 직접 실행 필요)
+- [x] **설명문 작성** — `AI_AGENT_제안분석.md` 기반 10장 카드 내용 작성
+- [x] **사이드바 2차 트리 확장** — `#project-nav`의 "AI 에이전트 분석" → pj-subgroup 3분류(서비스플랫폼·MultiAgent·LLMOps) + 10개 서브링크
+- [x] **본문 카드 추가** — `#pj-ai` 섹션에 `.pj-screen` 카드 10개 추가
+- [x] **Playwright 테스트** — AI 갤러리 케이스 2개 추가
 
 ---
 

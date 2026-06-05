@@ -12,3 +12,12 @@ test-results/
 playwright-report/
 
 .vercel
+
+# 제안서/As-Is 분석용 임시 이미지 (로컬 작업용, 원본은 D:\업무 폴더에 있음)
+_pdf_pages/
+_asis/
+_rfp/
+_proposal_text.txt
+
+# 로컬 작업용 PowerShell 스크립트 (이미지 크롭 등)
+_crop-ai-images.ps1
