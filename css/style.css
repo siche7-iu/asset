@@ -2248,6 +2248,57 @@ body.is-mobile .ai-slide-info h5 { font-size: 12px; }
 /* 모바일에서 이미지 확대 힌트 항상 표시 (hover 없으므로) */
 body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 
+/* ===== 질의·인터뷰 섹션 ===== */
+.pj-subsec-title {
+  font-size: 13.5px; font-weight: 700; color: var(--c-navy);
+  margin: 0 0 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.pj-sub-lead { font-size: 12.5px; color: #6B7280; margin: 0 0 14px; line-height: 1.6; }
+.pj-note-orange { background: #FFF7ED; border-color: #fed7aa; color: #92400e; }
+.pj-badge { font-size: 10.5px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+.pj-badge-ok    { background: var(--c-green-bg); color: var(--c-green-fg); }
+.pj-badge-ready { background: #EDE9FE; color: #6D28D9; }
+
+/* 질의서 파트 카드 그리드 */
+.iq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.iq-card {
+  background: #fff;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.iq-card-append { border-style: dashed; background: #fafafa; }
+.iq-card-head {
+  font-size: 11px; font-weight: 800; color: var(--c-blue-fg);
+  letter-spacing: 0.05em;
+}
+.iq-card-title { font-size: 13px; font-weight: 700; color: var(--c-navy); }
+.iq-card-desc  { font-size: 11.5px; color: #6B7280; line-height: 1.55; flex: 1; }
+.iq-card-tag   { font-size: 10px; font-weight: 700; color: #9CA3AF; margin-top: 6px; }
+
+/* 인터뷰 진행 가이드 박스 */
+.iq-guide-box {
+  background: var(--c-blue-bg);
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+.iq-guide-title { font-size: 13px; font-weight: 700; color: #1e40af; margin-bottom: 10px; }
+.iq-guide-cols  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.iq-guide-cols b { font-size: 12px; color: var(--c-navy); display: block; margin-bottom: 6px; }
+.iq-guide-cols ul { margin: 0; padding-left: 16px; }
+.iq-guide-cols li { font-size: 12px; color: #1e40af; line-height: 1.7; }
+@media (max-width: 700px) {
+  .iq-guide-cols { grid-template-columns: 1fr; }
+}
+
 /* ===== 플로우 차트 ===== */
 .fc-wrap { display: flex; flex-direction: column; gap: 28px; }
 .fc-card {
