@@ -159,9 +159,13 @@
                 <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-monitor"><span class="nav-item-label">Agent 모니터링</span></a>
                 <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-ext"><span class="nav-item-label">외부 모델 반입</span></a>
                 <div class="pj-sub-label">② Multi Agent FW</div>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-multiagent-A"><span class="nav-item-label">역할·권한·연동</span></a>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-multiagent-B"><span class="nav-item-label">MCP연계·그룹관리</span></a>
-                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-multiagent-C"><span class="nav-item-label">시뮬레이션·테스트</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-role"><span class="nav-item-label">Agent 역할 정의</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-perm"><span class="nav-item-label">자원 권한 관리</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-group"><span class="nav-item-label">그룹·멤버 관리</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-node"><span class="nav-item-label">노드 연결·연동</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-mcp"><span class="nav-item-label">MCP 연계 체계</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-test"><span class="nav-item-label">배포 전후 테스트</span></a>
+                <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-magent-nocode"><span class="nav-item-label">No-Code 화면</span></a>
                 <div class="pj-sub-label">③ LLM Ops</div>
                 <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llmops-A"><span class="nav-item-label">모델카탈로그·학습</span></a>
                 <a class="pj-link pj-sublink pj-ai-sublink" data-pj="pjs-ai-llmops-B"><span class="nav-item-label">에이전트·모델배포</span></a>
@@ -1235,42 +1239,159 @@
                     <p>전문 AI 여럿이 협업하는 멀티에이전트 프레임워크. 역할 정의·노드 연결·배포 전 시뮬레이션.</p>
                   </div>
                 </div>
-                <!-- 토픽 A: Agent 역할 정의·자원 권한 부여 -->
-                <div class="ai-topic" id="pjs-ai-multiagent-A">
+                <!-- 토픽 1: Agent 역할 정의 -->
+                <div class="ai-topic" id="pjs-ai-magent-role">
                   <div class="ai-topic-header">
-                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
-                    <h4>Agent 역할 정의·자원 권한 부여</h4>
-                    <p>전문 AI마다 역할(모델·지침·도구)을 정의하고 부서별 접근 자원을 제어.</p>
-                    <div class="pj-screen-meta">제안서 2.3.3 ①②</div>
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span></div>
+                    <h4>Agent 역할 정의</h4>
+                    <p>각 전문 AI에게 역할(모델·시스템 지침·연결 도구)을 부여하는 설정 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3 ①</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-role-00" alt="Agent 역할 정의 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-role-01" alt="Agent 역할 정의 — 모델 선택" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-role-02" alt="Agent 역할 정의 — 지침 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-role-03" alt="Agent 역할 정의 — 도구 연결" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
                   </div>
                 </div>
 
-                <!-- 토픽 B: Agent 노드 연결·MCP 묶음 -->
-                <div class="ai-topic" id="pjs-ai-multiagent-B">
+                <!-- 토픽 2: 플랫폼 자원 권한 관리 -->
+                <div class="ai-topic" id="pjs-ai-magent-perm">
                   <div class="ai-topic-header">
-                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
-                    <h4>Agent 노드 연결·MCP 묶음</h4>
-                    <p>한 AI의 결과를 다음 AI로 넘기고(바통 터치), 여러 도구를 묶어 연계.</p>
-                    <div class="pj-screen-meta">제안서 2.3.3 ③④</div>
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span></div>
+                    <h4>플랫폼 자원 권한 관리</h4>
+                    <p>플랫폼 자원을 사용자·프로젝트별로 권한을 부여하고 관리하는 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3 ②</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-perm-00" alt="자원 권한 관리 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-perm-01" alt="사용자별 자원 권한 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-perm-02" alt="프로젝트별 자원 권한 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
                   </div>
                 </div>
 
-                <!-- 토픽 C: 배포 전 시뮬레이션·테스트 -->
-                <div class="ai-topic" id="pjs-ai-multiagent-C">
+                <!-- 토픽 3: 그룹·멤버별 권한으로 Agent 추가·삭제 -->
+                <div class="ai-topic" id="pjs-ai-magent-group">
                   <div class="ai-topic-header">
-                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
-                    <h4>배포 전 시뮬레이션·테스트</h4>
-                    <p>실제 투입 전 리허설 및 투입 후 지속 점검하는 QA 화면.</p>
-                    <div class="pj-screen-meta">제안서 2.3.3 ⑤⑥⑦</div>
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span></div>
+                    <h4>그룹·멤버별 권한으로 Agent 추가·삭제</h4>
+                    <p>그룹 및 멤버별·권한별로 Agent를 추가하거나 삭제하는 관리 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3 ③</div>
                   </div>
                   <div class="ai-slides">
-                    <div class="ai-slide-pending">이미지 준비 중 — Figma에서 개별 화면 추출 후 추가됩니다</div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-group-00" alt="그룹 Agent 관리 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-group-01" alt="멤버별 권한 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-group-02" alt="Agent 추가 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-group-03" alt="Agent 삭제 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-group-04" alt="그룹 권한 관리 상세" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽 4: Agent 상호 연동·노드 전달 관리 -->
+                <div class="ai-topic" id="pjs-ai-magent-node">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span></div>
+                    <h4>Agent 상호 연동·노드 전달 관리</h4>
+                    <p>한 Agent의 결과를 다음 Agent로 넘기는 바통 터치(노드 연결) 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3 ④</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-node-00" alt="Agent 연동 흐름 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-node-01" alt="노드 전달 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-node-02" alt="Agent 간 데이터 전달 관리" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽 5: MCP 체계와 유기적 연계 -->
+                <div class="ai-topic" id="pjs-ai-magent-mcp">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span></div>
+                    <h4>MCP 체계와 유기적 연계 체계 제공</h4>
+                    <p>MCP(Model Context Protocol) 기반으로 외부 도구와 Agent를 유기적으로 연결.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3 ⑤</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-mcp-00" alt="MCP 연계 체계 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-mcp-01" alt="MCP 연결 설정" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-mcp-02" alt="MCP 상태 및 관리" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽 6: Agent 배포 전후 테스트 -->
+                <div class="ai-topic" id="pjs-ai-magent-test">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span></div>
+                    <h4>Agent 배포 전후 테스트</h4>
+                    <p>실제 투입 전 시뮬레이션과 투입 후 지속 점검하는 QA 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3 ⑥</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-test-00" alt="Agent 테스트 개요" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-test-01" alt="배포 전 시뮬레이션" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-test-02" alt="배포 후 QA 모니터링" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-test-03" alt="테스트 결과 리포트" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 토픽 7: No-Code 화면 -->
+                <div class="ai-topic" id="pjs-ai-magent-nocode">
+                  <div class="ai-topic-header">
+                    <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span></div>
+                    <h4>No-Code 화면</h4>
+                    <p>코딩 없이 드래그&드롭으로 Agent 흐름을 구성하는 비개발자용 빌더 화면.</p>
+                    <div class="pj-screen-meta">제안서 2.3.3 ⑦</div>
+                  </div>
+                  <div class="ai-slides">
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-nocode-00" alt="No-Code 빌더 화면" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
+                    <div class="ai-slide-card">
+                      <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-magent-nocode-01" alt="No-Code 흐름 편집" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    </div>
                   </div>
                 </div>
               </div>
