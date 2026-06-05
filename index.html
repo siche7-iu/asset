@@ -116,7 +116,7 @@
           <div class="pj-group-items">
             <a class="pj-link" data-pj="pj-rfp"><span class="nav-item-label">RFP 요청사항</span></a>
             <a class="pj-link" data-pj="pj-proposal"><span class="nav-item-label">제안서 (UI/UX·개발)</span></a>
-            <div class="pj-subgroup open">
+            <div class="pj-subgroup">
               <a class="pj-link pj-link-parent" data-pj="pj-asis"><span class="pj-subcaret"></span><span class="nav-item-label">As-Is 현행 · 화면 디자인</span></a>
               <div class="pj-subitems">
                 <div class="pj-sub-label">대시보드 (To-Be)</div>
@@ -138,7 +138,7 @@
                 <a class="pj-link pj-sublink" data-pj="pjs-ps-prop-contract"><span class="nav-item-label">계약목록 · 프로세스</span></a>
               </div>
             </div>
-            <div class="pj-subgroup open">
+            <div class="pj-subgroup">
               <a class="pj-link pj-link-parent" data-pj="pj-ai"><span class="pj-subcaret"></span><span class="nav-item-label">AI 에이전트 분석</span></a>
               <div class="pj-subitems">
                 <div class="pj-sub-label">① 서비스 플랫폼</div>
@@ -849,152 +849,132 @@
               </div>
               <div class="pj-note">우리 적용 = 노후진단·보험점검·예산분석·보고서 작성 <b>전문 Agent</b>로 번역. (상세: <code>AI_AGENT_제안분석.md</code>)</div>
 
-              <!-- ① 서비스 플랫폼 -->
-              <div class="pj-screen-group-label">① AI 서비스 플랫폼 (2.3)</div>
-
-              <div class="pj-screen" id="pjs-ai-platform-A">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-platform-A" alt="MCP 관리·앱스토어·단일 Agent 개발" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
-                  <h4>MCP 관리·앱스토어·단일 Agent 개발</h4>
-                  <p>No-Code로 외부 도구(MCP)를 등록·공유하고, 코딩 없이 AI 하나를 만드는 작업장.</p>
-                  <ul class="pj-screen-points">
-                    <li>MCP 추가·이력관리, 사내 앱스토어 공유</li>
-                    <li>단일 Agent No-Code 개발 (지침·도구·모델 지정)</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.3 영역 ①②③</div>
+              <!-- ① AI 서비스 플랫폼 그룹 -->
+              <div class="ai-group" id="pj-ai-group-platform">
+                <div class="ai-group-header">
+                  <div class="ai-group-num">①</div>
+                  <div class="ai-group-info">
+                    <h3>AI 서비스 플랫폼 <span>(제안서 2.3)</span></h3>
+                    <p>No-Code Agent 빌더·채팅 UI·평가(Datumo Eval) 영역. 우리 자산관리 AI Agent 화면과 직접 연결.</p>
+                  </div>
+                </div>
+                <div class="ai-slides">
+                  <div class="ai-slide-card" id="pjs-ai-platform-A">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-platform-A" alt="MCP 관리·앱스토어·단일 Agent 개발" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                      <h5>MCP 관리·앱스토어·단일 Agent 개발</h5>
+                      <p>No-Code로 외부 도구(MCP)를 등록·공유하고, 코딩 없이 AI 하나를 만드는 작업장.</p>
+                      <div class="pj-screen-meta">제안서 2.3 ①②③</div>
+                    </div>
+                  </div>
+                  <div class="ai-slide-card" id="pjs-ai-platform-B">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-platform-B" alt="자연어 Chat UI·FLOW 빌더" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                      <h5>자연어 Chat UI·FLOW 빌더</h5>
+                      <p>말로 시키거나 블록을 드래그&amp;드롭해 AI 업무 흐름을 만드는 화면.</p>
+                      <div class="pj-screen-meta">제안서 2.3 ④⑤⑥</div>
+                    </div>
+                  </div>
+                  <div class="ai-slide-card" id="pjs-ai-platform-C">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-platform-C" alt="Datumo Eval·권한 관리·Agent 모니터링" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
+                      <h5>Datumo Eval·권한·모니터링</h5>
+                      <p>AI 답변 신뢰성 자동 채점, 부서별 권한 관리·사용량 관제 화면.</p>
+                      <div class="pj-screen-meta">제안서 2.3 ⑦⑧⑨⑩⑪</div>
+                    </div>
+                  </div>
+                  <div class="ai-slide-card" id="pjs-ai-platform-D">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-platform-D" alt="외부 AI 모델 반입 절차" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                      <h5>외부 AI 모델 반입 절차</h5>
+                      <p>외부 모델 도입 시 담당자 승인 단계를 거치는 보안 결재 프로세스.</p>
+                      <div class="pj-screen-meta">제안서 2.3 ⑫</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="pj-screen" id="pjs-ai-platform-B">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-platform-B" alt="자연어 Chat UI·FLOW 빌더" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
-                  <h4>자연어 Chat UI·FLOW 빌더 (Drag &amp; Drop)</h4>
-                  <p>말로 시키거나 블록을 드래그&amp;드롭해 AI 업무 흐름을 만드는 화면.</p>
-                  <ul class="pj-screen-points">
-                    <li>Chat UI — 우리 AI Agent 화면과 동일 컨셉</li>
-                    <li>FLOW UI 액션 블록으로 멀티에이전트 흐름 시각화</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.3 영역 ④⑤⑥</div>
+              <!-- ② Multi Agent FW 그룹 -->
+              <div class="ai-group" id="pj-ai-group-multiagent">
+                <div class="ai-group-header">
+                  <div class="ai-group-num">②</div>
+                  <div class="ai-group-info">
+                    <h3>Multi Agent FW <span>(제안서 2.3.3)</span></h3>
+                    <p>전문 AI 여럿이 협업하는 멀티에이전트 프레임워크. 역할 정의·노드 연결·배포 전 시뮬레이션.</p>
+                  </div>
+                </div>
+                <div class="ai-slides">
+                  <div class="ai-slide-card" id="pjs-ai-multiagent-A">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-multiagent-A" alt="Agent 역할 정의·자원 권한 부여" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                      <h5>Agent 역할 정의·자원 권한 부여</h5>
+                      <p>전문 AI마다 역할(모델·지침·도구)을 정의하고 부서별 접근 자원을 제어.</p>
+                      <div class="pj-screen-meta">제안서 2.3.3 ①②</div>
+                    </div>
+                  </div>
+                  <div class="ai-slide-card" id="pjs-ai-multiagent-B">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-multiagent-B" alt="Agent 노드 연결·MCP 유기적 연계" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
+                      <h5>Agent 노드 연결·MCP 묶음</h5>
+                      <p>한 AI의 결과를 다음 AI로 넘기고(바통 터치), 여러 도구를 묶어 연계.</p>
+                      <div class="pj-screen-meta">제안서 2.3.3 ③④</div>
+                    </div>
+                  </div>
+                  <div class="ai-slide-card" id="pjs-ai-multiagent-C">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-multiagent-C" alt="배포 전 시뮬레이션·No-Code 테스트" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
+                      <h5>배포 전 시뮬레이션·테스트</h5>
+                      <p>실제 투입 전 리허설 및 투입 후 지속 점검하는 QA 화면.</p>
+                      <div class="pj-screen-meta">제안서 2.3.3 ⑤⑥⑦</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="pj-screen" id="pjs-ai-platform-C">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-platform-C" alt="Datumo Eval·권한 관리·Agent 모니터링" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
-                  <h4>Datumo Eval·권한 관리·Agent 모니터링</h4>
-                  <p>AI 답변 신뢰성을 자동 채점(Eval)하고, 부서별 접근 권한을 관리하며, 사용량을 관제하는 화면.</p>
-                  <ul class="pj-screen-points">
-                    <li>BAD~EXCELLENT 신뢰도 점수, 모델 간 정확도 비교</li>
-                    <li>권한·사용량 대시보드 (Phase 2 적용 예정)</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.3 영역 ⑦⑧⑨⑩⑪</div>
+              <!-- ③ LLM Ops 그룹 -->
+              <div class="ai-group" id="pj-ai-group-llmops">
+                <div class="ai-group-header">
+                  <div class="ai-group-num ai-group-num--ref">③</div>
+                  <div class="ai-group-info">
+                    <h3>LLM Ops <span>(제안서 2.4 — 데모 제외 인프라 영역)</span></h3>
+                    <p>AI 모델·GPU 운영 인프라 관제. 시연 데모에는 포함되지 않으나 참고용으로 정리.</p>
+                  </div>
                 </div>
-              </div>
-
-              <div class="pj-screen" id="pjs-ai-platform-D">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-platform-D" alt="외부 AI 모델 반입 절차" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
-                  <h4>외부 AI 모델 반입 절차 (보안 결재)</h4>
-                  <p>외부 AI 모델을 도입할 때 담당자 승인 단계(요청→사용→선택→확인→최종승인)를 거치는 보안 프로세스.</p>
-                  <ul class="pj-screen-points">
-                    <li>외부 모델 도입 결재 흐름</li>
-                    <li>보안망 내 AI 반입 통제 절차</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.3 영역 ⑫</div>
-                </div>
-              </div>
-
-              <!-- ② Multi Agent FW -->
-              <div class="pj-screen-group-label">② Multi Agent FW (2.3.3)</div>
-
-              <div class="pj-screen" id="pjs-ai-multiagent-A">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-multiagent-A" alt="Agent 역할 정의·자원 권한 부여" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
-                  <h4>Agent 역할 정의·자원 권한 부여</h4>
-                  <p>전문 AI마다 역할(LLM 모델·지침·도구)을 정의하고, 부서별 접근 자원을 제어하는 화면.</p>
-                  <ul class="pj-screen-points">
-                    <li>Agent 정체성 설정 (설명·모델·프롬프트·Tool)</li>
-                    <li>사용자·프로젝트별 접근 권한 분리</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.3.3 영역 ①②</div>
-                </div>
-              </div>
-
-              <div class="pj-screen" id="pjs-ai-multiagent-B">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-multiagent-B" alt="Agent 노드 연결·MCP 유기적 연계" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-done">우리 구현</span></div>
-                  <h4>Agent 노드 연결·MCP 유기적 연계</h4>
-                  <p>한 AI의 결과를 다음 AI의 입력으로 넘기고(노드 전달), 여러 MCP 도구를 한 다발로 묶는 화면.</p>
-                  <ul class="pj-screen-points">
-                    <li>AI A → AI B 바통 터치 (노드 전달)</li>
-                    <li>기본 MCP + Datumo Eval + 외부 API 묶음</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.3.3 영역 ③④</div>
-                </div>
-              </div>
-
-              <div class="pj-screen" id="pjs-ai-multiagent-C">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-multiagent-C" alt="배포 전 시뮬레이션·No-Code 테스트" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-tobe">To-Be</span><span class="pj-badge-todo">미반영</span></div>
-                  <h4>배포 전 시뮬레이션·No-Code 테스트</h4>
-                  <p>실제 투입 전 리허설과 투입 후 지속 점검을 하는 QA 화면.</p>
-                  <ul class="pj-screen-points">
-                    <li>Low-Code 배포 전 즉시 테스트</li>
-                    <li>배포 후 실행 이력·재검증</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.3.3 영역 ⑤⑥⑦</div>
-                </div>
-              </div>
-
-              <!-- ③ LLM Ops -->
-              <div class="pj-screen-group-label">③ LLM Ops — 참고용 (2.4, 데모 제외 영역)</div>
-
-              <div class="pj-screen" id="pjs-ai-llmops-A">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llmops-A" alt="통합 모델 카탈로그·학습 최적화" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
-                  <h4>통합 모델 카탈로그·학습 최적화</h4>
-                  <p>사용 가능한 AI 모델을 등록·검색·버전관리하고, 학습 효율을 높이는 인프라 화면.</p>
-                  <ul class="pj-screen-points">
-                    <li>내/외부 모델 도서관 (내부 sLLM + 외부 GPT/Claude/Gemini)</li>
-                    <li>Early Stopping·학습 로그</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.4 영역 ①② — 인프라팀 대상, 시연 데모 제외</div>
-                </div>
-              </div>
-
-              <div class="pj-screen" id="pjs-ai-llmops-B">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llmops-B" alt="에이전트·모델 배포 절차" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
-                  <h4>에이전트·모델 배포 절차</h4>
-                  <p>만든 AI를 실제 서비스로 출시하고, sLLM·LLM(GPT/Claude/Gemini)를 서버에 올리는 배포 화면.</p>
-                  <ul class="pj-screen-points">
-                    <li>API Endpoint 배포</li>
-                    <li>CPU/GPU/Memory·Replica·양자화 설정</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.4 영역 ③④ — 인프라팀 대상, 시연 데모 제외</div>
-                </div>
-              </div>
-
-              <div class="pj-screen" id="pjs-ai-llmops-C">
-                <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llmops-C" alt="GPUaaS 풀 관리·GPU 모니터링" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
-                <div class="pj-screen-desc">
-                  <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
-                  <h4>GPUaaS 풀 관리·GPU 모니터링</h4>
-                  <p>GPU 자원을 프로젝트별로 배분하고 실시간 사용량을 감시하는 관제 화면.</p>
-                  <ul class="pj-screen-points">
-                    <li>GPU Pool 프로젝트 배분</li>
-                    <li>Cluster Usage·Heatmap·Pending 모니터링</li>
-                  </ul>
-                  <div class="pj-screen-meta">우리은행 제안서 2.4 영역 ⑤⑥⑦ — 인프라팀 대상, 시연 데모 제외</div>
+                <div class="ai-slides">
+                  <div class="ai-slide-card" id="pjs-ai-llmops-A">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llmops-A" alt="통합 모델 카탈로그·학습 최적화" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                      <h5>통합 모델 카탈로그·학습 최적화</h5>
+                      <p>AI 모델을 등록·검색·버전관리하고 학습 효율을 높이는 인프라 화면.</p>
+                      <div class="pj-screen-meta">제안서 2.4 ①② — 인프라팀 대상</div>
+                    </div>
+                  </div>
+                  <div class="ai-slide-card" id="pjs-ai-llmops-B">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llmops-B" alt="에이전트·모델 배포 절차" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                      <h5>에이전트·모델 배포 절차</h5>
+                      <p>만든 AI를 서비스로 출시, CPU/GPU·Replica·양자화 설정 배포 화면.</p>
+                      <div class="pj-screen-meta">제안서 2.4 ③④ — 인프라팀 대상</div>
+                    </div>
+                  </div>
+                  <div class="ai-slide-card" id="pjs-ai-llmops-C">
+                    <button class="pj-shot" data-full=""><img class="pj-shot-img" src="" data-pskey="ai-llmops-C" alt="GPUaaS 풀 관리·GPU 모니터링" loading="lazy"><span class="pj-shot-zoom">⤢ 크게 보기</span></button>
+                    <div class="ai-slide-info">
+                      <div class="pj-screen-badges"><span class="pj-badge-src">참고용</span></div>
+                      <h5>GPUaaS 풀 관리·GPU 모니터링</h5>
+                      <p>GPU 자원을 프로젝트별로 배분하고 실시간 사용량을 감시하는 관제 화면.</p>
+                      <div class="pj-screen-meta">제안서 2.4 ⑤⑥⑦ — 인프라팀 대상</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
