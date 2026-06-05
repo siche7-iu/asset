@@ -193,3 +193,4 @@ TODO.md           다음에 할 일 목록(체크리스트).
 - **2026-06-05** — AI 서비스 플랫폼 14개 토픽 전면 반영. Figma '2.3 AI 서비스 플랫폼.png' 개요 기준으로 B/C/D 플레이스홀더 → 13개 ai-topic 교체. 이미지 37장 복사(svr·sagent·chat·uenv·flowenv·block1/2·sdk·auth·dash·eval·monitor·ext). 토픽A 제목 명확화. 사이드바 3그룹(MCP·Agent/Chat·Flow/Eval·운영) 14개 링크로 개편. 테스트 9건 전부 통과.
 - **2026-06-05** — Multi Agent FW(2.3.3) 이미지 24장 반영. '2.3.3 Multi Agent FW' 폴더 7개 주제(역할정의·자원권한·그룹관리·노드연결·MCP연계·배포테스트·No-Code)를 ai-magent-* 명명으로 복사. 기존 placeholder 3토픽 → 7개 실제 ai-topic으로 교체. 사이드바 링크도 3개 → 7개로 확장.
 - **2026-06-05** — AI 모델 영역 LLM Ops(2.4) 이미지 23장 반영. '2.4 AI 모델 영역(LLM Ops)' 폴더 7개 주제(모델등록·카탈로그·모델API배포·에이전트API배포·학습최적화·GPU모니터링·GPU Pool관리)를 ai-llm-* 명명으로 복사. placeholder 3토픽 → 7개 실제 ai-topic으로 교체. 사이드바 링크 3개 → 7개로 확장.
+- **2026-06-05** — Multi Agent FW·LLM Ops 전체 카드(47장)에 화면별 설명 추가. 각 ai-slide-card에 `ai-slide-info`(h5 제목+p 설명) 블록 삽입. "개요 — …", "모델 선택 — …" 형식으로 화면 목적과 주요 내용을 한 줄씩 기재.
