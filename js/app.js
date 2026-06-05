@@ -389,6 +389,13 @@ var INTRO_ENABLED = false;
           if (sg) sg.classList.toggle('open');
         }
         showProjectSection(a.dataset.pj);
+        // data-anchor 속성이 있으면 해당 차트 카드로 추가 스크롤
+        if (a.dataset.anchor) {
+          setTimeout(function () {
+            var el = document.getElementById(a.dataset.anchor);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 350);
+        }
       });
     });
   }

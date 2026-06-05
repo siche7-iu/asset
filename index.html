@@ -163,7 +163,18 @@
         <div class="pj-group">
           <button class="pj-group-head"><span class="pj-caret"></span><span class="nav-item-label">플로우 차트</span></button>
           <div class="pj-group-items">
-            <a class="pj-link" data-pj="pj-flow"><span class="nav-item-label">흐름도 목록</span></a>
+            <div class="pj-subgroup">
+              <a class="pj-link pj-link-parent" data-pj="pj-flow"><span class="pj-subcaret"></span><span class="nav-item-label">흐름도 전체 보기</span></a>
+              <div class="pj-subitems">
+                <a class="pj-link pj-sublink" data-pj="pj-flow" data-anchor="fc-lifecycle"><span class="nav-item-label">자산 생애주기</span></a>
+                <a class="pj-link pj-sublink" data-pj="pj-flow" data-anchor="fc-approval"><span class="nav-item-label">신청·검증·결재·승인</span></a>
+                <a class="pj-link pj-sublink" data-pj="pj-flow" data-anchor="fc-api"><span class="nav-item-label">외부 API 자동 검증</span></a>
+                <a class="pj-link pj-sublink" data-pj="pj-flow" data-anchor="fc-aiagent"><span class="nav-item-label">AI Agent 동작 흐름</span></a>
+                <a class="pj-link pj-sublink" data-pj="pj-flow" data-anchor="fc-budget"><span class="nav-item-label">예산 흐름</span></a>
+                <a class="pj-link pj-sublink" data-pj="pj-flow" data-anchor="fc-contract"><span class="nav-item-label">계약(사무) 프로세스</span></a>
+                <a class="pj-link pj-sublink" data-pj="pj-flow" data-anchor="fc-sitemap"><span class="nav-item-label">화면 전환 맵</span></a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -998,21 +1009,492 @@
 
             <!-- 플로우 차트 -->
             <section id="pj-flow" class="pj-sec">
-              <h2 class="pj-sec-title">플로우 차트 — 그릴 목록</h2>
-              <p class="pj-lead">Figma 플로우차트 학습 완료(17유형·표준기호). 아래는 우리 프로젝트에 그릴 후보. (상세: <code>플로우차트_학습정리.md</code>)</p>
-              <table class="pj-table">
-                <thead><tr><th>흐름도</th><th>추천 유형</th><th>상태</th></tr></thead>
-                <tbody>
-                  <tr><td>자산 생애주기 (취득→처분)</td><td>Process Flow</td><td><span class="pj-st plan">예정</span></td></tr>
-                  <tr><td>자산 신청→검증→결재→승인→사후관리</td><td>Swimlane (역할별)</td><td><span class="pj-st plan">예정</span></td></tr>
-                  <tr><td>외부 API 자동 검증</td><td>Decision Tree / Data Flow</td><td><span class="pj-st plan">예정</span></td></tr>
-                  <tr><td>AI Agent 동작 흐름</td><td>Process / Use Case</td><td><span class="pj-st plan">예정</span></td></tr>
-                  <tr><td>예산 흐름 (편성→집행→재배정)</td><td>Process Flow</td><td><span class="pj-st plan">예정</span></td></tr>
-                  <tr><td>계약(사무) 프로세스</td><td>Process + 체크리스트</td><td><span class="pj-st plan">예정</span></td></tr>
-                  <tr><td>화면 전환 맵 (SPA 라우팅)</td><td>Website Flowchart</td><td><span class="pj-st plan">예정</span></td></tr>
-                </tbody>
-              </table>
-              <div class="pj-note">도구 옵션: Figma/FigJam 또는 무라이브러리 원칙에 맞춘 SVG/CSS·Mermaid. (작도는 요청 시 진행 — 여기 카드에 결과를 임베드 예정)</div>
+              <h2 class="pj-sec-title">플로우 차트</h2>
+              <p class="pj-lead">고정자산관리시스템 핵심 업무 흐름 7종. 표준 기호(터미네이터·프로세스·판단) 사용.</p>
+
+              <div class="fc-wrap">
+
+                <!-- ① 자산 생애주기 -->
+                <div class="fc-card" id="fc-lifecycle">
+                  <div class="fc-card-title">① 자산 생애주기 흐름</div>
+                  <div class="fc-card-sub">취득 신청 → 검수 → 운영 → 처분까지의 전체 자산 생애 Process Flow</div>
+                  <div class="fc-chart">
+                    <svg viewBox="0 0 700 490" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <marker id="fc1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
+                        </marker>
+                      </defs>
+                      <!-- 시작 -->
+                      <ellipse cx="300" cy="28" rx="72" ry="22" fill="#1B2B4B"/>
+                      <text x="300" y="28" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12" font-weight="600">시 작</text>
+                      <!-- 취득 신청·등록 -->
+                      <rect x="220" y="64" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="300" y="83" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">취득 신청 · 등록</text>
+                      <!-- 검수·인수 -->
+                      <rect x="220" y="136" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="300" y="155" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">검수 · 인수 확인</text>
+                      <!-- 자산 운영 -->
+                      <rect x="220" y="208" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="300" y="227" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">자산 운영 (사용 중)</text>
+                      <!-- 처분 시기 diamond -->
+                      <polygon points="300,270 360,303 300,336 240,303" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="300" y="303" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11.5" font-weight="500">처분 시기 도래?</text>
+                      <!-- 감가상각 (No 경로) -->
+                      <rect x="445" y="283" width="135" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="512" y="302" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">감가상각 처리</text>
+                      <!-- 처분 방법 diamond -->
+                      <polygon points="300,368 344,398 300,428 256,398" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="300" y="398" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11.5" font-weight="500">처분 방법?</text>
+                      <!-- 매각 -->
+                      <ellipse cx="112" cy="455" rx="54" ry="22" fill="#1B2B4B"/>
+                      <text x="112" y="455" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12">매 각</text>
+                      <!-- 무상이전 -->
+                      <ellipse cx="300" cy="455" rx="54" ry="22" fill="#1B2B4B"/>
+                      <text x="300" y="455" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12">무상이전</text>
+                      <!-- 폐기 -->
+                      <ellipse cx="488" cy="455" rx="54" ry="22" fill="#1B2B4B"/>
+                      <text x="488" y="455" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12">폐 기</text>
+
+                      <!-- 화살표 -->
+                      <line x1="300" y1="50" x2="300" y2="63" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                      <line x1="300" y1="102" x2="300" y2="135" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                      <line x1="300" y1="174" x2="300" y2="207" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                      <line x1="300" y1="246" x2="300" y2="269" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                      <!-- No → 감가상각 -->
+                      <line x1="360" y1="303" x2="444" y2="303" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                      <text x="398" y="294" text-anchor="middle" fill="#6B7280" font-size="10.5">No</text>
+                      <!-- 감가상각 → 운영 (루프백, 점선) -->
+                      <path d="M512,283 L512,227 L381,227" fill="none" stroke="#4B5563" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#fc1a)"/>
+                      <text x="490" y="250" text-anchor="middle" fill="#9CA3AF" font-size="10">반복</text>
+                      <!-- Yes → 처분방법 -->
+                      <line x1="300" y1="336" x2="300" y2="367" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                      <text x="313" y="351" fill="#6B7280" font-size="10.5">Yes</text>
+                      <!-- 처분방법 → 매각 -->
+                      <path d="M256,398 L112,398 L112,432" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                      <!-- 처분방법 → 무상이전 -->
+                      <line x1="300" y1="428" x2="300" y2="432" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                      <!-- 처분방법 → 폐기 -->
+                      <path d="M344,398 L488,398 L488,432" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc1a)"/>
+                    </svg>
+                  </div>
+                  <div class="fc-legend">
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#1B2B4B;border-radius:10px"></div>시작 / 종료</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#EFF6FF;border:1px solid #3B73C8"></div>처리 단계</div>
+                    <div class="fc-legend-item"><div class="fc-legend-dia"></div>판단 분기</div>
+                    <div class="fc-legend-item"><svg width="22" height="10"><line x1="2" y1="5" x2="20" y2="5" stroke="#4B5563" stroke-width="1.5" stroke-dasharray="4,2"/></svg>반복 루프</div>
+                  </div>
+                </div>
+
+                <!-- ② 자산 신청·승인 (Swimlane) -->
+                <div class="fc-card" id="fc-approval">
+                  <div class="fc-card-title">② 자산 신청 → 검증 → 결재 → 승인 흐름</div>
+                  <div class="fc-card-sub">신청자 / 자산담당자 / 결재자 / 시스템 역할별 책임 분담 Swimlane Diagram</div>
+                  <div class="fc-chart">
+                    <svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <marker id="fc2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
+                        </marker>
+                      </defs>
+                      <!-- 레인 배경 -->
+                      <rect x="80" y="40" width="780" height="90" fill="#F8FAFF"/>
+                      <rect x="80" y="130" width="780" height="90" fill="#EFF6FF"/>
+                      <rect x="80" y="220" width="780" height="90" fill="#FFF9F0"/>
+                      <rect x="80" y="310" width="780" height="90" fill="#F0FDF4"/>
+                      <!-- 레인 헤더 배경 -->
+                      <rect x="0" y="40" width="80" height="90" fill="#1B2B4B"/>
+                      <rect x="0" y="130" width="80" height="90" fill="#1B3060"/>
+                      <rect x="0" y="220" width="80" height="90" fill="#1B4080"/>
+                      <rect x="0" y="310" width="80" height="90" fill="#1B5090"/>
+                      <!-- 열 헤더 -->
+                      <rect x="0" y="0" width="860" height="40" fill="#1B2B4B"/>
+                      <text x="430" y="20" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12" font-weight="700">자산 신청 · 검증 · 결재 프로세스</text>
+                      <!-- 레인 이름 -->
+                      <text x="40" y="85" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">신청자</text>
+                      <text x="40" y="175" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">자산</text>
+                      <text x="40" y="189" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">담당자</text>
+                      <text x="40" y="265" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">결재자</text>
+                      <text x="40" y="355" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">시스템</text>
+                      <!-- 레인 구분선 -->
+                      <line x1="80" y1="130" x2="860" y2="130" stroke="#D1D5DB" stroke-width="1"/>
+                      <line x1="80" y1="220" x2="860" y2="220" stroke="#D1D5DB" stroke-width="1"/>
+                      <line x1="80" y1="310" x2="860" y2="310" stroke="#D1D5DB" stroke-width="1"/>
+                      <line x1="80" y1="40" x2="80" y2="400" stroke="#D1D5DB" stroke-width="1"/>
+
+                      <!-- Step 1: 신청서 작성 (신청자) -->
+                      <rect x="95" y="67" width="130" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="160" y="85" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">신청서 작성</text>
+                      <!-- Step 2: 접수·확인 (자산담당자) -->
+                      <rect x="270" y="157" width="130" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="335" y="175" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">접수 · 서류 확인</text>
+                      <!-- Step 3: 검토·검증 (자산담당자) -->
+                      <rect x="440" y="157" width="130" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="505" y="175" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">현장 검토·검증</text>
+                      <!-- Step 4: 결재 판단 (결재자) — diamond -->
+                      <polygon points="625,237 675,265 625,293 575,265" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="625" y="265" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11" font-weight="500">승 인?</text>
+                      <!-- Step 5: 자산 등록 (시스템) -->
+                      <rect x="715" y="337" width="130" height="36" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+                      <text x="780" y="355" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="11.5">자산 등록 · ID 부여</text>
+                      <!-- No 분기: 반려 처리 (신청자) -->
+                      <rect x="565" y="67" width="120" height="36" rx="7" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+                      <text x="625" y="85" text-anchor="middle" dominant-baseline="central" fill="#991B1B" font-size="11.5">반려 처리</text>
+
+                      <!-- 화살표 -->
+                      <!-- Step1 → Step2 (신청자 → 자산담당자) -->
+                      <path d="M225,85 L245,85 L245,175 L270,175" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc2a)"/>
+                      <!-- Step2 → Step3 -->
+                      <line x1="400" y1="175" x2="440" y2="175" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc2a)"/>
+                      <!-- Step3 → Step4 (자산담당자 → 결재자) -->
+                      <path d="M570,175 L625,175 L625,237" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc2a)"/>
+                      <!-- Step4 Yes → Step5 (결재자 → 시스템) -->
+                      <path d="M675,265 L780,265 L780,337" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc2a)"/>
+                      <text x="720" y="256" text-anchor="middle" fill="#16A34A" font-size="10.5" font-weight="600">승인</text>
+                      <!-- Step4 No → 반려 (결재자 → 신청자) -->
+                      <path d="M575,265 L540,265 L540,85 L565,85" fill="none" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#fc2a)"/>
+                      <text x="528" y="180" text-anchor="middle" fill="#EF4444" font-size="10.5" font-weight="600">반려</text>
+                    </svg>
+                  </div>
+                  <div class="fc-legend">
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#EFF6FF;border:1px solid #3B73C8"></div>처리 단계</div>
+                    <div class="fc-legend-item"><div class="fc-legend-dia"></div>판단 분기</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#DCFCE7;border:1px solid #16A34A"></div>완료 단계</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#FEF2F2;border:1px solid #EF4444"></div>반려</div>
+                  </div>
+                </div>
+
+                <!-- ③ 외부 API 자동 검증 -->
+                <div class="fc-card" id="fc-api">
+                  <div class="fc-card-title">③ 외부 API 자동 검증 흐름</div>
+                  <div class="fc-card-sub">자산 등록 시 차량·위치·사번 정보를 외부 API로 자동 검증하는 Decision Tree</div>
+                  <div class="fc-chart">
+                    <svg viewBox="0 0 720 440" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <marker id="fc3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
+                        </marker>
+                      </defs>
+                      <!-- 시작 -->
+                      <ellipse cx="200" cy="28" rx="72" ry="22" fill="#1B2B4B"/>
+                      <text x="200" y="28" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12" font-weight="600">시 작</text>
+                      <!-- 자산 정보 입력 -->
+                      <rect x="120" y="62" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="200" y="81" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">자산 정보 입력</text>
+                      <!-- ◇ 차량 자산? -->
+                      <polygon points="200,118 258,148 200,178 142,148" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="200" y="148" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11" font-weight="500">차량 자산?</text>
+                      <!-- 국토부 시세 API -->
+                      <rect x="370" y="128" width="150" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="445" y="147" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">국토부 시세 API 조회</text>
+                      <!-- 시세 판정 결과 -->
+                      <rect x="550" y="128" width="140" height="38" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+                      <text x="620" y="147" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="11.5">시세 적정 판정</text>
+
+                      <!-- ◇ 위치 정보? -->
+                      <polygon points="200,208 258,238 200,268 142,238" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="200" y="238" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11" font-weight="500">위치 정보?</text>
+                      <!-- 지도 API -->
+                      <rect x="370" y="218" width="150" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="445" y="237" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">카카오 지도 API</text>
+                      <!-- 위치 검증 결과 -->
+                      <rect x="550" y="218" width="140" height="38" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+                      <text x="620" y="237" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="11.5">위치 검증</text>
+
+                      <!-- ◇ 사번 정보? -->
+                      <polygon points="200,298 258,328 200,358 142,328" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="200" y="328" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11" font-weight="500">사번 정보?</text>
+                      <!-- 인사 DB API -->
+                      <rect x="370" y="308" width="150" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="445" y="327" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">인사 DB API 조회</text>
+                      <!-- 사용자 확인 결과 -->
+                      <rect x="550" y="308" width="140" height="38" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+                      <text x="620" y="327" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="11.5">사용자 확인</text>
+
+                      <!-- 검증 결과 집계 -->
+                      <rect x="120" y="382" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="200" y="401" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">검증 결과 집계·저장</text>
+
+                      <!-- 화살표 -->
+                      <line x1="200" y1="50" x2="200" y2="61" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <line x1="200" y1="100" x2="200" y2="117" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <!-- 차량? Yes → 시세API -->
+                      <line x1="258" y1="148" x2="370" y2="148" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <text x="310" y="140" text-anchor="middle" fill="#6B7280" font-size="10.5">Yes</text>
+                      <!-- 시세API → 판정 -->
+                      <line x1="520" y1="147" x2="550" y2="147" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <!-- 차량? No → 위치? -->
+                      <line x1="200" y1="178" x2="200" y2="207" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <text x="213" y="193" fill="#6B7280" font-size="10.5">No</text>
+                      <!-- 위치? Yes → 지도API -->
+                      <line x1="258" y1="238" x2="370" y2="238" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <text x="310" y="230" text-anchor="middle" fill="#6B7280" font-size="10.5">Yes</text>
+                      <!-- 지도API → 검증 -->
+                      <line x1="520" y1="237" x2="550" y2="237" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <!-- 위치? No → 사번? -->
+                      <line x1="200" y1="268" x2="200" y2="297" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <text x="213" y="283" fill="#6B7280" font-size="10.5">No</text>
+                      <!-- 사번? Yes → 인사DB -->
+                      <line x1="258" y1="328" x2="370" y2="328" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <text x="310" y="320" text-anchor="middle" fill="#6B7280" font-size="10.5">Yes</text>
+                      <!-- 인사DB → 확인 -->
+                      <line x1="520" y1="327" x2="550" y2="327" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <!-- 사번? No → 집계 -->
+                      <line x1="200" y1="358" x2="200" y2="381" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc3a)"/>
+                      <text x="213" y="370" fill="#6B7280" font-size="10.5">No</text>
+                      <!-- API 결과들 → 집계 (우측에서 집계로) -->
+                      <path d="M620,166 L660,166 L660,401 L281,401" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#fc3a)"/>
+                      <path d="M620,256 L650,256 L650,401" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4,2"/>
+                      <path d="M620,346 L640,346 L640,401" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4,2"/>
+                    </svg>
+                  </div>
+                  <div class="fc-legend">
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#EFF6FF;border:1px solid #3B73C8"></div>처리 단계</div>
+                    <div class="fc-legend-item"><div class="fc-legend-dia"></div>판단 분기</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#DCFCE7;border:1px solid #16A34A"></div>API 검증 결과</div>
+                    <div class="fc-legend-item"><svg width="22" height="10"><line x1="2" y1="5" x2="20" y2="5" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="3,2"/></svg>결과 수집</div>
+                  </div>
+                </div>
+
+                <!-- ④ AI Agent 동작 흐름 -->
+                <div class="fc-card" id="fc-aiagent">
+                  <div class="fc-card-title">④ AI Agent 동작 흐름</div>
+                  <div class="fc-card-sub">사용자 질의 접수 → 데이터 조회 → 이상 판단 → 추천 조치 → 보고서 생성 Process Flow</div>
+                  <div class="fc-chart">
+                    <svg viewBox="0 0 660 510" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <marker id="fc4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
+                        </marker>
+                      </defs>
+                      <!-- 시작 -->
+                      <ellipse cx="260" cy="28" rx="72" ry="22" fill="#1B2B4B"/>
+                      <text x="260" y="28" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12" font-weight="600">질의 접수</text>
+                      <!-- 의도 파악 -->
+                      <rect x="180" y="62" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="260" y="81" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">의도 파악 (NLP)</text>
+                      <!-- 자산 데이터 조회 -->
+                      <rect x="180" y="134" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="260" y="153" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">자산 데이터 조회</text>
+                      <!-- 정책 기준 검토 -->
+                      <rect x="180" y="206" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="260" y="225" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">정책 기준 검토</text>
+                      <!-- ◇ 이상 발견? -->
+                      <polygon points="260,272 320,305 260,338 200,305" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="260" y="305" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11" font-weight="500">이상 발견?</text>
+                      <!-- Yes: 위험 분류·추천 조치 -->
+                      <rect x="410" y="285" width="150" height="38" rx="7" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="485" y="304" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11.5">위험 분류·추천 조치</text>
+                      <!-- 답변·분석 결과 생성 -->
+                      <rect x="180" y="395" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="260" y="414" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">답변·분석 결과 생성</text>
+                      <!-- 보고서 작성 -->
+                      <rect x="180" y="456" width="160" height="38" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+                      <text x="260" y="475" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="12">보고서 작성 · 완료</text>
+
+                      <!-- 화살표 -->
+                      <line x1="260" y1="50" x2="260" y2="61" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc4a)"/>
+                      <line x1="260" y1="100" x2="260" y2="133" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc4a)"/>
+                      <line x1="260" y1="172" x2="260" y2="205" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc4a)"/>
+                      <line x1="260" y1="244" x2="260" y2="271" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc4a)"/>
+                      <!-- Yes → 위험분류 -->
+                      <line x1="320" y1="305" x2="410" y2="305" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc4a)"/>
+                      <text x="363" y="296" text-anchor="middle" fill="#6B7280" font-size="10.5">Yes</text>
+                      <!-- No → 답변생성 -->
+                      <line x1="260" y1="338" x2="260" y2="394" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc4a)"/>
+                      <text x="273" y="366" fill="#6B7280" font-size="10.5">No</text>
+                      <!-- 위험분류 → 답변생성 (merge) -->
+                      <path d="M485,323 L485,414 L341,414" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc4a)"/>
+                      <!-- 답변생성 → 보고서 -->
+                      <line x1="260" y1="433" x2="260" y2="455" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc4a)"/>
+                    </svg>
+                  </div>
+                  <div class="fc-legend">
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#1B2B4B;border-radius:10px"></div>시작</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#EFF6FF;border:1px solid #3B73C8"></div>처리 단계</div>
+                    <div class="fc-legend-item"><div class="fc-legend-dia"></div>판단 분기</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#FEF3C7;border:1px solid #F59E0B"></div>이상 처리</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#DCFCE7;border:1px solid #16A34A"></div>완료</div>
+                  </div>
+                </div>
+
+                <!-- ⑤ 예산 흐름 -->
+                <div class="fc-card" id="fc-budget">
+                  <div class="fc-card-title">⑤ 예산 흐름 (편성 → 집행 → 정산)</div>
+                  <div class="fc-card-sub">부서 예산 편성 신청부터 집행·잔여예산 정산까지의 Process Flow</div>
+                  <div class="fc-chart">
+                    <svg viewBox="0 0 860 220" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <marker id="fc5a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
+                        </marker>
+                      </defs>
+                      <!-- Row 1 (y=75): 예산편성 → 예산심의 → 예산배정 → 집행요청 -->
+                      <ellipse cx="68" cy="75" rx="56" ry="22" fill="#1B2B4B"/>
+                      <text x="68" y="75" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">예산 편성 신청</text>
+                      <rect x="150" y="57" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="210" y="75" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">예산 심의</text>
+                      <rect x="300" y="57" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="360" y="75" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">예산 확정·배정</text>
+                      <rect x="450" y="57" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="510" y="75" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">집행 요청</text>
+                      <!-- U-turn 화살표 Row1→Row2 -->
+                      <path d="M570,75 L600,75 L600,148 L570,148" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+
+                      <!-- Row 2 (y=148): ← 자산집행 ← 집행승인 ← ◇잔여예산? -->
+                      <rect x="430" y="130" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="490" y="148" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">집행 승인</text>
+                      <rect x="280" y="130" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="340" y="148" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">자산 집행</text>
+                      <!-- ◇ 잔여예산? -->
+                      <polygon points="170,148 216,175 170,202 124,175" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+                      <text x="170" y="175" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="10.5" font-weight="500">잔여예산?</text>
+                      <!-- 이월 -->
+                      <rect x="30" y="130" width="70" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="65" y="148" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11">이월</text>
+                      <!-- 완료 -->
+                      <ellipse cx="65" cy="195" rx="46" ry="19" fill="#1B2B4B"/>
+                      <text x="65" y="195" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">집행 완료</text>
+
+                      <!-- 화살표 Row1 -->
+                      <line x1="124" y1="75" x2="150" y2="75" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <line x1="270" y1="75" x2="300" y2="75" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <line x1="420" y1="75" x2="450" y2="75" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <!-- 화살표 Row2 (right→left) -->
+                      <line x1="550" y1="148" x2="431" y2="148" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <line x1="430" y1="148" x2="401" y2="148" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <line x1="280" y1="148" x2="217" y2="148" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <!-- 잔여? Yes → 이월 -->
+                      <line x1="124" y1="175" x2="100" y2="175" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <text x="112" y="166" text-anchor="middle" fill="#6B7280" font-size="10">Yes</text>
+                      <!-- 잔여? No → 완료 -->
+                      <line x1="170" y1="202" x2="110" y2="202" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc5a)"/>
+                      <text x="154" y="213" text-anchor="middle" fill="#6B7280" font-size="10">No</text>
+                    </svg>
+                  </div>
+                  <div class="fc-legend">
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#1B2B4B;border-radius:10px"></div>시작 / 종료</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#EFF6FF;border:1px solid #3B73C8"></div>처리 단계</div>
+                    <div class="fc-legend-item"><div class="fc-legend-dia"></div>판단 분기</div>
+                  </div>
+                </div>
+
+                <!-- ⑥ 계약(사무) 프로세스 -->
+                <div class="fc-card" id="fc-contract">
+                  <div class="fc-card-title">⑥ 계약(사무) 프로세스</div>
+                  <div class="fc-card-sub">수요 발생부터 계약 체결 · 이행 · 대금 지급까지 8단계 순차 Process Flow</div>
+                  <div class="fc-chart">
+                    <svg viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <marker id="fc6a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
+                        </marker>
+                      </defs>
+                      <!-- Row 1: 수요발생 → 입찰공고 → 제안서접수 → 평가·낙찰 -->
+                      <ellipse cx="62" cy="76" rx="54" ry="22" fill="#1B2B4B"/>
+                      <text x="62" y="76" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">수요 발생</text>
+                      <rect x="136" y="58" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="196" y="76" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">입찰 공고</text>
+                      <rect x="286" y="58" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="346" y="76" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">제안서 접수</text>
+                      <rect x="436" y="58" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="496" y="76" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">평가 · 낙찰</text>
+                      <!-- U-turn -->
+                      <path d="M556,76 L590,76 L590,165 L556,165" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc6a)"/>
+
+                      <!-- Row 2: 계약체결 ← 이행관리 ← 검수완료 ← 대금지급 -->
+                      <rect x="436" y="147" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="496" y="165" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">계약 체결</text>
+                      <rect x="286" y="147" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="346" y="165" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">이행 관리</text>
+                      <rect x="136" y="147" width="120" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="196" y="165" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">검수 · 완료</text>
+                      <ellipse cx="62" cy="165" rx="54" ry="22" fill="#1B2B4B"/>
+                      <text x="62" y="165" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">대금 지급</text>
+
+                      <!-- Row 1 화살표 -->
+                      <line x1="116" y1="76" x2="136" y2="76" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc6a)"/>
+                      <line x1="256" y1="76" x2="286" y2="76" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc6a)"/>
+                      <line x1="406" y1="76" x2="436" y2="76" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc6a)"/>
+                      <!-- Row 2 화살표 (right→left) -->
+                      <line x1="436" y1="165" x2="406" y2="165" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc6a)"/>
+                      <line x1="286" y1="165" x2="256" y2="165" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc6a)"/>
+                      <line x1="136" y1="165" x2="116" y2="165" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc6a)"/>
+                    </svg>
+                  </div>
+                  <div class="fc-legend">
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#1B2B4B;border-radius:10px"></div>시작 / 종료</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#EFF6FF;border:1px solid #3B73C8"></div>처리 단계</div>
+                  </div>
+                </div>
+
+                <!-- ⑦ 화면 전환 맵 -->
+                <div class="fc-card" id="fc-sitemap">
+                  <div class="fc-card-title">⑦ 화면 전환 맵 (SPA 라우팅)</div>
+                  <div class="fc-card-sub">인트로부터 각 화면 간 이동 경로를 나타낸 Website Flowchart</div>
+                  <div class="fc-chart">
+                    <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <marker id="fc7f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
+                        </marker>
+                        <marker id="fc7r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M0,0 L10,5 L0,10 z" fill="#3B73C8"/>
+                        </marker>
+                      </defs>
+                      <!-- 인트로 (시작점) -->
+                      <ellipse cx="110" cy="50" rx="72" ry="22" fill="#1B2B4B"/>
+                      <text x="110" y="50" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12" font-weight="600">인트로 화면</text>
+                      <!-- 대시보드 (허브) -->
+                      <ellipse cx="340" cy="170" rx="80" ry="26" fill="#3B73C8"/>
+                      <text x="340" y="170" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="13" font-weight="700">대시보드</text>
+                      <text x="340" y="184" text-anchor="middle" fill="#BFD6F6" font-size="9">(허브)</text>
+                      <!-- 자산 목록 -->
+                      <rect x="50" y="152" width="130" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="115" y="170" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">자산 목록</text>
+                      <!-- 자산 상세 -->
+                      <rect x="50" y="250" width="130" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="115" y="268" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">자산 상세</text>
+                      <!-- AI Agent -->
+                      <rect x="530" y="100" width="130" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="595" y="118" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">AI Agent</text>
+                      <!-- 보고서 -->
+                      <rect x="530" y="200" width="130" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
+                      <text x="595" y="218" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">보고서 화면</text>
+                      <!-- 프로젝트 관리 (비밀) -->
+                      <rect x="255" y="280" width="170" height="36" rx="7" fill="#F5F3FF" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="5,2"/>
+                      <text x="340" y="298" text-anchor="middle" dominant-baseline="central" fill="#5B21B6" font-size="12">프로젝트 관리 🔒</text>
+
+                      <!-- 화살표: 인트로 → 대시보드 (one-way) -->
+                      <path d="M182,50 L260,50 L260,155" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc7f)"/>
+                      <!-- 대시보드 ↔ 자산목록 -->
+                      <line x1="260" y1="166" x2="183" y2="166" stroke="#3B73C8" stroke-width="1.5" marker-end="url(#fc7r)"/>
+                      <line x1="183" y1="174" x2="260" y2="174" stroke="#3B73C8" stroke-width="1.5" marker-end="url(#fc7r)"/>
+                      <!-- 자산목록 ↔ 자산상세 -->
+                      <line x1="111" y1="188" x2="111" y2="250" stroke="#3B73C8" stroke-width="1.5" marker-end="url(#fc7r)"/>
+                      <line x1="119" y1="250" x2="119" y2="188" stroke="#3B73C8" stroke-width="1.5" marker-end="url(#fc7r)"/>
+                      <!-- 대시보드 ↔ AI Agent -->
+                      <line x1="418" y1="162" x2="526" y2="117" stroke="#3B73C8" stroke-width="1.5" marker-end="url(#fc7r)"/>
+                      <line x1="524" y1="124" x2="420" y2="168" stroke="#3B73C8" stroke-width="1.5" marker-end="url(#fc7r)"/>
+                      <!-- AI Agent → 보고서 (one-way) -->
+                      <line x1="595" y1="136" x2="595" y2="200" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc7f)"/>
+                      <!-- 대시보드 ↔ 보고서 -->
+                      <line x1="416" y1="180" x2="528" y2="208" stroke="#3B73C8" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#fc7r)"/>
+                      <!-- 대시보드 → 프로젝트관리 (비밀, 점선) -->
+                      <path d="M340,196 L340,279" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#fc7r)"/>
+                    </svg>
+                  </div>
+                  <div class="fc-legend">
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#1B2B4B;border-radius:10px"></div>인트로 (시작)</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#3B73C8;border-radius:10px"></div>대시보드 (허브)</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#EFF6FF;border:1px solid #3B73C8"></div>일반 화면</div>
+                    <div class="fc-legend-item"><div class="fc-legend-box" style="background:#F5F3FF;border:1px dashed #7C3AED"></div>비밀 화면</div>
+                    <div class="fc-legend-item"><svg width="22" height="10"><line x1="2" y1="5" x2="20" y2="5" stroke="#3B73C8" stroke-width="1.5"/><polygon points="16,2 20,5 16,8" fill="#3B73C8"/></svg>양방향 이동</div>
+                    <div class="fc-legend-item"><svg width="22" height="10"><line x1="2" y1="5" x2="18" y2="5" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc7f)"/></svg>단방향 이동</div>
+                  </div>
+                </div>
+
+              </div><!-- /.fc-wrap -->
             </section>
 
             <!-- 계획 -->
