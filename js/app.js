@@ -2374,15 +2374,16 @@ function buildReqSection() {
     tbody.addEventListener('mouseover', function(e) {
       var cell = e.target.closest('.req-src-tip');
       if (!cell) return;
-      tipEl.textContent = cell.dataset.tip;
+      tipEl.innerHTML = formatSrcTip(cell.dataset.tip);
       tipEl.style.display = 'block';
     });
     tbody.addEventListener('mousemove', function(e) {
       var cell = e.target.closest('.req-src-tip');
       if (!cell) { tipEl.style.display = 'none'; return; }
+      var tw = tipEl.offsetWidth || 360, th = tipEl.offsetHeight || 100;
       var x = e.clientX + 14, y = e.clientY - 12;
-      if (x + 300 > window.innerWidth) x = e.clientX - 310;
-      if (y + 80 > window.innerHeight) y = e.clientY - 70;
+      if (x + tw + 8 > window.innerWidth) x = e.clientX - tw - 8;
+      if (y + th + 8 > window.innerHeight) y = e.clientY - th - 8;
       tipEl.style.left = x + 'px';
       tipEl.style.top = y + 'px';
     });
@@ -2687,6 +2688,47 @@ function toggleProposalMd() {
     .catch(function(err) {
       content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>';
     });
+}
+
+// 출처 툴팁 HTML 포맷터
+// "RFP X — Y / 제안서 §1.1.1 Z / §1.1.2 W" 형식을 구조화된 HTML로 변환
+function formatSrcTip(raw) {
+  if (!raw) return '';
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  var segs = raw.split(' / ');
+  if (segs.length === 1) {
+    return '<span style="white-space:pre-wrap">' + esc(raw) + '</span>';
+  }
+  var lines = [];
+  var propAdded = false;
+  segs.forEach(function(seg) {
+    seg = seg.trim();
+    if (!seg) return;
+    if (/^RFP /.test(seg)) {
+      var di = seg.indexOf(' — ');
+      if (di !== -1) {
+        lines.push('<b>' + esc(seg.slice(0, di)) + '</b>');
+        lines.push('ㆍ' + esc(seg.slice(di + 3)));
+      } else {
+        lines.push('<b>' + esc(seg) + '</b>');
+      }
+      propAdded = false;
+    } else if (/^제안서/.test(seg)) {
+      if (!propAdded) { lines.push('<b>제안서</b>'); propAdded = true; }
+      lines.push('ㆍ' + esc(seg.replace(/^제안서 §?/, '')));
+    } else if (/^§/.test(seg)) {
+      if (!propAdded) { lines.push('<b>제안서</b>'); propAdded = true; }
+      lines.push('ㆍ' + esc(seg.slice(1)));
+    } else if (/^As-Is/.test(seg)) {
+      lines.push('<b>As-Is</b>');
+      lines.push('ㆍ' + esc(seg.replace(/^As-Is\s*/, '')));
+    } else {
+      lines.push(esc(seg));
+    }
+  });
+  return lines.join('<br>');
 }
 
 function toggleQna1Md() {
