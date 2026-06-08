@@ -336,6 +336,7 @@ var INTRO_ENABLED = false;
       var links = projectNav.querySelectorAll('.pj-link');
       links.forEach(function (a, i) { a.classList.toggle('active', i === 0); });
     }
+    buildReqSection();
   }
   function exitProjectMode() {
     window._projectMode = false;
@@ -1939,6 +1940,234 @@ function showDbToast(msg, tone) {
 // ===== Markdown 렌더러 (인터뷰 질의서) =====
 var _mdIqCache = null;
 var _mdProposalCache = null;
+var _mdReqCache = null;
+
+// 요구사항 데이터 (51건)
+var REQ_DATA = [
+  // NH-DSH 대시보드·관제 (6건)
+  {id:'NH-DSH-001',name:'통합 대시보드 메인',cat:'DSH',catName:'대시보드·관제',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 공통·관제 / 제안서 p7·p11',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-DSH-002',name:'개인화 대시보드',cat:'DSH',catName:'대시보드·관제',pri:'Should',type:'신규',stage:'1차',star:false,src:'제안서 p8',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-DSH-003',name:'지역별 GIS 자산 지도',cat:'DSH',catName:'대시보드·관제',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 관제(GIS) / 제안서 p9',user:'관리자, 현황 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-DSH-004',name:'실시간 자산 상태 관제',cat:'DSH',catName:'대시보드·관제',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 관제 / 제안서 1.2.1',user:'관리자, 현황 담당자',asIs:'자산별 상세현황[LH1005] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-DSH-005',name:'조직별·유형별 비교 현황판',cat:'DSH',catName:'대시보드·관제',pri:'Should',type:'신규',stage:'1차',star:false,src:'제안서 p11',user:'관리자, 임원',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-DSH-006',name:'알림·긴급 보고 센터',cat:'DSH',catName:'대시보드·관제',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 관제 / 제안서 1.2.2',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-AST 자산 원장·생애주기 (10건)
+  {id:'NH-AST-001',name:'자산 등록(취득)',cat:'AST',catName:'자산 원장·생애주기',pri:'Must',type:'개선',stage:'1차',star:false,src:'RFP 공통·자산별 / 제안서 1.1.2·1.4.1',user:'자산 등록 담당자',asIs:'일반자산 취득[W2HK] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-002',name:'자산 조회·검색',cat:'AST',catName:'자산 원장·생애주기',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.1(스마트 데이터 그리드)',user:'전체 사용자',asIs:'자산별 상세현황[LH1005] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-003',name:'자산 이관·변경',cat:'AST',catName:'자산 원장·생애주기',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.2·1.4.1',user:'자산 담당자, 승인권자',asIs:'이관등록[W3I05·W3I06] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-004',name:'자산 처분·폐기',cat:'AST',catName:'자산 원장·생애주기',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.2·1.4.1',user:'자산 담당자, 승인권자',asIs:'일반자산 처분/처분취소 → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-005',name:'감가상각 관리',cat:'AST',catName:'자산 원장·생애주기',pri:'Must',type:'개선',stage:'1차',star:false,src:'RFP 공통 / 제안서 1.5.1',user:'회계·결산 담당자',asIs:'기존 감가상각 → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-006',name:'자산 디지털 이력서',cat:'AST',catName:'자산 원장·생애주기',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 1.5.3',user:'담당자, 관리자, 감사',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-007',name:'생애주기 실시간 모니터링',cat:'AST',catName:'자산 원장·생애주기',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 p10·1.5.2',user:'관리자, 자산 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-008',name:'재물조사 관리',cat:'AST',catName:'자산 원장·생애주기',pri:'Must',type:'개선',stage:'2차',star:false,src:'RFP 공통 / As-Is 재물조사',user:'재물조사 담당자, 현장 직원',asIs:'재물조사 메뉴 → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-009',name:'건설중인 자산(CIP) 관리',cat:'AST',catName:'자산 원장·생애주기',pri:'Should',type:'신규',stage:'2차',star:true,src:'글로벌 벤치마킹(선제 제안)',user:'재무·회계 담당자',asIs:'없음 또는 수기(Excel)',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-010',name:'자산 복수 감가상각 장부',cat:'AST',catName:'자산 원장·생애주기',pri:'Could',type:'신규',stage:'2차',star:true,src:'글로벌 벤치마킹(선제 제안)',user:'회계 담당자',asIs:'Excel 병행 관리',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-BUD 예산·결산·회계 (7건)
+  {id:'NH-BUD-001',name:'예산 종합현황판',cat:'BUD',catName:'예산·결산·회계',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 예산결산 / 제안서 1.3.1',user:'예산 담당자, 관리자, 임원',asIs:'고정투자예산(폼) → 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-BUD-002',name:'예산 편성·배정·조정',cat:'BUD',catName:'예산·결산·회계',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.3.1',user:'예산 담당자, 관리자',asIs:'고정투자예산 폼 → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-BUD-003',name:'예산 집행·실적 관리',cat:'BUD',catName:'예산·결산·회계',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.3.1',user:'자산 담당자, 예산 담당자',asIs:'기존 예산 폼 → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-BUD-004',name:'불용예산 조기 경보',cat:'BUD',catName:'예산·결산·회계',pri:'Should',type:'신규',stage:'2차',star:false,src:'RFP 예산결산 / 제안서 1.3.2(LightGBM)',user:'예산 담당자, 관리자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-BUD-005',name:'결산 마감 체크리스트',cat:'BUD',catName:'예산·결산·회계',pri:'Must',type:'개선',stage:'1차',star:false,src:'As-Is 결산전 수행작업[GS9005]',user:'회계·결산 담당자',asIs:'결산전 수행작업[GS9005] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-BUD-006',name:'외부 감사자료 자동 생성',cat:'BUD',catName:'예산·결산·회계',pri:'Must',type:'개선',stage:'2차',star:false,src:'RFP 예산결산 / 제안서 1.3.3',user:'회계·감사 담당자',asIs:'수작업 → 자동화',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-BUD-007',name:'전표·회계 연동 조회',cat:'BUD',catName:'예산·결산·회계',pri:'Must',type:'개선',stage:'1차',star:false,src:'As-Is 전표대장[GS1B01]·B/S[GS1005]',user:'회계 담당자',asIs:'전표대장·B/S 폼 → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-WKF 신청·검증·승인 (7건)
+  {id:'NH-WKF-001',name:'자산 취득 신청→승인 프로세스',cat:'WKF',catName:'신청·검증·승인',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.2·1.4.1',user:'신청자, 검토자, 승인권자',asIs:'수기·이메일 → 시스템화',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-WKF-002',name:'차량 리스 신청·검증',cat:'WKF',catName:'신청·검증·승인',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.4.1·1.4.2',user:'차량 신청자, 검증 담당자',asIs:'차량 리스 계약[LS2010·LS2012] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-WKF-003',name:'부동산(사택·합숙소) 신청·검증',cat:'WKF',catName:'신청·검증·승인',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.4.1·1.4.2',user:'부동산 신청자, 검증 담당자',asIs:'부동산 리스(임차) 계약[LS1010] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-WKF-004',name:'자산 처분·이관 승인',cat:'WKF',catName:'신청·검증·승인',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.2·1.4.1',user:'처분 신청자, 승인권자',asIs:'결재 관리[RT1005] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-WKF-005',name:'단계별 진행 현황판',cat:'WKF',catName:'신청·검증·승인',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.1.2·1.4.1',user:'담당자, 관리자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-WKF-006',name:'결재 관리',cat:'WKF',catName:'신청·검증·승인',pri:'Must',type:'개선',stage:'1차',star:false,src:'As-Is 결재 관리[RT1005]',user:'결재 담당자',asIs:'결재 관리[RT1005] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-WKF-007',name:'체크리스트 미이행 단계 잠금',cat:'WKF',catName:'신청·검증·승인',pri:'Must',type:'신규',stage:'1차',star:true,src:'RFP 업무지원 / 제안서 1.6.2',user:'모든 업무 처리자',asIs:'없음(수기 체크)',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-AI AI·자동화 (4건)
+  {id:'NH-AI-001',name:'AI Agent 자연어 질의응답',cat:'AI',catName:'AI·자동화',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 관제(LLM) / 제안서 1.2.1·1.2.2',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AI-002',name:'노후·교체 시기 AI 예측',cat:'AI',catName:'AI·자동화',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 1.2.1(LightGBM)',user:'자산 관리자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AI-003',name:'불용예산 사전 탐지 AI',cat:'AI',catName:'AI·자동화',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 1.3.2',user:'예산 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AI-004',name:'AI 자동 보고서 초안 생성',cat:'AI',catName:'AI·자동화',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 1.2.2·1.3.3',user:'담당자, 관리자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-RPT 리포트·보고서 (4건)
+  {id:'NH-RPT-001',name:'자산 현황 리포트',cat:'RPT',catName:'리포트·보고서',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.1(p11)·1.3.3',user:'담당자, 관리자, 임원',asIs:'기존 현황 화면 → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-RPT-002',name:'조직별 자산 비교 리포트',cat:'RPT',catName:'리포트·보고서',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.1.1(p11)',user:'관리자, 임원',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-RPT-003',name:'감가상각 시뮬레이션 리포트',cat:'RPT',catName:'리포트·보고서',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 1.5.1',user:'회계 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-RPT-004',name:'사용자 정의형 데이터 추출',cat:'RPT',catName:'리포트·보고서',pri:'Could',type:'신규',stage:'2차',star:true,src:'제안서 1.5.4(선제 제안)',user:'담당자, 분석팀',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-EXT 외부 시스템 연동 (5건)
+  {id:'NH-EXT-001',name:'부동산 시세 API 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.4.2·1.5.1(한국부동산원·KB)',user:'자동(백그라운드)',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-EXT-002',name:'지도 API 연동(카카오·네이버)',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.4.2·1.5.1',user:'자동(신청 시)',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-EXT-003',name:'인사 DB 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.4.2·1.5.1',user:'자동(신청 시)',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-EXT-004',name:'ERP·회계 시스템 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.5.1(GSE·MCA·MFT)',user:'회계 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-EXT-005',name:'주소 표준화 API',cat:'EXT',catName:'외부 시스템 연동',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 1.5.1(행안부 주소 API)',user:'자동',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-SYS 시스템 공통·관리 (4건)
+  {id:'NH-SYS-001',name:'권한·역할 관리',cat:'SYS',catName:'시스템 공통·관리',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.1(역할별 맞춤)',user:'시스템 관리자',asIs:'권한그룹 관리[SY2002] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-SYS-002',name:'공통코드 관리',cat:'SYS',catName:'시스템 공통·관리',pri:'Must',type:'개선',stage:'1차',star:false,src:'As-Is 공통코드[SY1001]',user:'시스템 관리자',asIs:'공통코드 관리[SY1001] → 개선',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-SYS-003',name:'시스템 이력·감사 로그',cat:'SYS',catName:'시스템 공통·관리',pri:'Must',type:'신규',stage:'1차',star:true,src:'금융권 내부통제 요건(선제 제안)',user:'감사 담당자, 관리자',asIs:'없음 또는 미흡',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-SYS-004',name:'업무 체크리스트·템플릿 관리',cat:'SYS',catName:'시스템 공통·관리',pri:'Should',type:'신규',stage:'2차',star:false,src:'RFP 업무지원 / 제안서 1.6.1·1.6.2',user:'시스템 관리자, 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-UI UI/UX 표준 (4건)
+  {id:'NH-UI-001',name:'전체 디자인 시스템·가이드',cat:'UI',catName:'UI/UX 표준',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 공통 UI/UX / 제안서 1.1.3',user:'개발사, 유지보수 팀',asIs:'없음 — 신규',by:'블루비 전담 산출'},
+  {id:'NH-UI-002',name:'공통 컴포넌트 라이브러리',cat:'UI',catName:'UI/UX 표준',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.1.3(WebSquare)',user:'개발사, 유지보수 팀',asIs:'없음 — 신규',by:'블루비 전담 산출'},
+  {id:'NH-UI-003',name:'반응형·다기기 대응',cat:'UI',catName:'UI/UX 표준',pri:'Should',type:'신규',stage:'2차',star:true,src:'선제 제안',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-UI-004',name:'접근성(웹 표준) 준수',cat:'UI',catName:'UI/UX 표준',pri:'Should',type:'신규',stage:'1차',star:true,src:'제안서 1.1.1(Accessibility)',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'}
+];
+
+var _reqFilter = { cat: 'ALL', pri: 'ALL', stage: 'ALL' };
+var _reqBuilt = false;
+
+function buildReqSection() {
+  if (_reqBuilt) return;
+  _reqBuilt = true;
+  var catData = [
+    {k:'ALL',label:'전체',count:51},
+    {k:'DSH',label:'DSH',count:6},
+    {k:'AST',label:'AST',count:10},
+    {k:'BUD',label:'BUD',count:7},
+    {k:'WKF',label:'WKF',count:7},
+    {k:'AI',label:'AI',count:4},
+    {k:'RPT',label:'RPT',count:4},
+    {k:'EXT',label:'EXT',count:5},
+    {k:'SYS',label:'SYS',count:4},
+    {k:'UI',label:'UI',count:4}
+  ];
+  var catTabs = document.getElementById('req-cat-tabs');
+  if (catTabs) {
+    catTabs.innerHTML = catData.map(function(c) {
+      return '<button class="req-cat-btn' + (c.k === 'ALL' ? ' active' : '') + '" data-cat="' + c.k + '">' +
+        c.label + ' <span style="opacity:.65">(' + c.count + ')</span></button>';
+    }).join('');
+    catTabs.addEventListener('click', function(e) {
+      var btn = e.target.closest('.req-cat-btn');
+      if (!btn) return;
+      catTabs.querySelectorAll('.req-cat-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      _reqFilter.cat = btn.dataset.cat;
+      _applyReqFilter();
+    });
+  }
+  var priChips = document.getElementById('req-priority-chips');
+  if (priChips) {
+    var priData = [
+      {k:'ALL',label:'전체',cls:''},
+      {k:'Must',label:'Must',cls:'must-chip'},
+      {k:'Should',label:'Should',cls:'should-chip'},
+      {k:'Could',label:'Could',cls:'could-chip'}
+    ];
+    priChips.innerHTML = priData.map(function(p) {
+      return '<button class="req-chip ' + p.cls + (p.k === 'ALL' ? ' active' : '') + '" data-filter="pri" data-val="' + p.k + '">' + p.label + '</button>';
+    }).join('');
+    priChips.addEventListener('click', function(e) {
+      var btn = e.target.closest('.req-chip');
+      if (!btn) return;
+      priChips.querySelectorAll('.req-chip').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      _reqFilter.pri = btn.dataset.val;
+      _applyReqFilter();
+    });
+  }
+  var stgChips = document.getElementById('req-stage-chips');
+  if (stgChips) {
+    var stgData = [
+      {k:'ALL',label:'전체',cls:''},
+      {k:'1차',label:'1차',cls:'s1-chip'},
+      {k:'2차',label:'2차',cls:'s2-chip'}
+    ];
+    stgChips.innerHTML = stgData.map(function(s) {
+      return '<button class="req-chip ' + s.cls + (s.k === 'ALL' ? ' active' : '') + '" data-filter="stage" data-val="' + s.k + '">' + s.label + '</button>';
+    }).join('');
+    stgChips.addEventListener('click', function(e) {
+      var btn = e.target.closest('.req-chip');
+      if (!btn) return;
+      stgChips.querySelectorAll('.req-chip').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      _reqFilter.stage = btn.dataset.val;
+      _applyReqFilter();
+    });
+  }
+  var tbody = document.getElementById('req-tbody');
+  if (tbody) {
+    var rows = '';
+    REQ_DATA.forEach(function(r) {
+      var priBadge = r.pri === 'Must' ? '<span class="badge-must">Must</span>'
+        : r.pri === 'Should' ? '<span class="badge-should">Should</span>'
+        : '<span class="badge-could">Could</span>';
+      var typeBadge = r.type === '신규' ? '<span class="badge-new">신규</span>' : '<span class="badge-imp">개선</span>';
+      var stgBadge = r.stage === '1차' ? '<span class="badge-s1">1차</span>' : '<span class="badge-s2">2차</span>';
+      var starHtml = r.star ? '<span class="req-star" title="고객 미명시 확장·예측 제안">★</span>' : '';
+      var byShort = r.by.indexOf('전담') !== -1 ? '블루비 전담' : '블루비+천명소프트';
+      rows += '<tr class="req-data-row" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '" onclick="_toggleReqRow(this)">' +
+        '<td><span class="req-id-cell">' + r.id + '</span></td>' +
+        '<td><span class="req-name-cell">' + r.name + starHtml + '</span></td>' +
+        '<td>' + priBadge + '</td>' +
+        '<td>' + typeBadge + '</td>' +
+        '<td>' + stgBadge + '</td>' +
+        '<td class="req-by-cell">' + byShort + '</td>' +
+        '</tr>' +
+        '<tr class="req-detail-row" id="req-det-' + r.id + '">' +
+        '<td colspan="6">' +
+        '<div class="req-detail-grid">' +
+        '<div class="req-dkv"><span class="req-dk">출처</span><span class="req-dv">' + r.src + '</span></div>' +
+        '<div class="req-dkv"><span class="req-dk">주요 사용자</span><span class="req-dv">' + r.user + '</span></div>' +
+        '<div class="req-dkv"><span class="req-dk">As-Is 대응</span><span class="req-dv">' + r.asIs + '</span></div>' +
+        '<div class="req-dkv"><span class="req-dk">담당</span><span class="req-dv">' + r.by + '</span></div>' +
+        '</div>' +
+        '</td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = rows;
+  }
+}
+
+function _toggleReqRow(tr) {
+  var rid = tr.dataset.rid;
+  var det = document.getElementById('req-det-' + rid);
+  if (!det) return;
+  var isOpen = det.classList.contains('req-detail-open');
+  det.classList.toggle('req-detail-open', !isOpen);
+  tr.classList.toggle('req-expanded', !isOpen);
+}
+
+function _applyReqFilter() {
+  var f = _reqFilter;
+  var tbody = document.getElementById('req-tbody');
+  if (!tbody) return;
+  var dataRows = tbody.querySelectorAll('.req-data-row');
+  var visible = 0;
+  dataRows.forEach(function(tr) {
+    var catOk  = f.cat   === 'ALL' || tr.dataset.cat   === f.cat;
+    var priOk  = f.pri   === 'ALL' || tr.dataset.pri   === f.pri;
+    var stgOk  = f.stage === 'ALL' || tr.dataset.stage === f.stage;
+    var show   = catOk && priOk && stgOk;
+    tr.classList.toggle('req-hidden', !show);
+    // 상세 행도 같이 숨김
+    var rid = tr.dataset.rid;
+    var det = document.getElementById('req-det-' + rid);
+    if (det) det.classList.toggle('req-hidden', !show);
+    if (show) visible++;
+  });
+  var label = document.getElementById('req-count-label');
+  if (label) label.textContent = visible + '건 표시';
+}
+
+function toggleReqMd() {
+  var viewer = document.getElementById('req-md-viewer');
+  var btn = document.getElementById('btn-req-md-toggle');
+  if (!viewer) return;
+  if (viewer.style.display !== 'none') {
+    viewer.style.display = 'none';
+    if (btn) btn.textContent = '📄 전체 요구사항 보기 (요구사항_상세정의.md)';
+    return;
+  }
+  if (btn) btn.textContent = '📄 전체 요구사항 접기';
+  if (_mdReqCache) { viewer.style.display = ''; return; }
+  var content = document.getElementById('req-md-content');
+  if (!content) return;
+  if (location.protocol === 'file:') {
+    content.innerHTML = '<div class="md-file-notice">⚠️ 로컬 파일(file://)로 열었을 때는 보안 제한으로 파일을 직접 읽을 수 없습니다.<br>배포 버전에서 확인해 주세요: <a href="https://atg-asset.vercel.app" target="_blank" rel="noopener">🔗 atg-asset.vercel.app</a></div>';
+    viewer.style.display = '';
+    return;
+  }
+  content.innerHTML = '<div class="md-loading">로딩 중…</div>';
+  viewer.style.display = '';
+  fetch('요구사항_상세정의.md')
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .then(function(text) { _mdReqCache = text; content.innerHTML = renderMarkdown(text); })
+    .catch(function(err) { content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>'; });
+}
 
 function renderMarkdown(md) {
   function escHtml(s) {

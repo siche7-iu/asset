@@ -116,6 +116,7 @@
           <div class="pj-group-items">
             <a class="pj-link" data-pj="pj-rfp"><span class="nav-item-label">RFP 요청사항</span></a>
             <a class="pj-link" data-pj="pj-proposal"><span class="nav-item-label">제안서 (UI/UX·개발)</span></a>
+            <a class="pj-link" data-pj="pj-req"><span class="nav-item-label">요구사항 정의</span></a>
             <div class="pj-subgroup">
               <a class="pj-link pj-link-parent" data-pj="pj-asis"><span class="pj-subcaret"></span><span class="nav-item-label">As-Is 현행 · 화면 디자인</span></a>
               <div class="pj-subitems">
@@ -769,6 +770,62 @@
               </div>
               <div id="proposal-md-viewer" class="iq-md-viewer" style="display:none;">
                 <div id="proposal-md-content" class="md-body"></div>
+              </div>
+            </section>
+
+
+            <!-- 요구사항 정의 -->
+            <section id="pj-req" class="pj-sec">
+              <h2 class="pj-sec-title">요구사항 상세정의 <span class="req-ver-badge">v0.1 초안</span></h2>
+              <p class="pj-lead">RFP·제안서·As-Is 화면을 기반으로 블루비 주도로 세분화한 요구사항 51건. ★는 고객 미명시 확장·예측 제안, TBD는 현업 인터뷰 후 확정 예정.</p>
+
+              <!-- 통계 카드 -->
+              <div class="req-stats-row">
+                <div class="req-stat"><div class="req-stat-num">51</div><div class="req-stat-label">총 요구사항</div></div>
+                <div class="req-stat"><div class="req-stat-num req-n-must">35</div><div class="req-stat-label">Must (필수)</div></div>
+                <div class="req-stat"><div class="req-stat-num req-n-should">14</div><div class="req-stat-label">Should (권장)</div></div>
+                <div class="req-stat"><div class="req-stat-num req-n-could">2</div><div class="req-stat-label">Could (선택)</div></div>
+                <div class="req-stat"><div class="req-stat-num req-n-s1">36</div><div class="req-stat-label">1차 오픈</div></div>
+                <div class="req-stat"><div class="req-stat-num req-n-s2">15</div><div class="req-stat-label">2차 오픈</div></div>
+                <div class="req-stat"><div class="req-stat-num req-n-new">32</div><div class="req-stat-label">신규 기능</div></div>
+                <div class="req-stat"><div class="req-stat-num req-n-imp">19</div><div class="req-stat-label">개선 기능</div></div>
+              </div>
+
+              <!-- 필터 영역 -->
+              <div class="req-filter-bar">
+                <div class="req-cat-tabs" id="req-cat-tabs"></div>
+                <div class="req-filter-row">
+                  <span class="req-filter-label">우선순위</span>
+                  <div id="req-priority-chips" class="req-chips-group"></div>
+                  <span class="req-filter-label" style="margin-left:10px">오픈 단계</span>
+                  <div id="req-stage-chips" class="req-chips-group"></div>
+                </div>
+              </div>
+
+              <!-- 요구사항 테이블 -->
+              <div class="req-table-wrap">
+                <table class="req-table">
+                  <thead>
+                    <tr>
+                      <th style="width:136px">ID</th>
+                      <th>기능명</th>
+                      <th style="width:76px">우선순위</th>
+                      <th style="width:62px">분류</th>
+                      <th style="width:62px">오픈</th>
+                      <th style="width:96px">담당</th>
+                    </tr>
+                  </thead>
+                  <tbody id="req-tbody"></tbody>
+                </table>
+              </div>
+              <p class="req-count-label" id="req-count-label">51건 표시</p>
+
+              <!-- MD 전체 보기 -->
+              <div class="iq-md-toggle-row">
+                <button id="btn-req-md-toggle" class="iq-md-toggle-btn" onclick="toggleReqMd()">📄 전체 요구사항 보기 (요구사항_상세정의.md)</button>
+              </div>
+              <div id="req-md-viewer" class="iq-md-viewer" style="display:none;">
+                <div id="req-md-content" class="md-body"></div>
               </div>
             </section>
 
