@@ -1932,3 +1932,180 @@ function showDbToast(msg, tone) {
     t.classList.add('db-toast-out');
   }, 3000);
 }
+
+// ===== Markdown 렌더러 (인터뷰 질의서) =====
+var _mdIqCache = null;
+
+function renderMarkdown(md) {
+  function escHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function inline(s) {
+    s = escHtml(s);
+    s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+    s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+    s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return s;
+  }
+
+  var lines = md.split('\n');
+  var html = '';
+  var i = 0;
+
+  while (i < lines.length) {
+    var line = lines[i];
+
+    // 코드 블록 (``` ... ```)
+    if (line.startsWith('```')) {
+      var lang = escHtml(line.slice(3).trim());
+      i++;
+      var code = [];
+      while (i < lines.length && !lines[i].startsWith('```')) {
+        code.push(escHtml(lines[i]));
+        i++;
+      }
+      html += '<pre class="md-pre"><code' + (lang ? ' class="lang-' + lang + '"' : '') + '>' + code.join('\n') + '</code></pre>\n';
+      i++;
+      continue;
+    }
+
+    // 헤더 (# ~ ######)
+    var hm = line.match(/^(#{1,6})\s+(.+)/);
+    if (hm) {
+      var lv = Math.min(hm[1].length + 1, 6); // # → h2, ## → h3 (h1은 문서 제목용으로 비워둠)
+      html += '<h' + lv + ' class="md-h md-h' + lv + '">' + inline(hm[2]) + '</h' + lv + '>\n';
+      i++;
+      continue;
+    }
+
+    // 수평선 (--- 또는 ***)
+    if (/^-{3,}$/.test(line.trim()) || /^\*{3,}$/.test(line.trim())) {
+      html += '<hr class="md-hr">\n';
+      i++;
+      continue;
+    }
+
+    // 블록쿼트 (> ...)
+    if (line.startsWith('>')) {
+      html += '<blockquote class="md-bq">';
+      while (i < lines.length && lines[i].startsWith('>')) {
+        var bline = lines[i].slice(1).trim();
+        if (bline) html += '<p>' + inline(bline) + '</p>';
+        i++;
+      }
+      html += '</blockquote>\n';
+      continue;
+    }
+
+    // 테이블 (| col | ...)
+    if (line.startsWith('|')) {
+      var rows = [];
+      while (i < lines.length && lines[i].startsWith('|')) {
+        rows.push(lines[i]);
+        i++;
+      }
+      // 구분선 행 필터: |---|:---:|---| 패턴 (한글·영문·숫자 없는 행)
+      var isSep = function(r) { return /^\|[\s\-:|]+\|$/.test(r) && !/[가-힣a-zA-Z0-9]/.test(r); };
+      var dataRows = rows.filter(function(r) { return !isSep(r); });
+      if (dataRows.length === 0) { continue; }
+      html += '<table class="md-table"><thead><tr>';
+      dataRows[0].split('|').slice(1, -1).forEach(function(c) {
+        html += '<th>' + inline(c.trim()) + '</th>';
+      });
+      html += '</tr></thead><tbody>';
+      for (var j = 1; j < dataRows.length; j++) {
+        html += '<tr>';
+        dataRows[j].split('|').slice(1, -1).forEach(function(c) {
+          html += '<td>' + inline(c.trim()) + '</td>';
+        });
+        html += '</tr>';
+      }
+      html += '</tbody></table>\n';
+      continue;
+    }
+
+    // 순서 없는 목록 (- 또는 *)
+    if (/^[-*]\s/.test(line)) {
+      html += '<ul class="md-ul">';
+      while (i < lines.length && /^[-*]\s/.test(lines[i])) {
+        html += '<li>' + inline(lines[i].replace(/^[-*]\s+/, '')) + '</li>';
+        i++;
+      }
+      html += '</ul>\n';
+      continue;
+    }
+
+    // 순서 있는 목록 (1. 2. 3.)
+    if (/^\d+\.\s/.test(line)) {
+      html += '<ol class="md-ol">';
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        html += '<li>' + inline(lines[i].replace(/^\d+\.\s+/, '')) + '</li>';
+        i++;
+      }
+      html += '</ol>\n';
+      continue;
+    }
+
+    // 빈 줄
+    if (line.trim() === '') {
+      i++;
+      continue;
+    }
+
+    // 단락
+    html += '<p class="md-p">' + inline(line) + '</p>\n';
+    i++;
+  }
+
+  return html;
+}
+
+function toggleInterviewMd() {
+  var viewer = document.getElementById('iq-md-viewer');
+  var btn = document.getElementById('btn-iq-md-toggle');
+  if (!viewer) return;
+
+  // 이미 열려 있으면 닫기
+  if (viewer.style.display !== 'none') {
+    viewer.style.display = 'none';
+    if (btn) btn.textContent = '📄 전체 질의서 보기 (요건정의_인터뷰질의서.md)';
+    return;
+  }
+
+  if (btn) btn.textContent = '📄 전체 질의서 접기';
+
+  // 이미 캐시됨 → 바로 표시
+  if (_mdIqCache) {
+    viewer.style.display = '';
+    return;
+  }
+
+  var content = document.getElementById('iq-md-content');
+  if (!content) return;
+
+  // file:// 환경: fetch CORS 제한 → 안내 메시지
+  if (location.protocol === 'file:') {
+    content.innerHTML = '<div class="md-file-notice">⚠️ 로컬 파일(file://)로 열었을 때는 보안 제한으로 파일을 직접 읽을 수 없습니다.<br>배포 버전에서 확인해 주세요: <a href="https://atg-asset.vercel.app" target="_blank" rel="noopener">🔗 atg-asset.vercel.app</a></div>';
+    viewer.style.display = '';
+    return;
+  }
+
+  // fetch로 .md 파일 로드
+  content.innerHTML = '<div class="md-loading">로딩 중…</div>';
+  viewer.style.display = '';
+
+  fetch('요건정의_인터뷰질의서.md')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(function(text) {
+      _mdIqCache = text;
+      content.innerHTML = renderMarkdown(text);
+    })
+    .catch(function(err) {
+      content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>';
+    });
+}
