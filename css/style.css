@@ -2491,8 +2491,12 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 .req-chip.s2-chip.active     { background: #7C3AED; border-color: #7C3AED; }
 
 .req-table-wrap {
-  border: 1px solid #E5E7EB; border-radius: 10px; overflow-x: auto;
+  border: 1px solid #E5E7EB; border-radius: 10px; overflow: hidden;
   margin-bottom: 8px;
+}
+.req-table-scroll {
+  overflow-x: auto;
+  overflow-y: clip; /* overflow-y:clip — 수직 sticky 컨텍스트를 .content로 위임 */
 }
 .req-table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 12.5px; }
 .req-table thead th {
@@ -2500,15 +2504,43 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
   font-size: 11px; font-weight: 700; color: #6B7280;
   text-align: left; border-bottom: 1px solid #E5E7EB;
   white-space: nowrap;
+  position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 1px 0 #E5E7EB;
 }
 .req-table tbody tr.req-data-row {
   border-bottom: 1px solid #F3F4F6;
   transition: background .12s;
 }
 .req-table tbody tr.req-data-row:hover { background: #F8FAFF; }
+.req-table tbody tr.req-row-pre { background: #F1F2F5; }
+.req-table tbody tr.req-row-pre:hover { background: #E9EAEE; }
 .req-table tbody tr.req-expanded { background: #EFF6FF; }
 .req-table tbody tr.req-hidden { display: none; }
 .req-table td { padding: 8px 11px; vertical-align: middle; }
+
+/* 선제 제안 출처 툴팁 */
+.req-src-tip { cursor: help; }
+.req-tip-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #9CA3AF; color: #fff;
+  font-size: 9px; font-weight: 700; margin-left: 4px;
+  vertical-align: middle;
+}
+#req-tip {
+  position: fixed;
+  background: rgba(17,24,39,.92);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  line-height: 1.55;
+  max-width: 280px;
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+  box-shadow: 0 4px 14px rgba(0,0,0,.3);
+}
 .req-id-cell {
   font-family: 'Courier New', monospace; font-size: 11.5px;
   font-weight: 700; color: #1E3A5F; white-space: nowrap;

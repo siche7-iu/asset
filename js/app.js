@@ -1960,8 +1960,8 @@ var REQ_DATA = [
   {id:'NH-AST-006',name:'자산 디지털 이력서',cat:'AST',catName:'자산 원장·생애주기',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 1.5.3',user:'담당자, 관리자, 감사',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
   {id:'NH-AST-007',name:'생애주기 실시간 모니터링',cat:'AST',catName:'자산 원장·생애주기',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 p10·1.5.2',user:'관리자, 자산 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
   {id:'NH-AST-008',name:'재물조사 관리',cat:'AST',catName:'자산 원장·생애주기',pri:'Must',type:'개선',stage:'2차',star:false,src:'RFP 공통 / As-Is 재물조사',user:'재물조사 담당자, 현장 직원',asIs:'재물조사 메뉴 → 개선',by:'블루비 설계 / 천명소프트 구현'},
-  {id:'NH-AST-009',name:'건설중인 자산(CIP) 관리',cat:'AST',catName:'자산 원장·생애주기',pri:'Should',type:'신규',stage:'2차',star:true,src:'글로벌 벤치마킹(선제 제안)',user:'재무·회계 담당자',asIs:'없음 또는 수기(Excel)',by:'블루비 설계 / 천명소프트 구현'},
-  {id:'NH-AST-010',name:'자산 복수 감가상각 장부',cat:'AST',catName:'자산 원장·생애주기',pri:'Could',type:'신규',stage:'2차',star:true,src:'글로벌 벤치마킹(선제 제안)',user:'회계 담당자',asIs:'Excel 병행 관리',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-009',name:'건설중인 자산(CIP) 관리',cat:'AST',catName:'자산 원장·생애주기',pri:'Should',type:'신규',stage:'2차',star:true,src:'글로벌 벤치마킹(선제 제안)',srcTip:'RFP·제안서 미명시. SAP·Oracle 등 글로벌 자산관리 표준 기능. 건설 공사 자산의 자본화 前 단계 추적 관리 — 도입 선제 제안',user:'재무·회계 담당자',asIs:'없음 또는 수기(Excel)',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-AST-010',name:'자산 복수 감가상각 장부',cat:'AST',catName:'자산 원장·생애주기',pri:'Could',type:'신규',stage:'2차',star:true,src:'글로벌 벤치마킹(선제 제안)',srcTip:'RFP·제안서 미명시. IFRS·K-GAAP 혼용 시 장부별 상각 기준 차이 대응. Excel 병행 리스크 해소 목적으로 선제 제안',user:'회계 담당자',asIs:'Excel 병행 관리',by:'블루비 설계 / 천명소프트 구현'},
   // NH-BUD 예산·결산·회계 (7건)
   {id:'NH-BUD-001',name:'예산 종합현황판',cat:'BUD',catName:'예산·결산·회계',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 예산결산 / 제안서 1.3.1',user:'예산 담당자, 관리자, 임원',asIs:'고정투자예산(폼) → 신규',by:'블루비 설계 / 천명소프트 구현'},
   {id:'NH-BUD-002',name:'예산 편성·배정·조정',cat:'BUD',catName:'예산·결산·회계',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.3.1',user:'예산 담당자, 관리자',asIs:'고정투자예산 폼 → 개선',by:'블루비 설계 / 천명소프트 구현'},
@@ -1987,7 +1987,7 @@ var REQ_DATA = [
   {id:'NH-RPT-001',name:'자산 현황 리포트',cat:'RPT',catName:'리포트·보고서',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.1(p11)·1.3.3',user:'담당자, 관리자, 임원',asIs:'기존 현황 화면 → 개선',by:'블루비 설계 / 천명소프트 구현'},
   {id:'NH-RPT-002',name:'조직별 자산 비교 리포트',cat:'RPT',catName:'리포트·보고서',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.1.1(p11)',user:'관리자, 임원',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
   {id:'NH-RPT-003',name:'감가상각 시뮬레이션 리포트',cat:'RPT',catName:'리포트·보고서',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 1.5.1',user:'회계 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
-  {id:'NH-RPT-004',name:'사용자 정의형 데이터 추출',cat:'RPT',catName:'리포트·보고서',pri:'Could',type:'신규',stage:'2차',star:true,src:'제안서 1.5.4(선제 제안)',user:'담당자, 분석팀',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-RPT-004',name:'사용자 정의형 데이터 추출',cat:'RPT',catName:'리포트·보고서',pri:'Could',type:'신규',stage:'2차',star:true,src:'제안서 1.5.4(선제 제안)',srcTip:'제안서 1.5.4에 짧은 언급만 있고 요건 미정의. 담당자 자율 데이터 추출 수요를 블루비가 구체화한 항목',user:'담당자, 분석팀',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
   // NH-EXT 외부 시스템 연동 (5건)
   {id:'NH-EXT-001',name:'부동산 시세 API 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.4.2·1.5.1(한국부동산원·KB)',user:'자동(백그라운드)',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
   {id:'NH-EXT-002',name:'지도 API 연동(카카오·네이버)',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.4.2·1.5.1',user:'자동(신청 시)',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
@@ -1997,12 +1997,12 @@ var REQ_DATA = [
   // NH-SYS 시스템 공통·관리 (4건)
   {id:'NH-SYS-001',name:'권한·역할 관리',cat:'SYS',catName:'시스템 공통·관리',pri:'Must',type:'개선',stage:'1차',star:false,src:'제안서 1.1.1(역할별 맞춤)',user:'시스템 관리자',asIs:'권한그룹 관리[SY2002] → 개선',by:'블루비 설계 / 천명소프트 구현'},
   {id:'NH-SYS-002',name:'공통코드 관리',cat:'SYS',catName:'시스템 공통·관리',pri:'Must',type:'개선',stage:'1차',star:false,src:'As-Is 공통코드[SY1001]',user:'시스템 관리자',asIs:'공통코드 관리[SY1001] → 개선',by:'블루비 설계 / 천명소프트 구현'},
-  {id:'NH-SYS-003',name:'시스템 이력·감사 로그',cat:'SYS',catName:'시스템 공통·관리',pri:'Must',type:'신규',stage:'1차',star:true,src:'금융권 내부통제 요건(선제 제안)',user:'감사 담당자, 관리자',asIs:'없음 또는 미흡',by:'블루비 설계 / 천명소프트 구현'},
-  {id:'NH-SYS-004',name:'업무 체크리스트·템플릿 관리',cat:'SYS',catName:'시스템 공통·관리',pri:'Should',type:'신규',stage:'2차',star:false,src:'RFP 업무지원 / 제안서 1.6.1·1.6.2',user:'시스템 관리자, 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
-  // NH-UI UI/UX 표준 (4건)
-  {id:'NH-UI-001',name:'전체 디자인 시스템·가이드',cat:'UI',catName:'UI/UX 표준',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 공통 UI/UX / 제안서 1.1.3',user:'개발사, 유지보수 팀',asIs:'없음 — 신규',by:'블루비 전담 산출'},
-  {id:'NH-UI-002',name:'공통 컴포넌트 라이브러리',cat:'UI',catName:'UI/UX 표준',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.1.3(WebSquare)',user:'개발사, 유지보수 팀',asIs:'없음 — 신규',by:'블루비 전담 산출'},
-  {id:'NH-UI-004',name:'접근성(웹 표준) 준수',cat:'UI',catName:'UI/UX 표준',pri:'Should',type:'신규',stage:'1차',star:true,src:'제안서 1.1.1(Accessibility)',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'}
+  {id:'NH-SYS-003',name:'업무 체크리스트·템플릿 관리',cat:'SYS',catName:'시스템 공통·관리',pri:'Should',type:'신규',stage:'2차',star:false,src:'RFP 업무지원 / 제안서 1.6.1·1.6.2',user:'시스템 관리자, 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
+  {id:'NH-SYS-004',name:'시스템 이력·감사 로그',cat:'SYS',catName:'시스템 공통·관리',pri:'Must',type:'신규',stage:'1차',star:true,src:'금융권 내부통제 요건(선제 제안)',srcTip:'RFP·제안서 미명시. 전자금융감독규정 등 금융권 내부통제 요건 상 필수 — 감사 대응을 위해 블루비가 선제 제안',user:'감사 담당자, 관리자',asIs:'없음 또는 미흡',by:'블루비 설계 / 천명소프트 구현'},
+  // NH-UX UI/UX 표준 (3건)
+  {id:'NH-UX-001',name:'전체 디자인 시스템·가이드',cat:'UI',catName:'UI/UX 표준',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 공통 UI/UX / 제안서 1.1.3',user:'개발사, 유지보수 팀',asIs:'없음 — 신규',by:'블루비 전담 산출'},
+  {id:'NH-UX-002',name:'공통 컴포넌트 라이브러리',cat:'UI',catName:'UI/UX 표준',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.1.3(WebSquare)',user:'개발사, 유지보수 팀',asIs:'없음 — 신규',by:'블루비 전담 산출'},
+  {id:'NH-UX-003',name:'접근성(웹 표준) 준수',cat:'UI',catName:'UI/UX 표준',pri:'Should',type:'신규',stage:'1차',star:true,src:'제안서 1.1.1(Accessibility)',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'}
 ];
 
 var _reqFilter = { cat: 'ALL', pri: 'ALL', stage: 'ALL' };
@@ -2021,7 +2021,7 @@ function buildReqSection() {
     {k:'RPT',label:'RPT',count:4},
     {k:'EXT',label:'EXT',count:5},
     {k:'SYS',label:'SYS',count:4},
-    {k:'UI',label:'UI',count:3}
+    {k:'UI',label:'UX',count:3}
   ];
   var catTabs = document.getElementById('req-cat-tabs');
   if (catTabs) {
@@ -2087,19 +2087,49 @@ function buildReqSection() {
       var typeBadge = r.type === '신규' ? '<span class="badge-new">신규</span>' : '<span class="badge-imp">개선</span>';
       var stgBadge = r.stage === '1차' ? '<span class="badge-s1">1차</span>' : '<span class="badge-s2">2차</span>';
       var starHtml = r.star ? '<span class="req-star" title="고객 미명시 확장·예측 제안">★</span>' : '';
-      rows += '<tr class="req-data-row" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '">' +
+      var isPre = r.src && r.src.indexOf('선제 제안') !== -1;
+      var srcCell = isPre && r.srcTip
+        ? '<td class="req-src-cell req-src-tip" data-tip="' + r.srcTip + '">' + r.src + ' <span class="req-tip-icon">?</span></td>'
+        : '<td class="req-src-cell">' + r.src + '</td>';
+      rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '">' +
         '<td><span class="req-id-cell">' + r.id + '</span></td>' +
         '<td><span class="req-name-cell">' + r.name + starHtml + '</span></td>' +
         '<td>' + priBadge + '</td>' +
         '<td>' + typeBadge + '</td>' +
         '<td>' + stgBadge + '</td>' +
-        '<td class="req-src-cell">' + r.src + '</td>' +
+        srcCell +
         '<td class="req-user-cell">' + r.user + '</td>' +
         '<td class="req-asis-cell">' + r.asIs + '</td>' +
         '<td class="req-by-cell">' + r.by + '</td>' +
         '</tr>';
     });
     tbody.innerHTML = rows;
+
+    // 출처 툴팁
+    var tipEl = document.getElementById('req-tip');
+    if (!tipEl) {
+      tipEl = document.createElement('div');
+      tipEl.id = 'req-tip';
+      document.body.appendChild(tipEl);
+    }
+    tbody.addEventListener('mouseover', function(e) {
+      var cell = e.target.closest('.req-src-tip');
+      if (!cell) return;
+      tipEl.textContent = cell.dataset.tip;
+      tipEl.style.display = 'block';
+    });
+    tbody.addEventListener('mousemove', function(e) {
+      var cell = e.target.closest('.req-src-tip');
+      if (!cell) { tipEl.style.display = 'none'; return; }
+      var x = e.clientX + 14, y = e.clientY - 12;
+      if (x + 300 > window.innerWidth) x = e.clientX - 310;
+      if (y + 80 > window.innerHeight) y = e.clientY - 70;
+      tipEl.style.left = x + 'px';
+      tipEl.style.top = y + 'px';
+    });
+    tbody.addEventListener('mouseout', function(e) {
+      if (!e.relatedTarget || !e.relatedTarget.closest('.req-src-tip')) tipEl.style.display = 'none';
+    });
   }
 }
 
