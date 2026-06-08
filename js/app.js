@@ -689,9 +689,12 @@ var INTRO_ENABLED = false;
       var rows = r.detail.map(function(d) {
         return '<div class="cb-row"><span>'+d[0]+'</span><b>'+d[1]+'</b></div>';
       }).join('');
-      var expExtra = (r.expDir==='left' ? ' exp-dir-left' : '') + (r.expAbove ? ' exp-above' : '') + (r.expAdjust ? ' exp-left-adj' : '');
+      var expExtra = (r.expDir==='left' ? ' exp-dir-left' : '') + (r.expAbove ? ' exp-above' : '');
+      // expAdjust: 오른쪽으로 N px 이동 → right = calc(100% + (6-N)px)
+      var expRightOverride = (r.expDir==='left' && r.expAdjust)
+        ? ' style="right: calc(100% + ' + (6 - r.expAdjust) + 'px) !important"' : '';
       return '<div class="region-marker dir-'+r.dir+'" data-i="'+i+'" style="left:'+r.x+'%;top:'+r.y+'%">' +
-        '<div class="callout callout-exp'+expExtra+'" id="callout-exp-'+i+'">' +
+        '<div class="callout callout-exp'+expExtra+'"' + expRightOverride + ' id="callout-exp-'+i+'">' +
           '<div class="cb-name">'+r.name+'</div>' +
           '<div class="cb-num">'+r.count+'</div>' +
           '<div class="cb-div"></div>' + rows +
