@@ -2408,6 +2408,10 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 }
 .md-table td { padding: 7px 12px; border: 1px solid #E5E7EB; vertical-align: top; }
 .md-table tr:nth-child(even) td { background: #F9FAFB; }
+/* 요구사항 MD 뷰어 출처 셀 — 전체 내용 구조화 표시 */
+.req-md-src { line-height: 1.7; }
+.req-md-src b { color: #1e40af; font-weight: 700; display: block; margin-top: 8px; }
+.req-md-src b:first-child { margin-top: 0; }
 .md-pre {
   background: #1E293B; color: #E2E8F0;
   border-radius: 6px; padding: 14px 16px;

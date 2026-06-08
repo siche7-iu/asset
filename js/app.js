@@ -2507,6 +2507,7 @@ function toggleReqMd() {
     .then(function(text) {
       _mdReqCache = text;
       content.innerHTML = renderMarkdown(text);
+      postProcessReqMdSrc(content);
       var cbs3 = _mdReqCallbacks.splice(0);
       cbs3.forEach(function(cb) { cb(); });
     })
@@ -2688,6 +2689,32 @@ function toggleProposalMd() {
     .catch(function(err) {
       content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>';
     });
+}
+
+// 요구사항 MD 뷰어 렌더링 후 출처 셀을 REQ_SRC_TIPS 전체 내용으로 교체
+function postProcessReqMdSrc(container) {
+  if (typeof REQ_SRC_TIPS === 'undefined') return;
+  var anchors = container.querySelectorAll('[id^="req-anchor-NH-"]');
+  anchors.forEach(function(h) {
+    var id = h.id.replace('req-anchor-', '');
+    var tip = REQ_SRC_TIPS[id];
+    if (!tip) return;
+    var el = h.nextElementSibling;
+    while (el) {
+      if (/^H[1-6]$/.test(el.tagName)) break;
+      if (el.tagName === 'TABLE') {
+        el.querySelectorAll('tbody tr').forEach(function(tr) {
+          var tds = tr.querySelectorAll('td');
+          if (tds.length >= 2 && tds[0].textContent.trim() === '출처') {
+            tds[1].innerHTML = formatSrcTip(tip);
+            tds[1].classList.add('req-md-src');
+          }
+        });
+        break;
+      }
+      el = el.nextElementSibling;
+    }
+  });
 }
 
 // 출처 툴팁 HTML 포맷터
