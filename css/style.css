@@ -2409,9 +2409,10 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 .md-table td { padding: 7px 12px; border: 1px solid #E5E7EB; vertical-align: top; }
 .md-table tr:nth-child(even) td { background: #F9FAFB; }
 /* 요구사항 MD 뷰어 출처 셀 — 전체 내용 구조화 표시 */
-.req-md-src { line-height: 1.7; }
-.req-md-src b { color: #1e40af; font-weight: 700; display: block; margin-top: 8px; }
-.req-md-src b:first-child { margin-top: 0; }
+.req-md-src .src-grp { margin-bottom: 10px; }
+.req-md-src .src-grp:last-child { margin-bottom: 0; }
+.req-md-src .src-grp b { display: block; color: #1e40af; font-weight: 700; margin-bottom: 3px; }
+.req-md-src .src-grp span { display: block; line-height: 1.6; }
 .md-pre {
   background: #1E293B; color: #E2E8F0;
   border-radius: 6px; padding: 14px 16px;
@@ -2583,12 +2584,11 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
   display: none;
   box-shadow: 0 4px 14px rgba(0,0,0,.3);
 }
-#req-tip b {
-  display: block;
-  color: #93C5FD;
-  margin-top: 6px;
-}
-#req-tip b:first-child { margin-top: 0; }
+/* src-grp: 섹션 간 여백(크게), 섹션 내 제목-목록 여백(작게) */
+#req-tip .src-grp { margin-bottom: 9px; }
+#req-tip .src-grp:last-child { margin-bottom: 0; }
+#req-tip .src-grp b { display: block; color: #93C5FD; font-weight: 700; margin-bottom: 2px; }
+#req-tip .src-grp span { display: block; padding-left: 2px; }
 .req-id-cell {
   font-family: 'Courier New', monospace; font-size: 11.5px;
   font-weight: 700; color: #1E3A5F; white-space: nowrap;

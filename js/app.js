@@ -2347,9 +2347,10 @@ function buildReqSection() {
       var starHtml = r.star ? '<span class="req-star" title="고객 미명시 확장·예측 제안">★</span>' : '';
       var isPre = r.src && r.src.indexOf('선제 제안') !== -1;
       var tip = r.srcTip || REQ_SRC_TIPS[r.id] || '';
+      var srcDisplay = r.src.replace(/§/g, '');
       var srcCell = tip
-        ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + r.src + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
-        : '<td class="req-src-cell">' + r.src + '</td>';
+        ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + srcDisplay + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
+        : '<td class="req-src-cell">' + srcDisplay + '</td>';
       rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '" data-type="' + r.type + '">' +
         '<td><span class="req-id-cell">' + r.id + '</span><button class="req-edit-btn" onclick="openReqEditModal(\'' + r.id + '\')" title="수정">✏</button></td>' +
         '<td><span class="req-name-cell" title="클릭하면 상세 정의서로 이동">' + r.name + starHtml + '</span></td>' +
@@ -2719,6 +2720,7 @@ function postProcessReqMdSrc(container) {
 
 // 출처 툴팁 HTML 포맷터
 // "RFP X — Y / 제안서 §1.1.1 Z / §1.1.2 W" 형식을 구조화된 HTML로 변환
+// 섹션(src-grp)으로 묶어 제목-목록 간격을 좁히고, 섹션 간 여백을 크게 유지
 function formatSrcTip(raw) {
   if (!raw) return '';
   function esc(s) {
@@ -2726,36 +2728,53 @@ function formatSrcTip(raw) {
   }
   var segs = raw.split(' / ');
   if (segs.length === 1) {
-    return '<span style="white-space:pre-wrap">' + esc(raw) + '</span>';
+    return '<div class="src-grp">' + esc(raw) + '</div>';
   }
-  var lines = [];
-  var propAdded = false;
+
+  // 세그먼트를 그룹(헤더 + 불릿 배열)으로 수집
+  var groups = [];
+  var cur = null;
   segs.forEach(function(seg) {
     seg = seg.trim();
     if (!seg) return;
     if (/^RFP /.test(seg)) {
       var di = seg.indexOf(' — ');
       if (di !== -1) {
-        lines.push('<b>' + esc(seg.slice(0, di)) + '</b>');
-        lines.push('ㆍ' + esc(seg.slice(di + 3)));
+        cur = {hdr: esc(seg.slice(0, di)), bullets: [esc(seg.slice(di + 3))]};
       } else {
-        lines.push('<b>' + esc(seg) + '</b>');
+        cur = {hdr: esc(seg), bullets: []};
       }
-      propAdded = false;
+      groups.push(cur);
     } else if (/^제안서/.test(seg)) {
-      if (!propAdded) { lines.push('<b>제안서</b>'); propAdded = true; }
-      lines.push('ㆍ' + esc(seg.replace(/^제안서 §?/, '')));
+      if (cur && cur.isProposal) {
+        cur.bullets.push(esc(seg.replace(/^제안서 §?/, '')));
+      } else {
+        cur = {hdr: '제안서', bullets: [esc(seg.replace(/^제안서 §?/, ''))], isProposal: true};
+        groups.push(cur);
+      }
     } else if (/^§/.test(seg)) {
-      if (!propAdded) { lines.push('<b>제안서</b>'); propAdded = true; }
-      lines.push('ㆍ' + esc(seg.slice(1)));
+      if (cur && cur.isProposal) {
+        cur.bullets.push(esc(seg.slice(1)));
+      } else {
+        cur = {hdr: '제안서', bullets: [esc(seg.slice(1))], isProposal: true};
+        groups.push(cur);
+      }
     } else if (/^As-Is/.test(seg)) {
-      lines.push('<b>As-Is</b>');
-      lines.push('ㆍ' + esc(seg.replace(/^As-Is\s*/, '')));
+      cur = {hdr: 'As-Is', bullets: [esc(seg.replace(/^As-Is\s*/, ''))]};
+      groups.push(cur);
     } else {
-      lines.push(esc(seg));
+      cur = {hdr: null, bullets: [esc(seg)]};
+      groups.push(cur);
     }
   });
-  return lines.join('<br>');
+
+  return groups.map(function(g) {
+    var html = '<div class="src-grp">';
+    if (g.hdr) html += '<b>' + g.hdr + '</b>';
+    g.bullets.forEach(function(b) { html += '<span>ㆍ' + b + '</span>'; });
+    html += '</div>';
+    return html;
+  }).join('');
 }
 
 function toggleQna1Md() {
@@ -2951,9 +2970,10 @@ function _refreshReqTable() {
     var starHtml  = r.star ? '<span class="req-star" title="고객 미명시 확장·예측 제안">★</span>' : '';
     var isPre = r.src && r.src.indexOf('선제 제안') !== -1;
     var tip = r.srcTip || (typeof REQ_SRC_TIPS !== 'undefined' && REQ_SRC_TIPS[r.id]) || '';
+    var srcDisplay = r.src.replace(/§/g, '');
     var srcCell = tip
-      ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + r.src + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
-      : '<td class="req-src-cell">' + r.src + '</td>';
+      ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + srcDisplay + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
+      : '<td class="req-src-cell">' + srcDisplay + '</td>';
     rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '">' +
       '<td><span class="req-id-cell">' + r.id + '</span><button class="req-edit-btn" onclick="openReqEditModal(\'' + r.id + '\')" title="수정">✏</button></td>' +
       '<td><span class="req-name-cell" title="클릭하면 상세 정의서로 이동">' + r.name + starHtml + '</span></td>' +
