@@ -689,7 +689,7 @@ var INTRO_ENABLED = false;
       var rows = r.detail.map(function(d) {
         return '<div class="cb-row"><span>'+d[0]+'</span><b>'+d[1]+'</b></div>';
       }).join('');
-      var expExtra = (r.expDir==='left' ? ' exp-dir-left' : '') + (r.expAbove ? ' exp-above' : '');
+      var expExtra = (r.expDir==='left' ? ' exp-dir-left' : '') + (r.expAbove ? ' exp-above' : '') + (r.expAdjust ? ' exp-left-adj' : '');
       return '<div class="region-marker dir-'+r.dir+'" data-i="'+i+'" style="left:'+r.x+'%;top:'+r.y+'%">' +
         '<div class="callout callout-exp'+expExtra+'" id="callout-exp-'+i+'">' +
           '<div class="cb-name">'+r.name+'</div>' +

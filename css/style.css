@@ -601,6 +601,10 @@ nav { flex: none; }
   left: auto !important;
   right: calc(100% + 6px) !important;
 }
+/* 강원: 말풍선이 패널 왼쪽으로 너무 나가므로 160px 우측 보정 */
+.region-marker .callout-exp.exp-dir-left.exp-left-adj {
+  margin-left: 160px;
+}
 /* 상세 말풍선 위쪽 전개 (전라·제주: 아래로 퍼지면 다른 핀·패널 하단과 충돌) */
 .region-marker .callout-exp.exp-above {
   top: auto !important;
