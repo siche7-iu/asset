@@ -2206,7 +2206,7 @@ var REQ_DATA = [
     tbd:[]}
 ];
 
-var _reqFilter = { cat: 'ALL', pri: 'ALL', stage: 'ALL' };
+var _reqFilter = { cat: 'ALL', pri: 'ALL', stage: 'ALL', type: 'ALL' };
 var _reqBuilt = false;
 
 function buildReqSection() {
@@ -2243,6 +2243,7 @@ function buildReqSection() {
       catTabs.querySelectorAll('.req-cat-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       _reqFilter.cat = btn.dataset.cat;
+      _clearStatActive();
       _applyReqFilter();
     });
   }
@@ -2263,6 +2264,7 @@ function buildReqSection() {
       priChips.querySelectorAll('.req-chip').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       _reqFilter.pri = btn.dataset.val;
+      _clearStatActive();
       _applyReqFilter();
     });
   }
@@ -2282,7 +2284,54 @@ function buildReqSection() {
       stgChips.querySelectorAll('.req-chip').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       _reqFilter.stage = btn.dataset.val;
+      _clearStatActive();
       _applyReqFilter();
+    });
+  }
+  var typeChips = document.getElementById('req-type-chips');
+  if (typeChips) {
+    var typeData = [
+      {k:'ALL',label:'전체',cls:''},
+      {k:'신규',label:'신규',cls:'new-chip'},
+      {k:'개선',label:'개선',cls:'imp-chip'}
+    ];
+    typeChips.innerHTML = typeData.map(function(t) {
+      return '<button class="req-chip ' + t.cls + (t.k === 'ALL' ? ' active' : '') + '" data-filter="type" data-val="' + t.k + '">' + t.label + '</button>';
+    }).join('');
+    typeChips.addEventListener('click', function(e) {
+      var btn = e.target.closest('.req-chip');
+      if (!btn) return;
+      typeChips.querySelectorAll('.req-chip').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      _reqFilter.type = btn.dataset.val;
+      _clearStatActive();
+      _applyReqFilter();
+    });
+  }
+  // stat 카드 클릭 → 필터 활성화
+  var statsRow = document.getElementById('req-stats-row');
+  if (statsRow) {
+    statsRow.addEventListener('click', function(e) {
+      var card = e.target.closest('.stat-btn');
+      if (!card) return;
+      var action = card.dataset.stat;
+      // 모든 stat 카드 active 해제 후 클릭된 것만 활성
+      statsRow.querySelectorAll('.stat-btn').forEach(function(c) { c.classList.remove('stat-active'); });
+      card.classList.add('stat-active');
+      // 필터 초기화 후 해당 필터만 적용
+      _reqFilter = { cat: 'ALL', pri: 'ALL', stage: 'ALL', type: 'ALL' };
+      if (action !== 'reset') {
+        var parts = action.split(':');
+        if (parts[0] === 'pri')   _reqFilter.pri   = parts[1];
+        if (parts[0] === 'stage') _reqFilter.stage = parts[1];
+        if (parts[0] === 'type')  _reqFilter.type  = parts[1];
+      }
+      // 칩 UI 동기화
+      _syncChipsToFilter();
+      _applyReqFilter();
+      // 그리드로 스크롤
+      var tableWrap = document.getElementById('req-table-wrap');
+      if (tableWrap) tableWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   }
   var tbody = document.getElementById('req-tbody');
@@ -2300,7 +2349,7 @@ function buildReqSection() {
       var srcCell = tip
         ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + r.src + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
         : '<td class="req-src-cell">' + r.src + '</td>';
-      rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '">' +
+      rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '" data-type="' + r.type + '">' +
         '<td><span class="req-id-cell">' + r.id + '</span><button class="req-edit-btn" onclick="openReqEditModal(\'' + r.id + '\')" title="수정">✏</button></td>' +
         '<td><span class="req-name-cell" title="클릭하면 상세 정의서로 이동">' + r.name + starHtml + '</span></td>' +
         '<td>' + priBadge + '</td>' +
@@ -2380,6 +2429,31 @@ function buildReqSection() {
 }
 
 
+function _clearStatActive() {
+  var row = document.getElementById('req-stats-row');
+  if (row) row.querySelectorAll('.stat-btn').forEach(function(c) { c.classList.remove('stat-active'); });
+}
+
+function _syncChipsToFilter() {
+  var f = _reqFilter;
+  var catTabs = document.getElementById('req-cat-tabs');
+  if (catTabs) catTabs.querySelectorAll('.req-cat-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.cat === f.cat);
+  });
+  var priChips = document.getElementById('req-priority-chips');
+  if (priChips) priChips.querySelectorAll('.req-chip').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.val === f.pri);
+  });
+  var stgChips = document.getElementById('req-stage-chips');
+  if (stgChips) stgChips.querySelectorAll('.req-chip').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.val === f.stage);
+  });
+  var typeChips = document.getElementById('req-type-chips');
+  if (typeChips) typeChips.querySelectorAll('.req-chip').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.val === f.type);
+  });
+}
+
 function _applyReqFilter() {
   var f = _reqFilter;
   var tbody = document.getElementById('req-tbody');
@@ -2390,7 +2464,8 @@ function _applyReqFilter() {
     var catOk  = f.cat   === 'ALL' || tr.dataset.cat   === f.cat;
     var priOk  = f.pri   === 'ALL' || tr.dataset.pri   === f.pri;
     var stgOk  = f.stage === 'ALL' || tr.dataset.stage === f.stage;
-    var show   = catOk && priOk && stgOk;
+    var typOk  = f.type  === 'ALL' || tr.dataset.type  === f.type;
+    var show   = catOk && priOk && stgOk && typOk;
     tr.classList.toggle('req-hidden', !show);
     if (show) visible++;
   });

@@ -2441,6 +2441,25 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
   background: #fff; border: 1px solid #E5E7EB; border-radius: 10px;
   padding: 12px 18px; flex: 1; min-width: 88px; text-align: center;
 }
+.req-stat.stat-btn {
+  cursor: pointer; transition: transform .12s, box-shadow .12s, border-color .12s;
+  user-select: none;
+}
+.req-stat.stat-btn:hover {
+  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  border-color: #CBD5E1;
+}
+.req-stat.stat-active {
+  border-width: 2px; box-shadow: 0 4px 14px rgba(30,58,95,.13);
+}
+.req-stat.stat-active[data-stat="reset"]      { border-color: #1E3A5F; }
+.req-stat.stat-active[data-stat="pri:Must"]   { border-color: #DC2626; }
+.req-stat.stat-active[data-stat="pri:Should"] { border-color: #2563EB; }
+.req-stat.stat-active[data-stat="pri:Could"]  { border-color: #9CA3AF; }
+.req-stat.stat-active[data-stat="stage:1차"]  { border-color: #4F46E5; }
+.req-stat.stat-active[data-stat="stage:2차"]  { border-color: #7C3AED; }
+.req-stat.stat-active[data-stat="type:신규"]  { border-color: #059669; }
+.req-stat.stat-active[data-stat="type:개선"]  { border-color: #D97706; }
 .req-stat-num {
   font-size: 21px; font-weight: 700; color: #1E3A5F; line-height: 1.2;
 }
@@ -2493,6 +2512,8 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 .req-chip.could-chip.active  { background: #9CA3AF; border-color: #9CA3AF; }
 .req-chip.s1-chip.active     { background: #4F46E5; border-color: #4F46E5; }
 .req-chip.s2-chip.active     { background: #7C3AED; border-color: #7C3AED; }
+.req-chip.new-chip.active    { background: #059669; border-color: #059669; }
+.req-chip.imp-chip.active    { background: #D97706; border-color: #D97706; }
 
 .req-table-wrap {
   border: 1px solid #E5E7EB; border-radius: 10px; overflow: hidden;
