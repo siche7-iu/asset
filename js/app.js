@@ -2693,13 +2693,12 @@ function toggleProposalMd() {
 }
 
 // 요구사항 MD 뷰어 렌더링 후 출처 셀을 REQ_SRC_TIPS 전체 내용으로 교체
+// REQ_SRC_TIPS에 없는 항목은 셀 원문(textContent)을 formatSrcTip()으로 처리해 § 제거
 function postProcessReqMdSrc(container) {
-  if (typeof REQ_SRC_TIPS === 'undefined') return;
   var anchors = container.querySelectorAll('[id^="req-anchor-NH-"]');
   anchors.forEach(function(h) {
     var id = h.id.replace('req-anchor-', '');
-    var tip = REQ_SRC_TIPS[id];
-    if (!tip) return;
+    var tip = (typeof REQ_SRC_TIPS !== 'undefined') ? REQ_SRC_TIPS[id] : null;
     var el = h.nextElementSibling;
     while (el) {
       if (/^H[1-6]$/.test(el.tagName)) break;
@@ -2707,7 +2706,8 @@ function postProcessReqMdSrc(container) {
         el.querySelectorAll('tbody tr').forEach(function(tr) {
           var tds = tr.querySelectorAll('td');
           if (tds.length >= 2 && tds[0].textContent.trim() === '출처') {
-            tds[1].innerHTML = formatSrcTip(tip);
+            var raw = tip || tds[1].textContent.trim();
+            tds[1].innerHTML = formatSrcTip(raw);
             tds[1].classList.add('req-md-src');
           }
         });
