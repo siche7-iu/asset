@@ -10,7 +10,7 @@
 ## 1. 한 줄 요약
 **고정자산관리시스템(NH 고정자산관리)의 시연용 웹 프로토타입.** `index.html`을 더블클릭하면 브라우저에서 바로 열립니다.
 인터넷이 있으면 **Supabase DB**에서 자산 데이터를 읽고, 오프라인이면 로컬 샘플 데이터로 자동 전환됩니다.
-배포 주소: **https://atg-asset.vercel.app** (GitHub push 시 자동 배포)
+배포 주소: **https://블루비-asset.vercel.app** (GitHub push 시 자동 배포)
 
 ---
 
@@ -95,7 +95,7 @@ index.html 더블클릭  → 브라우저에서 바로 열림
 - 인터넷이 있으면 Supabase DB에서 자산 데이터를 읽어옵니다. 🟢 토스트로 확인.
 - 오프라인이면 `js/data.js`의 로컬 샘플 데이터를 자동으로 사용합니다. 🟡 토스트 표시.
 - 코드 수정 후 브라우저 **새로고침(F5)** 하면 반영됩니다.
-- `git push` 하면 Vercel이 자동으로 https://atg-asset.vercel.app 에 배포합니다.
+- `git push` 하면 Vercel이 자동으로 https://블루비-asset.vercel.app 에 배포합니다.
 
 ### Supabase 정보
 - **프로젝트 URL**: `https://znlcgszxhrbxkhggqbry.supabase.co`
@@ -114,3 +114,4 @@ index.html 더블클릭  → 브라우저에서 바로 열림
 1. `index.html`을 브라우저로 열어 현재 모습 확인.
 2. [TODO.md](TODO.md)에서 다음 작업을 고른다.
 3. 작업 완료 후 `CLAUDE.md` 맨 아래 "작업 로그"에 한 줄 기록하고, 이 문서의 "최종 업데이트" 날짜를 갱신한다.
+
