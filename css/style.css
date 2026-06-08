@@ -2491,12 +2491,13 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 .req-chip.s2-chip.active     { background: #7C3AED; border-color: #7C3AED; }
 
 .req-table-wrap {
-  border: 1px solid #E5E7EB; border-radius: 10px; overflow: clip; /* clip: 시각 잘림은 유지하면서 sticky 컨텍스트는 .content로 위임 */
+  border: 1px solid #E5E7EB; border-radius: 10px; overflow: hidden;
   margin-bottom: 8px;
 }
 .req-table-scroll {
-  overflow-x: auto;
-  overflow-y: clip; /* overflow-y:clip — 수직 sticky 컨텍스트를 .content로 위임 */
+  overflow: auto;                   /* 가로·세로 모두 스크롤 — 이 컨테이너 안에서 thead sticky 동작 */
+  max-height: calc(100vh - 360px);
+  min-height: 280px;
 }
 .req-table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 12.5px; }
 .req-table thead th {
