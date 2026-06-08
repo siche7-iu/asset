@@ -2723,15 +2723,13 @@ function postProcessReqMdSrc(container) {
 // 섹션(src-grp)으로 묶어 제목-목록 간격을 좁히고, 섹션 간 여백을 크게 유지
 function formatSrcTip(raw) {
   if (!raw) return '';
+  // § 기호를 포함해 HTML 이스케이프 처리
   function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return String(s).replace(/§/g, '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
   var segs = raw.split(' / ');
-  if (segs.length === 1) {
-    return '<div class="src-grp">' + esc(raw) + '</div>';
-  }
 
-  // 세그먼트를 그룹(헤더 + 불릿 배열)으로 수집
+  // 세그먼트를 그룹(헤더 + 불릿 배열)으로 수집 — 단일 세그먼트도 동일 처리
   var groups = [];
   var cur = null;
   segs.forEach(function(seg) {
@@ -2763,10 +2761,17 @@ function formatSrcTip(raw) {
       cur = {hdr: 'As-Is', bullets: [esc(seg.replace(/^As-Is\s*/, ''))]};
       groups.push(cur);
     } else {
-      cur = {hdr: null, bullets: [esc(seg)]};
-      groups.push(cur);
+      // 이전 그룹이 있으면 이어붙이기 (섹션명 내부 '/' 로 잘못 분리된 경우 대응)
+      if (cur) {
+        cur.bullets.push(esc(seg));
+      } else {
+        cur = {hdr: null, bullets: [esc(seg)]};
+        groups.push(cur);
+      }
     }
   });
+
+  if (!groups.length) return '<div class="src-grp">' + esc(raw) + '</div>';
 
   return groups.map(function(g) {
     var html = '<div class="src-grp">';
