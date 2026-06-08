@@ -2503,3 +2503,36 @@ function toggleInterviewMd() {
       content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>';
     });
 }
+
+// 요구사항 그리드 CSV 다운로드 (현재 필터 상태 반영)
+function downloadReqCsv() {
+  var tbody = document.getElementById('req-tbody');
+  if (!tbody) return;
+  var cols = ['ID','기능명','우선순위','분류','오픈','출처','주요사용자','As-Is대응','담당'];
+  var lines = [cols.join(',')];
+  tbody.querySelectorAll('tr.req-data-row:not(.req-hidden)').forEach(function(tr) {
+    var rid = tr.dataset.rid;
+    // REQ_DATA에서 해당 항목 찾기
+    var r = null;
+    for (var i = 0; i < REQ_DATA.length; i++) {
+      if (REQ_DATA[i].id === rid) { r = REQ_DATA[i]; break; }
+    }
+    if (!r) return;
+    var row = [r.id, r.name, r.pri, r.type, r.stage, r.src, r.user, r.asIs, r.by];
+    lines.push(row.map(function(v) {
+      var s = (v || '').replace(/"/g, '""');
+      return /[,\n"]/.test(s) ? '"' + s + '"' : s;
+    }).join(','));
+  });
+  var bom = '﻿';
+  var blob = new Blob([bom + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  var today = new Date();
+  var ymd = today.getFullYear() + ('0'+(today.getMonth()+1)).slice(-2) + ('0'+today.getDate()).slice(-2);
+  a.href = url;
+  a.download = '요구사항정의_' + ymd + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); a.remove(); }, 1000);
+}
