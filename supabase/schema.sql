@@ -30,30 +30,7 @@ CREATE TABLE IF NOT EXISTS asset_history (
 -- 이력 조회 속도를 위한 인덱스
 CREATE INDEX IF NOT EXISTS idx_asset_history_asset_id ON asset_history(asset_id);
 
--- 3. 요구사항 테이블
-CREATE TABLE IF NOT EXISTS requirements (
-  id          TEXT        PRIMARY KEY,           -- NH-DSH-001
-  name        TEXT        NOT NULL,
-  cat         TEXT        NOT NULL,              -- DSH, AST, BUD, ...
-  cat_name    TEXT        NOT NULL DEFAULT '',
-  pri         TEXT        NOT NULL DEFAULT 'Should', -- Must / Should / Could
-  type        TEXT        NOT NULL DEFAULT '신규',
-  stage       TEXT        NOT NULL DEFAULT '1차',
-  star        BOOLEAN     NOT NULL DEFAULT false,
-  src         TEXT        NOT NULL DEFAULT '',
-  src_tip     TEXT        NOT NULL DEFAULT '',
-  req_user    TEXT        NOT NULL DEFAULT '',
-  as_is       TEXT        NOT NULL DEFAULT '',
-  by          TEXT        NOT NULL DEFAULT '',
-  updated_at  TIMESTAMPTZ DEFAULT NOW()
-);
-
-ALTER TABLE requirements ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "demo_all" ON requirements;
-CREATE POLICY "demo_all" ON requirements
-  FOR ALL USING (true) WITH CHECK (true);
-
--- 4. RLS(행 수준 보안) 활성화
+-- 3. RLS(행 수준 보안) 활성화
 ALTER TABLE assets        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE asset_history ENABLE ROW LEVEL SECURITY;
 

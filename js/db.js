@@ -76,38 +76,5 @@
     }
   }
 
-  // 요구사항 목록 전체 조회
-  async function loadRequirements() {
-    var db = getClient();
-    if (!db) throw new Error('Supabase SDK가 로드되지 않았습니다.');
-    var { data, error } = await db
-      .from('requirements')
-      .select('*')
-      .order('id');
-    if (error) throw error;
-    return (data || []).map(function(r) {
-      return {
-        id: r.id, name: r.name, cat: r.cat, catName: r.cat_name,
-        pri: r.pri, type: r.type, stage: r.stage, star: r.star,
-        src: r.src, srcTip: r.src_tip,
-        user: r.req_user, asIs: r.as_is, by: r.by
-      };
-    });
-  }
-
-  // 요구사항 1건 저장 (없으면 삽입, 있으면 업데이트)
-  async function upsertRequirement(req) {
-    var db = getClient();
-    if (!db) throw new Error('Supabase SDK가 로드되지 않았습니다.');
-    var { error } = await db.from('requirements').upsert({
-      id: req.id, name: req.name, cat: req.cat, cat_name: req.catName,
-      pri: req.pri, type: req.type, stage: req.stage, star: !!req.star,
-      src: req.src || '', src_tip: req.srcTip || '',
-      req_user: req.user || '', as_is: req.asIs || '', by: req.by || '',
-      updated_at: new Date().toISOString()
-    });
-    if (error) throw error;
-  }
-
-  window.DB = { loadAssets: loadAssets, insertAsset: insertAsset, loadRequirements: loadRequirements, upsertRequirement: upsertRequirement };
+  window.DB = { loadAssets: loadAssets, insertAsset: insertAsset };
 })();

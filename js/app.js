@@ -311,7 +311,7 @@ var INTRO_ENABLED = false;
       pwInput.focus();
     }
   }
-  async function enterProjectMode() {
+  function enterProjectMode() {
     window._projectMode = true;
     document.body.classList.add('proj-mode');
     if (mainNav) mainNav.hidden = true;
@@ -335,20 +335,6 @@ var INTRO_ENABLED = false;
     if (projectNav) {
       var links = projectNav.querySelectorAll('.pj-link');
       links.forEach(function (a, i) { a.classList.toggle('active', i === 0); });
-    }
-    // Supabase에서 요구사항 로드 (최초 1회, 실패 시 REQ_DATA 폴백)
-    if (_reqDataSource === null) {
-      try {
-        if (window.DB && window.DB.loadRequirements) {
-          var rows = await window.DB.loadRequirements();
-          _reqDataSource = (rows && rows.length > 0) ? rows : REQ_DATA;
-        } else {
-          _reqDataSource = REQ_DATA;
-        }
-      } catch (e) {
-        console.warn('[REQ] Supabase 로드 실패, 로컬 데이터 사용:', e.message);
-        _reqDataSource = REQ_DATA;
-      }
     }
     buildReqSection();
   }
@@ -2072,7 +2058,6 @@ var REQ_DATA = [
 
 var _reqFilter = { cat: 'ALL', pri: 'ALL', stage: 'ALL' };
 var _reqBuilt = false;
-var _reqDataSource = null; // Supabase 로드 성공 시 채워짐, null이면 REQ_DATA 폴백
 
 function buildReqSection() {
   if (_reqBuilt) return;
@@ -2146,7 +2131,7 @@ function buildReqSection() {
   var tbody = document.getElementById('req-tbody');
   if (tbody) {
     var rows = '';
-    (_reqDataSource || REQ_DATA).forEach(function(r) {
+    REQ_DATA.forEach(function(r) {
       var priBadge = r.pri === 'Must' ? '<span class="badge-must">Must</span>'
         : r.pri === 'Should' ? '<span class="badge-should">Should</span>'
         : '<span class="badge-could">Could</span>';
