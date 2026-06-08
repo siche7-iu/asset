@@ -2193,7 +2193,10 @@ function buildReqSection() {
 
       function scrollToAnchor() {
         var anchor = document.getElementById('req-anchor-' + rid);
-        if (!anchor) return;
+        if (!anchor) {
+          if (location.protocol !== 'file:') alert('작성된 내용이 없습니다.');
+          return;
+        }
         anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
         anchor.classList.remove('req-anchor-flash');
         void anchor.offsetWidth; // reflow for re-trigger
