@@ -1941,6 +1941,57 @@ function showDbToast(msg, tone) {
 var _mdIqCache = null;
 var _mdProposalCache = null;
 var _mdReqCache = null;
+var _mdReqCallbacks = [];
+
+// 출처 풀 설명 (마우스오버 툴팁 — 모든 항목)
+var REQ_SRC_TIPS = {
+  'NH-DSH-001': 'RFP §3.1 공통요건 및 자산 관제 현황판 / 제안서 p7 통합관리 목표 · p11 대시보드 화면 구성',
+  'NH-DSH-002': '제안서 p8 — 사용자별 맞춤 위젯·필터·레이아웃 설정이 가능한 개인화 대시보드 기능 제안',
+  'NH-DSH-003': 'RFP §3.2 실시간 자산 관제(GIS 위치 표시) / 제안서 p9 지도 기반 자산 위치·현황 시각화',
+  'NH-DSH-004': 'RFP §3.2 실시간 자산 관제 / 제안서 1.2.1 LightGBM 기반 자산 상태·이상 징후 실시간 모니터링',
+  'NH-DSH-005': '제안서 p11 — 본부·지역·부서 단위 자산 보유 현황 비교 현황판(임원 보고용 차트·표 포함)',
+  'NH-DSH-006': 'RFP §3.2 실시간 자산 관제 / 제안서 1.2.2 AI 기반 알림·이상 탐지 및 긴급 보고 자동화',
+  'NH-AST-001': 'RFP §3.1 공통요건·§3.3 자산별 관리 / 제안서 1.1.2 자산 취득 프로세스 + 1.4.1 신청·검증 워크플로우',
+  'NH-AST-002': '제안서 1.1.1 스마트 데이터 그리드 — 다중 필터·정렬·엑셀 내보내기를 지원하는 자산 목록 조회 화면',
+  'NH-AST-003': '제안서 1.1.2 자산 이관·소유 변경 처리 / 1.4.1 이관 신청→검증→승인 워크플로우 연동',
+  'NH-AST-004': '제안서 1.1.2 자산 처분·폐기 처리(매각·기증·폐기 구분) / 1.4.1 처분 결재 워크플로우',
+  'NH-AST-005': 'RFP §3.1 공통요건(감가상각 관리) / 제안서 1.5.1 정액·정률·이중체감법 자동 계산 및 회계 연동',
+  'NH-AST-006': '제안서 1.5.3 — 취득~처분까지 전 생애 이벤트를 타임라인으로 통합 관리하는 디지털 이력서',
+  'NH-AST-007': '제안서 p10 생애주기 모니터링 개요 + 1.5.2 IoT·센서 데이터 연동 실시간 자산 상태 추적',
+  'NH-AST-008': 'RFP §3.1 공통요건(재물조사) / As-Is 재물조사 메뉴 → 모바일·RFID 스캔 기반으로 개선',
+  'NH-BUD-001': 'RFP §3.4 예산·결산 관리 / 제안서 1.3.1 예산 종합 현황판 — 편성·집행·잔액을 시각화하는 관제 화면',
+  'NH-BUD-002': '제안서 1.3.1 — 연간 예산 편성·중기 계획·배정·조정 프로세스를 통합 관리하는 화면',
+  'NH-BUD-003': '제안서 1.3.1 — 예산 집행 실적 추적, 잔액 경보, 비목별·부서별 집행 현황 분석',
+  'NH-BUD-004': 'RFP §3.4 예산결산 / 제안서 1.3.2 LightGBM ML 모델로 불용예산 조기 탐지 및 경보 발령',
+  'NH-BUD-005': 'As-Is 화면 GS9005 결산전 수행작업 → 체크리스트·자동 검증으로 개선하여 마감 오류 방지',
+  'NH-BUD-006': 'RFP §3.4 예산결산 / 제안서 1.3.3 — 감사원·외부감사 제출 자료 자동 생성 및 포맷 변환',
+  'NH-BUD-007': 'As-Is 전표대장[GS1B01]·재무상태표[GS1005] → ERP 전표와 자산 원장 간 실시간 대사·조회',
+  'NH-WKF-001': '제안서 1.1.2 자산 취득 프로세스 + 1.4.1 신청→현장검증→결재→자산등록 4단계 워크플로우',
+  'NH-WKF-002': '제안서 1.4.1 리스 신청 워크플로우 / 1.4.2 차량 리스 계약 자동 검증(보험 만기·차량 등록 갱신 포함)',
+  'NH-WKF-003': '제안서 1.4.1 부동산 신청 워크플로우 / 1.4.2 임차 계약 자동 검증(시세 API·계약 만기 경보)',
+  'NH-WKF-004': '제안서 1.1.2 처분·이관 처리 / 1.4.1 처분·이관 결재 워크플로우 — 다단계 승인 및 반려 처리',
+  'NH-WKF-005': '제안서 1.1.2·1.4.1 — 신청 건별 단계 상태(접수/검증중/승인/완료) 실시간 추적 현황판',
+  'NH-WKF-006': 'As-Is 결재 관리 화면[RT1005] → 기안·상신·결재·반려·재기안 전자결재 프로세스 고도화',
+  'NH-WKF-007': 'RFP §3.6 업무지원 / 제안서 1.6.2 — 체크리스트 미이행 시 다음 단계 진입 차단(업무 품질 강제 보증)',
+  'NH-AI-001': 'RFP §3.2 관제(LLM 자연어 질의) / 제안서 1.2.1·1.2.2 EXAONE 기반 AI Agent, 자산·예산 자연어 조회·분석',
+  'NH-AI-002': '제안서 1.2.1 — LightGBM 모델로 자산별 노후 진행률·교체 시기 예측 및 조기 경보 발령',
+  'NH-AI-003': '제안서 1.3.2 — AI 모델로 불용예산 발생 가능성 사전 탐지 및 잔여 예산 재배분 추천',
+  'NH-AI-004': '제안서 1.2.2 AI 인사이트 + 1.3.3 보고서 — LLM이 자산·예산 현황 분석 보고서 초안 자동 생성',
+  'NH-RPT-001': '제안서 1.1.1 p11 화면 + 1.3.3 — 자산 취득·운용·처분 현황을 기간별·유형별로 집계한 표준 리포트',
+  'NH-RPT-002': '제안서 1.1.1 p11 — 본부·사업소·팀 단위 자산 보유 현황 비교, 임원 보고용 차트·표 포함',
+  'NH-RPT-003': '제안서 1.5.1 — 상각 방법·내용연수 변경 시나리오별 잔존가액·비용 영향 시뮬레이션 리포트',
+  'NH-EXT-001': '제안서 1.4.2·1.5.1 — 한국부동산원·KB부동산 API로 건물·토지 시세 자동 조회, 공정가치 갱신',
+  'NH-EXT-002': '제안서 1.4.2·1.5.1 — 카카오·네이버 지도 API로 자산 위치 시각화, 신청 시 주소→좌표 자동 변환',
+  'NH-EXT-003': '제안서 1.4.2·1.5.1 — 인사 DB(HRIS) 연동으로 신청자 정보 자동 조회 및 부서 이동 시 자산 소유권 자동 이관',
+  'NH-EXT-004': '제안서 1.5.1 GSE(회계)·MCA(원가)·MFT(세금계산서) ERP와 자산 원장 실시간 연동, 이중 입력 제거',
+  'NH-EXT-005': '제안서 1.5.1 — 행정안전부 도로명주소 API로 자산 소재지 표준화(구 주소·도로명 혼용 해소)',
+  'NH-SYS-001': '제안서 1.1.1 역할별 맞춤 — 역할 기반 접근 제어(RBAC): 담당자·관리자·임원별 화면·기능 노출 차등',
+  'NH-SYS-002': 'As-Is 공통코드 관리[SY1001] → 자산 분류·상태·부서 코드 체계를 시스템화, 코드 추가·변경 UI',
+  'NH-SYS-003': 'RFP §3.6 업무지원 / 제안서 1.6.1 체크리스트 템플릿 + 1.6.2 단계별 적용 워크플로우 연동',
+  'NH-UX-001': 'RFP §3.1 공통 UI/UX 요건 / 제안서 1.1.3 WebSquare 기반 UI 컴포넌트 설계 가이드 및 디자인 시스템',
+  'NH-UX-002': '제안서 1.1.3 — WebSquare5 기반 공통 컴포넌트(그리드·탭·모달·폼) 라이브러리, 개발사 재사용',
+  'NH-UX-003': '제안서 1.1.1 — 한국형 웹 접근성 지침(KWCAG) 2.1 준수, 키보드 내비게이션·스크린 리더 지원'
+};
 
 // 요구사항 데이터 (51건)
 var REQ_DATA = [
@@ -2088,12 +2139,13 @@ function buildReqSection() {
       var stgBadge = r.stage === '1차' ? '<span class="badge-s1">1차</span>' : '<span class="badge-s2">2차</span>';
       var starHtml = r.star ? '<span class="req-star" title="고객 미명시 확장·예측 제안">★</span>' : '';
       var isPre = r.src && r.src.indexOf('선제 제안') !== -1;
-      var srcCell = isPre && r.srcTip
-        ? '<td class="req-src-cell req-src-tip" data-tip="' + r.srcTip + '">' + r.src + ' <span class="req-tip-icon">?</span></td>'
+      var tip = r.srcTip || REQ_SRC_TIPS[r.id] || '';
+      var srcCell = tip
+        ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + r.src + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
         : '<td class="req-src-cell">' + r.src + '</td>';
       rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '">' +
         '<td><span class="req-id-cell">' + r.id + '</span></td>' +
-        '<td><span class="req-name-cell">' + r.name + starHtml + '</span></td>' +
+        '<td><span class="req-name-cell" title="클릭하면 상세 정의서로 이동">' + r.name + starHtml + '</span></td>' +
         '<td>' + priBadge + '</td>' +
         '<td>' + typeBadge + '</td>' +
         '<td>' + stgBadge + '</td>' +
@@ -2130,6 +2182,40 @@ function buildReqSection() {
     tbody.addEventListener('mouseout', function(e) {
       if (!e.relatedTarget || !e.relatedTarget.closest('.req-src-tip')) tipEl.style.display = 'none';
     });
+
+    // 기능명 클릭 → MD 뷰어 열기 + 해당 섹션으로 스크롤
+    tbody.addEventListener('click', function(e) {
+      var nameSpan = e.target.closest('.req-name-cell');
+      if (!nameSpan) return;
+      var tr = nameSpan.closest('tr[data-rid]');
+      if (!tr) return;
+      var rid = tr.dataset.rid;
+
+      function scrollToAnchor() {
+        var anchor = document.getElementById('req-anchor-' + rid);
+        if (!anchor) return;
+        anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        anchor.classList.remove('req-anchor-flash');
+        void anchor.offsetWidth; // reflow for re-trigger
+        anchor.classList.add('req-anchor-flash');
+        setTimeout(function() { anchor.classList.remove('req-anchor-flash'); }, 2500);
+      }
+
+      var viewer = document.getElementById('req-md-viewer');
+      var isOpen = viewer && viewer.style.display !== 'none';
+
+      if (_mdReqCache) {
+        if (!isOpen) {
+          if (viewer) viewer.style.display = '';
+          var btn2 = document.getElementById('btn-req-md-toggle');
+          if (btn2) btn2.textContent = '📄 전체 요구사항 접기';
+        }
+        setTimeout(scrollToAnchor, 80);
+      } else {
+        _mdReqCallbacks.push(function() { setTimeout(scrollToAnchor, 120); });
+        if (!isOpen) toggleReqMd();
+      }
+    });
   }
 }
 
@@ -2162,20 +2248,35 @@ function toggleReqMd() {
     return;
   }
   if (btn) btn.textContent = '📄 전체 요구사항 접기';
-  if (_mdReqCache) { viewer.style.display = ''; return; }
+  if (_mdReqCache) {
+    viewer.style.display = '';
+    var cbs = _mdReqCallbacks.splice(0);
+    cbs.forEach(function(cb) { cb(); });
+    return;
+  }
   var content = document.getElementById('req-md-content');
   if (!content) return;
   if (location.protocol === 'file:') {
     content.innerHTML = '<div class="md-file-notice">⚠️ 로컬 파일(file://)로 열었을 때는 보안 제한으로 파일을 직접 읽을 수 없습니다.<br>배포 버전에서 확인해 주세요: <a href="https://atg-asset.vercel.app" target="_blank" rel="noopener">🔗 atg-asset.vercel.app</a></div>';
     viewer.style.display = '';
+    var cbs2 = _mdReqCallbacks.splice(0);
+    cbs2.forEach(function(cb) { cb(); });
     return;
   }
   content.innerHTML = '<div class="md-loading">로딩 중…</div>';
   viewer.style.display = '';
   fetch('요구사항_상세정의.md')
     .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-    .then(function(text) { _mdReqCache = text; content.innerHTML = renderMarkdown(text); })
-    .catch(function(err) { content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>'; });
+    .then(function(text) {
+      _mdReqCache = text;
+      content.innerHTML = renderMarkdown(text);
+      var cbs3 = _mdReqCallbacks.splice(0);
+      cbs3.forEach(function(cb) { cb(); });
+    })
+    .catch(function(err) {
+      content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>';
+      _mdReqCallbacks = [];
+    });
 }
 
 function renderMarkdown(md) {
@@ -2217,7 +2318,11 @@ function renderMarkdown(md) {
     var hm = line.match(/^(#{1,6})\s+(.+)/);
     if (hm) {
       var lv = Math.min(hm[1].length + 1, 6); // # → h2, ## → h3 (h1은 문서 제목용으로 비워둠)
-      html += '<h' + lv + ' class="md-h md-h' + lv + '">' + inline(hm[2]) + '</h' + lv + '>\n';
+      var htext = hm[2];
+      // NH-XXX-NNN 패턴이 있으면 앵커 ID 부여 (기능명 클릭 스크롤 대상)
+      var anchorM = htext.match(/^(NH-[A-Z]+-\d+)/);
+      var anchorAttr = anchorM ? ' id="req-anchor-' + anchorM[1] + '"' : '';
+      html += '<h' + lv + anchorAttr + ' class="md-h md-h' + lv + '">' + inline(htext) + '</h' + lv + '>\n';
       i++;
       continue;
     }

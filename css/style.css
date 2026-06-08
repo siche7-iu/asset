@@ -2491,7 +2491,7 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 .req-chip.s2-chip.active     { background: #7C3AED; border-color: #7C3AED; }
 
 .req-table-wrap {
-  border: 1px solid #E5E7EB; border-radius: 10px; overflow: hidden;
+  border: 1px solid #E5E7EB; border-radius: 10px; overflow: clip; /* clip: 시각 잘림은 유지하면서 sticky 컨텍스트는 .content로 위임 */
   margin-bottom: 8px;
 }
 .req-table-scroll {
@@ -2518,8 +2518,8 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 .req-table tbody tr.req-hidden { display: none; }
 .req-table td { padding: 8px 11px; vertical-align: middle; }
 
-/* 선제 제안 출처 툴팁 */
-.req-src-tip { cursor: help; }
+/* 출처 툴팁 */
+.req-src-tip { cursor: help; border-bottom: 1px dotted #9CA3AF; }
 .req-tip-icon {
   display: inline-flex; align-items: center; justify-content: center;
   width: 14px; height: 14px; border-radius: 50%;
@@ -2527,6 +2527,18 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
   font-size: 9px; font-weight: 700; margin-left: 4px;
   vertical-align: middle;
 }
+
+/* 기능명 클릭 링크 */
+.req-name-cell { cursor: pointer; }
+.req-name-cell:hover { color: var(--c-primary); text-decoration: underline; text-underline-offset: 2px; }
+
+/* 앵커 하이라이트 플래시 */
+@keyframes reqAnchorFlash {
+  0%   { background: #DBEAFE; }
+  60%  { background: #DBEAFE; }
+  100% { background: transparent; }
+}
+.req-anchor-flash { animation: reqAnchorFlash 2.2s ease forwards; border-radius: 4px; padding: 2px 4px; }
 #req-tip {
   position: fixed;
   background: rgba(17,24,39,.92);
