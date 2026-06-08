@@ -2751,7 +2751,7 @@ function downloadReqCsv() {
     }
     if (!r) return;
     var row = [
-      r.id, r.name, r.pri, r.type, r.stage, r.src, r.user, r.asIs, r.by,
+      r.id, r.name, r.pri, r.type, r.stage, r.srcTip || REQ_SRC_TIPS[r.id] || r.src, r.user, r.asIs, r.by,
       (r.basicReqs||[]).join('\n'),
       (r.extReqs||[]).join('\n'),
       (r.tbd||[]).join('\n')
