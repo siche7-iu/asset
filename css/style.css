@@ -2636,12 +2636,13 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
   margin-bottom: 0;
 }
 .btn-req-csv {
-  padding: 5px 12px; border-radius: 6px; border: 1px solid #D1D5DB;
-  background: #fff; color: #374151; font-size: 12px; font-weight: 600;
+  display: inline-flex; align-items: center;
+  padding: 5px 13px; border-radius: 6px; border: 1.5px solid #1a5c38;
+  background: #217346; color: #fff; font-size: 12px; font-weight: 700;
   cursor: pointer; white-space: nowrap; flex-shrink: 0;
-  transition: background .15s, border-color .15s;
+  transition: background .15s, box-shadow .15s;
 }
-.btn-req-csv:hover { background: #F3F6FB; border-color: #3B82F6; color: #2563EB; }
+.btn-req-csv:hover { background: #185c30; box-shadow: 0 2px 8px rgba(33,115,70,.35); }
 
 /* 요구사항 편집 버튼 */
 .req-edit-btn {

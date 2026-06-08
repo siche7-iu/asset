@@ -828,7 +828,13 @@
               </div>
               <div class="req-count-row">
                 <p class="req-count-label" id="req-count-label">50건 표시</p>
-                <button class="btn-req-csv" onclick="downloadReqCsv()">⬇ CSV</button>
+                <button class="btn-req-csv" onclick="downloadReqCsv()" title="Excel(CSV)로 다운로드">
+                  <svg width="15" height="15" viewBox="0 0 20 20" fill="none" style="vertical-align:-2px;margin-right:5px;flex-shrink:0">
+                    <rect width="20" height="20" rx="3" fill="#217346"/>
+                    <line x1="4" y1="4" x2="16" y2="16" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+                    <line x1="16" y1="4" x2="4" y2="16" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+                  </svg>엑셀 다운로드
+                </button>
               </div>
 
               <!-- MD 전체 보기 -->
