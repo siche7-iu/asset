@@ -619,67 +619,130 @@
               <h2 class="pj-sec-title">RFP — 발주측 요청사항</h2>
               <p class="pj-lead">발주측이 정의한 6대 요청 영역(제안서 1.1~1.6과 1:1 일치). "무엇을 만들어 달라"의 원천.</p>
               <table class="pj-table">
-                <thead><tr><th style="width:16%">영역</th><th style="width:28%">핵심 요청</th><th>세부 요건</th></tr></thead>
+                <thead><tr><th style="width:16%">영역</th><th style="width:26%">핵심 요청</th><th>세부 요건 (RFP 원문)</th></tr></thead>
                 <tbody>
                   <tr>
                     <td>공통 사항<br><span class="pj-area-tag pj-area-us">우리 UI/UX</span></td>
                     <td>사용자 중심 UI/UX · Pain-Point 해소 · MS Edge 전환 · 신기술 사용환경</td>
-                    <td><ul class="pj-detail-list">
-                      <li>사용자 중심 UI/UX 설계 — Bento Grid · 정보 시각화 · Hyper-personalized UX · UX Writing</li>
-                      <li>업무 Pain-Point 해소 및 프로세스 재설계 — 입력 실수(Human Risk) 최소화</li>
-                      <li><b>당행 표준 웹브라우저(MS Edge) 전환</b> — ActiveX 제거, HTML5 웹표준</li>
-                      <li>신기술 기반 사용환경 고도화 — 데이터 시각화·실시간 모니터링·ERP 연계</li>
-                    </ul></td>
+                    <td>
+                      <p class="pj-rfp-sub">§ 사용자 중심 UI/UX 설계 및 구축</p>
+                      <ul class="pj-detail-list">
+                        <li>최신 웹 디자인 트렌드를 반영한 직관적이고 가독성 높은 UI화면 설계</li>
+                        <li>영업점 및 후선부서별 업무 성격에 최적화된 '통합 대시보드' 구축</li>
+                        <li>사용자 편의성 제고를 위한 조회 조건 개인화 및 데이터 그리드 컬럼 정비</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 업무 Pain-Point 해소 및 프로세스 재설계</p>
+                      <ul class="pj-detail-list">
+                        <li>사용자 관점의 업무 프로세스 효율화 및 축소</li>
+                        <li>불필요하거나 중복된 복잡 업무의 과감한 삭제(업무 다이어트) 적용</li>
+                        <li>입력 데이터 자동 검증 로직 강화를 통한 단순 Human Risk 최소화</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 당행 표준 웹브라우저(MS Edge) 전환 대응</p>
+                      <ul class="pj-detail-list">
+                        <li>WEB 표준 최신화 적용 및 HTML5 기반 UI 전환 구축</li>
+                        <li>일관성·가독성 있는 표준화된 UI/UX 재설계</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 신기술 기반 사용 환경 고도화</p>
+                      <ul class="pj-detail-list">
+                        <li>UI 新솔루션 활용으로 업무개선이 용이한 UI 개발환경 구현</li>
+                        <li>데이터 시각화 등에 최적화된 업무 연계 구축 지원</li>
+                      </ul>
+                    </td>
                   </tr>
                   <tr>
-                    <td>실시간 자산 관제<br><span class="pj-area-tag pj-area-dev">AI·개발사</span></td>
+                    <td>실시간<br>자산 관제<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
                     <td>GIS 시각화 · 생애주기 모니터링 · 조직별 비교 리포트 · LLM 질의응답 · 긴급 알림</td>
-                    <td><ul class="pj-detail-list">
-                      <li>핵심 자산 상태 시각화·관제 — 점포·부동산·차량 <b>GIS 지도</b></li>
-                      <li>생애주기 모니터링 — 취득/변경/폐기 상태별 KPI·게이지·이력</li>
-                      <li>조직별·자산별 비교 통계 그래픽 리포트</li>
-                      <li><b>LLM 생성형 AI 질의응답</b> (EXAONE + LightGBM 하이브리드)</li>
-                      <li>자산 상태 급변 시 긴급 보고·알림 체계</li>
-                    </ul></td>
+                    <td>
+                      <p class="pj-rfp-sub">§ 핵심 자산 상태 시각화 및 관제 시스템 구축</p>
+                      <ul class="pj-detail-list">
+                        <li>점포(자점·임차), 부동산, 차량 등 핵심 자산의 위치(GIS) 기반 시각화 송출</li>
+                        <li>자산별 취득, 변경, 폐기 등 생애주기(Life-Cycle)별 주요 상태값 실시간 모니터링</li>
+                        <li>조직별/자산별 비교 및 통계 분석 결과의 그래픽 리포트 제공</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 능동적 대응 및 보고 체계 구축</p>
+                      <ul class="pj-detail-list">
+                        <li>LLM(생성형 AI) 기반 질의응답을 통한 자산 데이터 추출 및 관제 대응(단계별 구축)</li>
+                        <li>자산 상태 급변(계약종료, 사고 등)시 즉시 대응을 위한 긴급 보고 및 알림(Alert)</li>
+                      </ul>
+                    </td>
                   </tr>
                   <tr>
-                    <td>예산·회계결산<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
+                    <td>예산·회계결산<br>고도화<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
                     <td>예산 종합현황판 · AI 불용예산 탐지 · 주석 검증·디지털 이력</td>
-                    <td><ul class="pj-detail-list">
-                      <li>예산 편성-배정-집행 단계별 <b>종합현황판</b> + 공통 모듈화 · 실시간 트래킹</li>
-                      <li><b>AI 예측</b> — 불용예산 사전 탐지·적기 재배분 (LightGBM 회귀)</li>
-                      <li>외부 감사 대응자료 자동 검증 + 주석 공시 연계</li>
-                      <li>디지털 이력 관리 — 분기·연도별 재무제표 주석 공시·회계 기표 연계</li>
-                    </ul></td>
+                    <td>
+                      <p class="pj-rfp-sub">§ 예산 관리 프로세스 개선 및 전용 화면 신설</p>
+                      <ul class="pj-detail-list">
+                        <li>예산 편성-배정-집행 단계별 실시간 트래킹 중심의 '종합현황판' 구축</li>
+                        <li>업무 효율화를 위한 예산 처리 공통 모듈화 및 사용자 지정 기능 제공</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ AI 기반 예측 모델 적용</p>
+                      <ul class="pj-detail-list">
+                        <li>과거 집행 데이터 기반 모델을 구축, 예산 배정의 적정성 검토 및 통계 지원</li>
+                        <li>불용 예산 사전 탐지 및 적기 재분배를 위한 데이터 분석 환경 제공</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 주석 검증 및 디지털 이력 관리 시스템 구축</p>
+                      <ul class="pj-detail-list">
+                        <li>분기/연도별 재무제표 주석 공시 데이터 자동 검증 및 회계 기표 연계</li>
+                      </ul>
+                    </td>
                   </tr>
                   <tr>
-                    <td>자산별 프로세스<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
+                    <td>자산별<br>프로세스<br>(신청·검증)<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
                     <td>신청·검증 현황판 · 수집 데이터 적정성 검토·사후관리</td>
-                    <td><ul class="pj-detail-list">
-                      <li>업무별(차량·사택·합숙소) 신청→검증→결재→승인→사후관리 단계 현황판</li>
-                      <li>수집 데이터로 취급 적정 여부 자동 검토·사후관리</li>
-                      <li>외부 시세 API·지도 API·인사DB 연계 자동 검증 — 한국부동산원·네이버·카카오 지도</li>
-                    </ul></td>
+                    <td>
+                      <p class="pj-rfp-sub">§ 업무별 관리 프로세스 개선 및 전용 화면 신설</p>
+                      <ul class="pj-detail-list">
+                        <li>업무 신청 – 검증 – 승인 단계별 실시간 트래킹 중심 '현황판' 구축</li>
+                        <li>자산별(업무용 차량, 사택, 합숙소 등) 신청화면 신설</li>
+                        <li>신청자의 대상 및 요건에 부합 여부 검증</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 수집 데이터를 활용하여 취급 적정 여부 검토 화면 신설</p>
+                      <ul class="pj-detail-list">
+                        <li>업무별(업무용 차량, 사택, 합숙소 등) 사후관리 화면</li>
+                        <li>일별/월별 필수 점검사항을 관리하고 사전 알림 기능 구현</li>
+                      </ul>
+                    </td>
                   </tr>
                   <tr>
-                    <td>데이터 연동<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
+                    <td>데이터 연동<br>및 최신화<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
                     <td>외부 API(시세·주소) · 오류 자동 보정 · 생애주기 관리 · 디지털 이력서</td>
-                    <td><ul class="pj-detail-list">
-                      <li>외부 공공/민간 <b>API 연동</b> — 한국부동산원·KB부동산·국토교통부·행안부 주소 API</li>
-                      <li>오류 데이터 자동 보정 · 데이터 표준화 5단계 정제</li>
-                      <li>자산 전 생애주기 관리 — 취득/운영/임대/유지보수/보험/계약서/도면 통합</li>
-                      <li><b>자산별 디지털 이력서</b> 생성 — 전 생애 이력 원클릭 조회</li>
-                      <li>사용자 정의형 데이터 추출(셀프 서비스 쿼리)</li>
-                    </ul></td>
+                    <td>
+                      <p class="pj-rfp-sub">§ 외부 데이터 연동 및 최신화</p>
+                      <ul class="pj-detail-list">
+                        <li>국토교통부 등 외부 공공/민간 API 연동으로 시세 및 자산 정보 자동 수집</li>
+                        <li>수기 입력 데이터를 외부 검증 데이터 기반으로 정기적(배치) 업데이트 및 최신 주소 체계(도로명 등) 반영</li>
+                        <li>기존 시스템 내 불완전·오류 데이터를 외부 데이터와 대조하여 (자동)보정</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 자산 전 생애주기별 관리 체계 구축</p>
+                      <ul class="pj-detail-list">
+                        <li>최초 취득, 건설, 개점, 운영, 폐점, 이·수관, 처분 등 주요 이슈별 현황 관리</li>
+                        <li>건물 운영, 임대정보 관리(임대 수익성, 공실, 임대율), 업무용부동산 세무</li>
+                        <li>유지보수 이력, 각종 검사, 권리관계, 보험, 계약서/도면 등재</li>
+                        <li>기존 고정자산시스템/통합업무시스템 간 연계</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 자산별 디지털 이력서 생성</p>
+                      <ul class="pj-detail-list">
+                        <li>취득, 건설, 운영, 처분 등 생애주기별 회계·물리적 변화를 타임라인 형태로 DB화</li>
+                        <li>유지보수 이력, 각종 검사 결과, 권리관계, 보험 정보, 계약서/도면 등 자산별 통합 등재</li>
+                        <li>외부감사 및 내부통제 시 즉각적인 증적 자료 추출 지원</li>
+                      </ul>
+                    </td>
                   </tr>
                   <tr>
-                    <td>업무지원<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
+                    <td>업무지원<br>프로세스<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
                     <td>매뉴얼화·도식화 · 단계별 체크리스트(미이행 시 다음단계 제어)</td>
-                    <td><ul class="pj-detail-list">
-                      <li>계약·사무관리·안전보건 업무 매뉴얼화·도식화</li>
-                      <li>단계별 필수 이행 체크리스트 — <b>미이행 시 다음 단계 진입 차단</b></li>
-                      <li>단계별 업무 템플릿 (수요발생→입찰→계약체결 등)</li>
-                    </ul></td>
+                    <td>
+                      <p class="pj-rfp-sub">§ 업무 지원 프로세스 신설</p>
+                      <ul class="pj-detail-list">
+                        <li>계약, 사무관리, 고정자산, 안전보건관리 등 매뉴얼화 및 프로세스 도식화</li>
+                        <li>계약(사무) 가이드: 입찰방법, 선정 및 낙찰까지 과정별 가이드 및 법률 준수사항 안내</li>
+                      </ul>
+                      <p class="pj-rfp-sub">§ 사용자 기반 업무 체크리스트 및 템플릿 제공</p>
+                      <ul class="pj-detail-list">
+                        <li>단계별 필수 이행 사항에 체크리스트 구현 (※미이행 시 다음단계 제어 등)</li>
+                        <li>규정 준수 여부를 실시간 검증하여 감사 리스크 및 Human Risk 차단</li>
+                      </ul>
+                    </td>
                   </tr>
                 </tbody>
               </table>
