@@ -619,14 +619,68 @@
               <h2 class="pj-sec-title">RFP — 발주측 요청사항</h2>
               <p class="pj-lead">발주측이 정의한 6대 요청 영역(제안서 1.1~1.6과 1:1 일치). "무엇을 만들어 달라"의 원천.</p>
               <table class="pj-table">
-                <thead><tr><th>영역</th><th>핵심 요청</th></tr></thead>
+                <thead><tr><th style="width:16%">영역</th><th style="width:28%">핵심 요청</th><th>세부 요건</th></tr></thead>
                 <tbody>
-                  <tr><td>공통 사항</td><td>사용자 중심 UI/UX · Pain-Point 해소 · MS Edge 전환 · 신기술 사용환경</td></tr>
-                  <tr><td>실시간 자산 관제</td><td>GIS 시각화 · 생애주기 모니터링 · 조직별 비교 리포트 · LLM 질의응답 · 긴급 알림</td></tr>
-                  <tr><td>예산·회계결산</td><td>예산 종합현황판 · AI 불용예산 탐지 · 주석 검증·디지털 이력</td></tr>
-                  <tr><td>자산별 프로세스</td><td>신청·검증 현황판 · 수집 데이터 적정성 검토·사후관리</td></tr>
-                  <tr><td>데이터 연동</td><td>외부 API(시세·주소) · 오류 자동 보정 · 생애주기 관리 · 디지털 이력서</td></tr>
-                  <tr><td>업무지원</td><td>매뉴얼화·도식화 · 단계별 체크리스트(미이행 시 다음단계 제어)</td></tr>
+                  <tr>
+                    <td>공통 사항<br><span class="pj-area-tag pj-area-us">우리 UI/UX</span></td>
+                    <td>사용자 중심 UI/UX · Pain-Point 해소 · MS Edge 전환 · 신기술 사용환경</td>
+                    <td><ul class="pj-detail-list">
+                      <li>사용자 중심 UI/UX 설계 — Bento Grid · 정보 시각화 · Hyper-personalized UX · UX Writing</li>
+                      <li>업무 Pain-Point 해소 및 프로세스 재설계 — 입력 실수(Human Risk) 최소화</li>
+                      <li><b>당행 표준 웹브라우저(MS Edge) 전환</b> — ActiveX 제거, HTML5 웹표준</li>
+                      <li>신기술 기반 사용환경 고도화 — 데이터 시각화·실시간 모니터링·ERP 연계</li>
+                    </ul></td>
+                  </tr>
+                  <tr>
+                    <td>실시간 자산 관제<br><span class="pj-area-tag pj-area-dev">AI·개발사</span></td>
+                    <td>GIS 시각화 · 생애주기 모니터링 · 조직별 비교 리포트 · LLM 질의응답 · 긴급 알림</td>
+                    <td><ul class="pj-detail-list">
+                      <li>핵심 자산 상태 시각화·관제 — 점포·부동산·차량 <b>GIS 지도</b></li>
+                      <li>생애주기 모니터링 — 취득/변경/폐기 상태별 KPI·게이지·이력</li>
+                      <li>조직별·자산별 비교 통계 그래픽 리포트</li>
+                      <li><b>LLM 생성형 AI 질의응답</b> (EXAONE + LightGBM 하이브리드)</li>
+                      <li>자산 상태 급변 시 긴급 보고·알림 체계</li>
+                    </ul></td>
+                  </tr>
+                  <tr>
+                    <td>예산·회계결산<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
+                    <td>예산 종합현황판 · AI 불용예산 탐지 · 주석 검증·디지털 이력</td>
+                    <td><ul class="pj-detail-list">
+                      <li>예산 편성-배정-집행 단계별 <b>종합현황판</b> + 공통 모듈화 · 실시간 트래킹</li>
+                      <li><b>AI 예측</b> — 불용예산 사전 탐지·적기 재배분 (LightGBM 회귀)</li>
+                      <li>외부 감사 대응자료 자동 검증 + 주석 공시 연계</li>
+                      <li>디지털 이력 관리 — 분기·연도별 재무제표 주석 공시·회계 기표 연계</li>
+                    </ul></td>
+                  </tr>
+                  <tr>
+                    <td>자산별 프로세스<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
+                    <td>신청·검증 현황판 · 수집 데이터 적정성 검토·사후관리</td>
+                    <td><ul class="pj-detail-list">
+                      <li>업무별(차량·사택·합숙소) 신청→검증→결재→승인→사후관리 단계 현황판</li>
+                      <li>수집 데이터로 취급 적정 여부 자동 검토·사후관리</li>
+                      <li>외부 시세 API·지도 API·인사DB 연계 자동 검증 — 한국부동산원·네이버·카카오 지도</li>
+                    </ul></td>
+                  </tr>
+                  <tr>
+                    <td>데이터 연동<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
+                    <td>외부 API(시세·주소) · 오류 자동 보정 · 생애주기 관리 · 디지털 이력서</td>
+                    <td><ul class="pj-detail-list">
+                      <li>외부 공공/민간 <b>API 연동</b> — 한국부동산원·KB부동산·국토교통부·행안부 주소 API</li>
+                      <li>오류 데이터 자동 보정 · 데이터 표준화 5단계 정제</li>
+                      <li>자산 전 생애주기 관리 — 취득/운영/임대/유지보수/보험/계약서/도면 통합</li>
+                      <li><b>자산별 디지털 이력서</b> 생성 — 전 생애 이력 원클릭 조회</li>
+                      <li>사용자 정의형 데이터 추출(셀프 서비스 쿼리)</li>
+                    </ul></td>
+                  </tr>
+                  <tr>
+                    <td>업무지원<br><span class="pj-area-tag pj-area-dev">개발사</span></td>
+                    <td>매뉴얼화·도식화 · 단계별 체크리스트(미이행 시 다음단계 제어)</td>
+                    <td><ul class="pj-detail-list">
+                      <li>계약·사무관리·안전보건 업무 매뉴얼화·도식화</li>
+                      <li>단계별 필수 이행 체크리스트 — <b>미이행 시 다음 단계 진입 차단</b></li>
+                      <li>단계별 업무 템플릿 (수요발생→입찰→계약체결 등)</li>
+                    </ul></td>
+                  </tr>
                 </tbody>
               </table>
               <div class="pj-note pj-note-blue">시연 포인트: RFP가 <b>GIS·생성형 AI 질의응답·데이터 기반 보고서·단계별 현황판</b>을 명시적으로 요청 → 우리 데모(지도·AI Agent·보고서·대시보드)와 정확히 일치.</div>

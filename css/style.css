@@ -1842,6 +1842,11 @@ code { font-family: ui-monospace, monospace; font-size: 11.5px; background: #eef
 .pj-table td { padding: 9px 12px; border-bottom: 1px solid #EEF1F5; color: #374151; vertical-align: top; }
 .pj-table tr:last-child td { border-bottom: none; }
 .pj-table td:first-child { font-weight: 600; color: var(--c-navy); white-space: nowrap; }
+.pj-detail-list { margin: 0; padding-left: 15px; font-size: 12px; color: #4B5563; line-height: 1.75; }
+.pj-detail-list li { margin-bottom: 1px; }
+.pj-area-tag { display: inline-block; margin-top: 4px; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+.pj-area-us  { background: #EFF6FF; color: #2563EB; }
+.pj-area-dev { background: #F0FDF4; color: #16A34A; }
 
 .pj-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .pj-tag { font-size: 12px; font-weight: 600; background: #EEF2F7; color: #334155; padding: 6px 12px; border-radius: 7px; }
