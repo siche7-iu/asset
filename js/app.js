@@ -1938,6 +1938,7 @@ function showDbToast(msg, tone) {
 
 // ===== Markdown 렌더러 (인터뷰 질의서) =====
 var _mdIqCache = null;
+var _mdProposalCache = null;
 
 function renderMarkdown(md) {
   function escHtml(s) {
@@ -2063,6 +2064,50 @@ function renderMarkdown(md) {
   }
 
   return html;
+}
+
+function toggleProposalMd() {
+  var viewer = document.getElementById('proposal-md-viewer');
+  var btn = document.getElementById('btn-proposal-md-toggle');
+  if (!viewer) return;
+
+  if (viewer.style.display !== 'none') {
+    viewer.style.display = 'none';
+    if (btn) btn.textContent = '📄 전체 분석 보기 (제안서_Asis_정리.md)';
+    return;
+  }
+
+  if (btn) btn.textContent = '📄 전체 분석 접기';
+
+  if (_mdProposalCache) {
+    viewer.style.display = '';
+    return;
+  }
+
+  var content = document.getElementById('proposal-md-content');
+  if (!content) return;
+
+  if (location.protocol === 'file:') {
+    content.innerHTML = '<div class="md-file-notice">⚠️ 로컬 파일(file://)로 열었을 때는 보안 제한으로 파일을 직접 읽을 수 없습니다.<br>배포 버전에서 확인해 주세요: <a href="https://atg-asset.vercel.app" target="_blank" rel="noopener">🔗 atg-asset.vercel.app</a></div>';
+    viewer.style.display = '';
+    return;
+  }
+
+  content.innerHTML = '<div class="md-loading">로딩 중…</div>';
+  viewer.style.display = '';
+
+  fetch('제안서_Asis_정리.md')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(function(text) {
+      _mdProposalCache = text;
+      content.innerHTML = renderMarkdown(text);
+    })
+    .catch(function(err) {
+      content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>';
+    });
 }
 
 function toggleInterviewMd() {
