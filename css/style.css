@@ -2477,7 +2477,7 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
   display: flex; gap: 5px; flex-wrap: wrap;
 }
 .req-stage-hint {
-  font-size: 10.5px; color: #93C5FD;
+  font-size: 10.5px; color: #2563EB;
   white-space: nowrap; margin-left: 4px;
 }
 .req-chip {
