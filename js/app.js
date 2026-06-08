@@ -2002,7 +2002,6 @@ var REQ_DATA = [
   // NH-UI UI/UX 표준 (4건)
   {id:'NH-UI-001',name:'전체 디자인 시스템·가이드',cat:'UI',catName:'UI/UX 표준',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 공통 UI/UX / 제안서 1.1.3',user:'개발사, 유지보수 팀',asIs:'없음 — 신규',by:'블루비 전담 산출'},
   {id:'NH-UI-002',name:'공통 컴포넌트 라이브러리',cat:'UI',catName:'UI/UX 표준',pri:'Must',type:'신규',stage:'1차',star:false,src:'제안서 1.1.3(WebSquare)',user:'개발사, 유지보수 팀',asIs:'없음 — 신규',by:'블루비 전담 산출'},
-  {id:'NH-UI-003',name:'반응형·다기기 대응',cat:'UI',catName:'UI/UX 표준',pri:'Should',type:'신규',stage:'2차',star:true,src:'선제 제안',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'},
   {id:'NH-UI-004',name:'접근성(웹 표준) 준수',cat:'UI',catName:'UI/UX 표준',pri:'Should',type:'신규',stage:'1차',star:true,src:'제안서 1.1.1(Accessibility)',user:'전체 사용자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현'}
 ];
 
@@ -2013,7 +2012,7 @@ function buildReqSection() {
   if (_reqBuilt) return;
   _reqBuilt = true;
   var catData = [
-    {k:'ALL',label:'전체',count:51},
+    {k:'ALL',label:'전체',count:50},
     {k:'DSH',label:'DSH',count:6},
     {k:'AST',label:'AST',count:10},
     {k:'BUD',label:'BUD',count:7},
@@ -2022,7 +2021,7 @@ function buildReqSection() {
     {k:'RPT',label:'RPT',count:4},
     {k:'EXT',label:'EXT',count:5},
     {k:'SYS',label:'SYS',count:4},
-    {k:'UI',label:'UI',count:4}
+    {k:'UI',label:'UI',count:3}
   ];
   var catTabs = document.getElementById('req-cat-tabs');
   if (catTabs) {
@@ -2088,38 +2087,22 @@ function buildReqSection() {
       var typeBadge = r.type === '신규' ? '<span class="badge-new">신규</span>' : '<span class="badge-imp">개선</span>';
       var stgBadge = r.stage === '1차' ? '<span class="badge-s1">1차</span>' : '<span class="badge-s2">2차</span>';
       var starHtml = r.star ? '<span class="req-star" title="고객 미명시 확장·예측 제안">★</span>' : '';
-      var byShort = r.by.indexOf('전담') !== -1 ? '블루비 전담' : '블루비+천명소프트';
-      rows += '<tr class="req-data-row" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '" onclick="_toggleReqRow(this)">' +
+      rows += '<tr class="req-data-row" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '">' +
         '<td><span class="req-id-cell">' + r.id + '</span></td>' +
         '<td><span class="req-name-cell">' + r.name + starHtml + '</span></td>' +
         '<td>' + priBadge + '</td>' +
         '<td>' + typeBadge + '</td>' +
         '<td>' + stgBadge + '</td>' +
-        '<td class="req-by-cell">' + byShort + '</td>' +
-        '</tr>' +
-        '<tr class="req-detail-row" id="req-det-' + r.id + '">' +
-        '<td colspan="6">' +
-        '<div class="req-detail-grid">' +
-        '<div class="req-dkv"><span class="req-dk">출처</span><span class="req-dv">' + r.src + '</span></div>' +
-        '<div class="req-dkv"><span class="req-dk">주요 사용자</span><span class="req-dv">' + r.user + '</span></div>' +
-        '<div class="req-dkv"><span class="req-dk">As-Is 대응</span><span class="req-dv">' + r.asIs + '</span></div>' +
-        '<div class="req-dkv"><span class="req-dk">담당</span><span class="req-dv">' + r.by + '</span></div>' +
-        '</div>' +
-        '</td>' +
+        '<td class="req-src-cell">' + r.src + '</td>' +
+        '<td class="req-user-cell">' + r.user + '</td>' +
+        '<td class="req-asis-cell">' + r.asIs + '</td>' +
+        '<td class="req-by-cell">' + r.by + '</td>' +
         '</tr>';
     });
     tbody.innerHTML = rows;
   }
 }
 
-function _toggleReqRow(tr) {
-  var rid = tr.dataset.rid;
-  var det = document.getElementById('req-det-' + rid);
-  if (!det) return;
-  var isOpen = det.classList.contains('req-detail-open');
-  det.classList.toggle('req-detail-open', !isOpen);
-  tr.classList.toggle('req-expanded', !isOpen);
-}
 
 function _applyReqFilter() {
   var f = _reqFilter;
@@ -2133,10 +2116,6 @@ function _applyReqFilter() {
     var stgOk  = f.stage === 'ALL' || tr.dataset.stage === f.stage;
     var show   = catOk && priOk && stgOk;
     tr.classList.toggle('req-hidden', !show);
-    // 상세 행도 같이 숨김
-    var rid = tr.dataset.rid;
-    var det = document.getElementById('req-det-' + rid);
-    if (det) det.classList.toggle('req-hidden', !show);
     if (show) visible++;
   });
   var label = document.getElementById('req-count-label');
