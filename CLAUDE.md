@@ -208,3 +208,4 @@ TODO.md           다음에 할 일 목록(체크리스트).
 - **2026-06-08** — 경상 지역 상세 말풍선 우측 100px 이동(expAdjust:100 → right:calc(100%-94px)).
 - **2026-06-08** — 제주 상세 말풍선 z-index 수정. `.dg-right`에 `position:relative; z-index:2` 추가 → 말풍선이 하단 패널(계약/점검 일정) 위에 렌더링됨. Playwright 스크린샷으로 확인 완료.
 - **2026-06-08** — 제안서 Markdown 뷰어 추가. "제안서 (57p) — UI/UX + 개발사" 섹션 하단에 "📄 전체 분석 보기 (제안서_Asis_정리.md)" 토글 버튼 추가. 클릭 시 `제안서_Asis_정리.md`를 기존 `renderMarkdown()` 파서로 렌더링. file:// 환경 안내·로드 캐시 포함. Playwright 검증 완료.
+- **2026-06-08** — `요구사항_상세정의.md` 초안(v0.1) 작성. RFP 6영역 + 제안서 전 영역을 ATG 기획 관점에서 세분화. NH-DSH/AST/BUD/WKF/AI/RPT/EXT/SYS/UI 9개 카테고리, 총 50개 요구사항(NH-XXX-NNN 형식). ★ 표시로 고객 미명시 확장·예측 요건 선제 제안, TBD로 현업 확인 필요 항목 명시.
