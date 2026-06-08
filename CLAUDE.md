@@ -216,3 +216,4 @@ TODO.md           다음에 할 일 목록(체크리스트).
 - **2026-06-08** — NH-EXT-002(지도 API)·NH-EXT-005(주소 표준화 API) 요구사항 상세정의 추가. 기능명 클릭 시 앵커 없으면 "작성된 내용이 없습니다." alert 표시.
 - **2026-06-08** — 요구사항 정의 Supabase DB화. requirements 테이블 스키마 추가(schema.sql), loadRequirements()·upsertRequirement() db.js 추가, enterProjectMode() async 전환(DB 로드 후 buildReqSection 호출, 실패 시 REQ_DATA 폴백), seed-requirements.html(50건 upsert 도구) 신설.
 - **2026-06-08** — 요구사항 그리드 CSV 다운로드 버튼 추가. 그리드 상단 우측에 "⬇ CSV" 버튼 구현. 클릭 시 현재 필터 상태가 반영된 행만 UTF-8 BOM CSV로 다운로드(`요구사항정의_YYYYMMDD.csv`). 컬럼 순서: ID·기능명·우선순위·분류·오픈·출처·주요사용자·As-Is대응·담당.
+- **2026-06-08** — 요구사항 그리드 행 편집 기능 추가. 각 행 hover 시 ✏ 버튼 표시, 클릭 시 8개 필드 수정 모달 오픈. 저장하면 REQ_DATA 메모리에 즉시 반영·테이블 재렌더링(세션 내 유지, 새로고침 시 초기화).
