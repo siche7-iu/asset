@@ -2125,11 +2125,11 @@ var REQ_DATA = [
     basicReqs:['자연어(한국어)로 자산 관련 질의를 입력하면 시스템이 자산 DB를 조회해 답변을 제공한다','예시 질의: "본점영업부에서 노후 PC 목록을 알려줘", "이번 달 보험 만기 차량이 있어?"','답변에는 자산 목록·차트·영향 금액 등 시각화 정보를 함께 제공한다','추천 질문(Suggested Questions)을 화면에 제공해 처음 사용자도 쉽게 활용하게 한다'],
     extReqs:['AI Agent의 분석 결과에서 바로 "보고서 생성", "조치 신청"으로 연결되는 액션 버튼을 제공한다','오타·띄어쓰기 오류 입력도 퍼지 매칭으로 정상 처리한다','대화 이력을 저장해 이전 맥락을 이어서 질의할 수 있다 ★'],
     tbd:[]},
-  {id:'NH-AI-002',name:'노후·교체 시기 AI 예측',cat:'AI',catName:'AI·자동화',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 §1.2.1 (p18~22)',user:'자산 관리자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현',
+  {id:'NH-AI-002',name:'노후·교체 시기 AI 예측',cat:'AI',catName:'AI·자동화',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 §1.2.1 (p18~22)',user:'자산 관리자',asIs:'없음 — 신규',by:'개발사 전담',
     basicReqs:['자산의 취득일·내용연수·수리 이력·사용 강도를 기반으로 교체 권고 시점을 예측한다','예측 결과를 대시보드의 "교체 시기 도래" 타임라인에 반영한다','예측 근거를 텍스트로 설명하고 신뢰도 점수를 함께 표시한다 ★'],
     extReqs:[],
     tbd:[]},
-  {id:'NH-AI-003',name:'불용예산 사전 탐지 AI',cat:'AI',catName:'AI·자동화',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 §1.3.2 (p29~31)',user:'예산 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현',
+  {id:'NH-AI-003',name:'불용예산 사전 탐지 AI',cat:'AI',catName:'AI·자동화',pri:'Should',type:'신규',stage:'2차',star:false,src:'제안서 §1.3.2 (p29~31)',user:'예산 담당자',asIs:'없음 — 신규',by:'개발사 전담',
     basicReqs:['과거 예산 집행 패턴을 학습해 연말에 불용(미집행)이 발생할 가능성이 높은 예산 항목을 사전에 탐지한다(NH-BUD-004 화면 연동)','항목별 불용 위험도를 점수·등급으로 산출하고 위험 높은 항목을 목록 상단에 노출한다','탐지 근거(집행 속도 둔화·전년 동기 대비 등)를 텍스트로 함께 설명한다'],
     extReqs:['탐지된 불용 예상 금액을 다른 시급한 항목으로 재배분하는 제안을 자동 생성한다 ★','분기별로 탐지 정확도를 자체 평가해 모델을 재학습한다 ★'],
     tbd:['AI 예측 모델의 학습 데이터 기간·정확도 목표 설정 (개발사 협의)']},
@@ -2155,23 +2155,23 @@ var REQ_DATA = [
     extReqs:['자주 쓰는 추출 조건을 "내 쿼리"로 저장하고 재실행할 수 있다 ★','추출 조건을 정기(매월·매주) 자동 실행으로 예약하고 결과를 메일로 받는다 ★'],
     tbd:['사용자에게 노출할 추출 가능 데이터 범위·권한 통제 방안 협의 필요']},
   // NH-EXT 외부 시스템 연동 (5건)
-  {id:'NH-EXT-001',name:'부동산 시세 API 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.4.2·§1.5.1 (p41~44)',user:'자동(백그라운드)',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현',
+  {id:'NH-EXT-001',name:'부동산 시세 API 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.4.2·§1.5.1 (p41~44)',user:'자동(백그라운드)',asIs:'없음 — 신규',by:'개발사 전담',
     basicReqs:['부동산 임차 신청 시 주소를 입력하면 해당 지역 시세(전세·월세)를 한국부동산원 API로 자동 조회한다','조회된 시세는 화면에 "기준 시세 n억~n억(조회일: YYYY-MM-DD)" 형태로 표시한다','시세 조회 실패 시 "수동 입력" 모드로 전환하고 이유를 표시한다'],
     extReqs:[],
     tbd:[]},
-  {id:'NH-EXT-002',name:'지도 API 연동(카카오·네이버)',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.4.2·§1.5.1 (p41~44)',user:'자동(신청 시)',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현',
+  {id:'NH-EXT-002',name:'지도 API 연동(카카오·네이버)',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.4.2·§1.5.1 (p41~44)',user:'자동(신청 시)',asIs:'없음 — 신규',by:'개발사 전담',
     basicReqs:['자산 등록·신청 시 주소를 입력하면 카카오·네이버 지도 API로 위도·경도 좌표를 자동 변환한다','대시보드 지역별 관리 현황 지도 및 자산 상세 화면에 해당 자산의 위치를 지도 핀으로 표시한다','건물·토지 자산은 지번 주소와 도로명 주소 중 하나만 입력해도 나머지를 자동으로 채운다 ★'],
     extReqs:[],
     tbd:[]},
-  {id:'NH-EXT-003',name:'인사 DB 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.4.2·§1.5.1 (p41~44)',user:'자동(신청 시)',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현',
+  {id:'NH-EXT-003',name:'인사 DB 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.4.2·§1.5.1 (p41~44)',user:'자동(신청 시)',asIs:'없음 — 신규',by:'개발사 전담',
     basicReqs:['자산 신청 시 신청자의 직급·부서·부양가족 수·근무지를 인사DB에서 자동으로 불러온다','결재 라인을 인사DB 조직도를 기반으로 자동 구성한다','인사 변동(이동·퇴직) 시 해당 직원 담당 자산을 "담당자 공석" 상태로 자동 전환하고 알림을 발송한다 ★'],
     extReqs:[],
     tbd:[]},
-  {id:'NH-EXT-004',name:'ERP·회계 시스템 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.5.1 (p41~44)',user:'회계 담당자',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현',
+  {id:'NH-EXT-004',name:'ERP·회계 시스템 연동',cat:'EXT',catName:'외부 시스템 연동',pri:'Must',type:'신규',stage:'1차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.5.1 (p41~44)',user:'회계 담당자',asIs:'없음 — 신규',by:'개발사 전담',
     basicReqs:['자산 취득·처분·감가상각 처리 결과가 ERP 회계 시스템에 자동으로 전표로 생성된다','연동 결과(성공/실패)를 화면에서 조회할 수 있고 실패 건은 재처리할 수 있다','전표 대장·B/S 잔액을 ERP 데이터를 기반으로 조회한다'],
     extReqs:[],
     tbd:[]},
-  {id:'NH-EXT-005',name:'주소 표준화 API',cat:'EXT',catName:'외부 시스템 연동',pri:'Should',type:'신규',stage:'2차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.5.1 (p41~44)',user:'자동',asIs:'없음 — 신규',by:'블루비 설계 / 천명소프트 구현',
+  {id:'NH-EXT-005',name:'주소 표준화 API',cat:'EXT',catName:'외부 시스템 연동',pri:'Should',type:'신규',stage:'2차',star:false,src:'RFP 데이터 연동·최신화 / 제안서 §1.5.1 (p41~44)',user:'자동',asIs:'없음 — 신규',by:'개발사 전담',
     basicReqs:['자산 등록 시 입력한 주소를 행정안전부 도로명주소 API로 검증하고 표준 형식으로 저장한다','주소 자동완성(드롭다운 검색) 기능을 자산 등록·이관 등 주소 입력 화면에 공통 적용한다','구 주소(지번)·도로명 주소가 혼재된 기존 데이터를 일괄 표준화하는 관리자 배치 도구를 제공한다 ★'],
     extReqs:[],
     tbd:[]},
@@ -2207,6 +2207,7 @@ var REQ_DATA = [
     tbd:[]}
 ];
 
+var _showDevReqs = false;
 var _reqFilter = { cat: 'ALL', pri: 'ALL', stage: 'ALL', type: 'ALL' };
 var _reqBuilt = false;
 
@@ -2351,7 +2352,7 @@ function buildReqSection() {
       var srcCell = tip
         ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + srcDisplay + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
         : '<td class="req-src-cell">' + srcDisplay + '</td>';
-      rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '" data-type="' + r.type + '">' +
+      rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '" data-type="' + r.type + '" data-by="' + r.by + '">' +
         '<td><span class="req-id-cell">' + r.id + '</span><button class="req-edit-btn" onclick="openReqEditModal(\'' + r.id + '\')" title="수정">✏</button></td>' +
         '<td><span class="req-name-cell" title="클릭하면 상세 정의서로 이동">' + r.name + starHtml + '</span></td>' +
         '<td>' + priBadge + '</td>' +
@@ -2468,12 +2469,20 @@ function _applyReqFilter() {
     var priOk  = f.pri   === 'ALL' || tr.dataset.pri   === f.pri;
     var stgOk  = f.stage === 'ALL' || tr.dataset.stage === f.stage;
     var typOk  = f.type  === 'ALL' || tr.dataset.type  === f.type;
-    var show   = catOk && priOk && stgOk && typOk;
+    var byOk   = _showDevReqs || tr.dataset.by !== '개발사 전담';
+    var show   = catOk && priOk && stgOk && typOk && byOk;
     tr.classList.toggle('req-hidden', !show);
     if (show) visible++;
   });
   var label = document.getElementById('req-count-label');
   if (label) label.textContent = visible + '건 표시';
+}
+
+function toggleDevReqs() {
+  _showDevReqs = !_showDevReqs;
+  var btn = document.getElementById('btn-dev-reqs-toggle');
+  if (btn) btn.textContent = _showDevReqs ? '개발사 업무닫기' : '개발사 업무보기';
+  _applyReqFilter();
 }
 
 function toggleReqMd() {
