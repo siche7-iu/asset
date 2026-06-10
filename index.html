@@ -2068,7 +2068,8 @@
                       <text x="300" y="155" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">검수 · 인수 확인</text>
                       <!-- 자산 운영 -->
                       <rect x="220" y="208" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
-                      <text x="300" y="227" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">자산 운영 (사용 중)</text>
+                      <text x="300" y="220" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">자산 운영 (사용 중)</text>
+                      <text x="300" y="234" text-anchor="middle" dominant-baseline="central" fill="#6B7280" font-size="10">(이동·수선·자본지출 포함)</text>
                       <!-- 처분 시기 diamond -->
                       <polygon points="300,270 360,303 300,336 240,303" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
                       <text x="300" y="303" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11.5" font-weight="500">처분 시기 도래?</text>
@@ -2083,7 +2084,7 @@
                       <text x="112" y="455" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12">매 각</text>
                       <!-- 무상이전 -->
                       <ellipse cx="300" cy="455" rx="54" ry="22" fill="#1B2B4B"/>
-                      <text x="300" y="455" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12">무상이전</text>
+                      <text x="300" y="455" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12">이 전</text>
                       <!-- 폐기 -->
                       <ellipse cx="488" cy="455" rx="54" ry="22" fill="#1B2B4B"/>
                       <text x="488" y="455" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12">폐 기</text>
@@ -2121,7 +2122,7 @@
                 <!-- ② 자산 신청·승인 (Swimlane) -->
                 <div class="fc-card" id="fc-approval">
                   <div class="fc-card-title">② 자산 신청 → 검증 → 결재 → 승인 → 사후관리 흐름</div>
-                  <div class="fc-card-sub">신청자 / 자산담당자 / 결재자 / 시스템 역할별 책임 분담 Swimlane Diagram</div>
+                  <div class="fc-card-sub">신청자 / 자산담당자 / 결재자 / 시스템 역할별 책임 분담 Swimlane Diagram (차량·사택·합숙소 등 업무용 자산 기준)</div>
                   <div class="fc-chart">
                     <svg viewBox="0 0 1020 400" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -2205,7 +2206,7 @@
                 <!-- ③ 외부 API 자동 검증 -->
                 <div class="fc-card" id="fc-api">
                   <div class="fc-card-title">③ 외부 API 자동 검증 흐름</div>
-                  <div class="fc-card-sub">자산 등록 시 차량·위치·사번 정보를 외부 API로 자동 검증하는 Decision Tree</div>
+                  <div class="fc-card-sub">자산 등록 시 부동산·위치·사번 정보를 외부 API로 자동 검증하는 Decision Tree</div>
                   <div class="fc-chart">
                     <svg viewBox="0 0 720 440" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -2221,7 +2222,7 @@
                       <text x="200" y="81" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="12">자산 정보 입력</text>
                       <!-- ◇ 차량 자산? -->
                       <polygon points="200,118 258,148 200,178 142,148" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
-                      <text x="200" y="148" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11" font-weight="500">차량 자산?</text>
+                      <text x="200" y="148" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11" font-weight="500">부동산 자산?</text>
                       <!-- 국토부 시세 API -->
                       <rect x="370" y="128" width="150" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
                       <text x="445" y="147" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">국토부 시세 API 조회</text>
@@ -2234,7 +2235,7 @@
                       <text x="200" y="238" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="11" font-weight="500">위치 정보?</text>
                       <!-- 지도 API -->
                       <rect x="370" y="218" width="150" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
-                      <text x="445" y="237" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">카카오 지도 API</text>
+                      <text x="445" y="237" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">지도 API (네이버/카카오)</text>
                       <!-- 위치 검증 결과 -->
                       <rect x="550" y="218" width="140" height="38" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
                       <text x="620" y="237" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="11.5">위치 검증</text>
@@ -2247,7 +2248,7 @@
                       <text x="445" y="327" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11.5">인사 DB API 조회</text>
                       <!-- 사용자 확인 결과 -->
                       <rect x="550" y="308" width="140" height="38" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
-                      <text x="620" y="327" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="11.5">사용자 확인</text>
+                      <text x="620" y="327" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="11.5">면적 기준 확인</text>
 
                       <!-- 검증 결과 집계 -->
                       <rect x="120" y="382" width="160" height="38" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
@@ -2297,7 +2298,7 @@
                 <!-- ④ AI Agent 동작 흐름 -->
                 <div class="fc-card" id="fc-aiagent">
                   <div class="fc-card-title">④ AI Agent 동작 흐름</div>
-                  <div class="fc-card-sub">사용자 질의 접수 → 데이터 조회 → 이상 판단 → 추천 조치 → 보고서 생성 Process Flow</div>
+                  <div class="fc-card-sub">사용자 질의 접수 → RAG 지식베이스 조회 → 데이터 분석 → 이상 판단 → 추천 조치 및 긴급 알림 → 보고서 생성 Process Flow</div>
                   <div class="fc-chart">
                     <svg viewBox="0 0 660 510" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -2358,8 +2359,8 @@
 
                 <!-- ⑤ 예산 흐름 -->
                 <div class="fc-card" id="fc-budget">
-                  <div class="fc-card-title">⑤ 예산 흐름 (편성 → 집행 → 재배정 / 완료)</div>
-                  <div class="fc-card-sub">부서 예산 편성 신청부터 집행·잔여예산 재배정 또는 집행 완료까지의 Process Flow</div>
+                  <div class="fc-card-title">⑤ 예산 흐름 (편성 → 집행 → 환수·재배정 / 완료)</div>
+                  <div class="fc-card-sub">부서 예산 편성 신청부터 집행·잔여예산 환수 및 재배정 또는 집행 완료까지의 Process Flow</div>
                   <div class="fc-chart">
                     <svg viewBox="0 0 860 220" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -2389,7 +2390,7 @@
                       <text x="170" y="175" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="10.5" font-weight="500">잔여예산?</text>
                       <!-- 이월 -->
                       <rect x="30" y="130" width="70" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
-                      <text x="65" y="148" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11">재배정</text>
+                      <text x="65" y="148" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11">환수·재배정</text>
                       <!-- 완료 -->
                       <ellipse cx="65" cy="195" rx="46" ry="19" fill="#1B2B4B"/>
                       <text x="65" y="195" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">집행 완료</text>
@@ -2419,7 +2420,7 @@
                 <!-- ⑥ 계약(사무) 프로세스 -->
                 <div class="fc-card" id="fc-contract">
                   <div class="fc-card-title">⑥ 계약(사무) 프로세스</div>
-                  <div class="fc-card-sub">수요 발생부터 계약 체결 · 이행 · 대금 지급까지 8단계 순차 Process Flow</div>
+                  <div class="fc-card-sub">수요 발생부터 계약 체결 · 이행 · 대금 지급까지 8단계 순차 Process Flow (각 단계별 체크리스트 완료 후 다음 단계 진입)</div>
                   <div class="fc-chart">
                     <svg viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg">
                       <defs>
