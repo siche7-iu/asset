@@ -125,6 +125,23 @@ index.html 더블클릭  → 브라우저에서 바로 열림
   2. `.dr-map-card .map-box`의 `height: auto` 제거
   3. `height: 100% !important`가 Leaflet 초기화 시 0으로 해석되는 타이밍 버그 → CSS에서 제거, `setView` 추가, `invalidateSize` 딜레이 400ms + `requestAnimationFrame` 적용
 
+### 버그 3번 — 왜 지도가 안 보였는가 (상세 원인)
+
+Leaflet이 초기화됐는데도 지도가 흰 화면으로 보인 이유:
+
+1. `renderMap()`이 `.map-box`에 inline 스타일 `width: 270px; height: 270px` 설정
+2. `L.map(mapEl)` 호출 → Leaflet이 즉시 `.map-box`에 `.leaflet-container` 클래스 추가
+3. **이 순간** CSS 규칙 `.map-box.leaflet-container { height: 100% !important }` 발동
+4. 브라우저가 `height: 100%`를 계산할 때 부모 `.dr-map-card`의 높이가 flex 레이아웃 계산 중 → **0으로 해석**
+5. Leaflet이 `clientHeight = 0`을 읽어 **내부 pane을 0×0으로 생성**
+6. GeoJSON 폴리곤들이 0×0짜리 SVG 안에 그려지고, SVG 자체가 컨테이너 완전 바깥(`x: 992, y: 445`)에 위치
+7. `.map-box`의 `overflow: hidden`이 바깥 영역을 잘라냄 → 아무것도 안 보임
+
+> Leaflet은 정상 동작했지만, 그림을 그린 캔버스 자체가 보이지 않는 곳에 있었던 것.
+> 200ms 후 `invalidateSize()` 호출도 SVG 좌표 계산이 0×0 기준으로 이미 꼬여 있어서 재배치 위치도 틀렸음.
+
+**수정 방향**: `height: 100% !important` 제거(CSS 간섭 차단) + `setView` 추가(초기 좌표계 명시) + 딜레이 400ms+rAF(레이아웃 확정 후 재계산)
+
 ### 내일 해야 할 것 (Stage 2 마무리 → Stage 3)
 - 지도가 올바르게 렌더링되는지 확인 (한국 지형 + 5개 권역 파란색 구분)
 - 안 되면 추가 디버깅 (Playwright로 SVG path 좌표 확인)
