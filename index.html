@@ -6,6 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>NH 고정자산관리 (시연용)</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="js/lib/leaflet/leaflet.css">
 </head>
 <body>
   <!-- 모바일 감지 — 렌더 전 실행으로 화면 깜빡임 없음 -->
@@ -2351,8 +2352,8 @@
 
                 <!-- ⑤ 예산 흐름 -->
                 <div class="fc-card" id="fc-budget">
-                  <div class="fc-card-title">⑤ 예산 흐름 (편성 → 집행 → 정산)</div>
-                  <div class="fc-card-sub">부서 예산 편성 신청부터 집행·잔여예산 정산까지의 Process Flow</div>
+                  <div class="fc-card-title">⑤ 예산 흐름 (편성 → 집행 → 이월 / 완료)</div>
+                  <div class="fc-card-sub">부서 예산 편성 신청부터 집행·잔여예산 이월 또는 집행 완료까지의 Process Flow</div>
                   <div class="fc-chart">
                     <svg viewBox="0 0 860 220" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -2693,6 +2694,12 @@
   <script src="js/lib/chart.min.js"></script>
   <!-- Plotly.js basic 2.35.2: AI 에이전트 분석 차트 (히트맵·예측·버블 등) -->
   <script src="js/lib/plotly.min.js"></script>
+  <!-- Leaflet 1.9.4: 인터랙티브 지도 (지역별 관리 현황) -->
+  <script src="js/lib/leaflet/leaflet.js"></script>
+  <!-- topojson-client 3: TopoJSON → GeoJSON 변환 -->
+  <script src="js/lib/topojson-client.min.js"></script>
+  <!-- 한국 시군구 TopoJSON 데이터 (KOSTAT 2012, window.MUNICIPALITIES_TOPO) -->
+  <script src="js/lib/municipalities-topo.js"></script>
 
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
