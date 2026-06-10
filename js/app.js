@@ -39,25 +39,13 @@ var INTRO_ENABLED = false;
   });
 })();
 
-(async function () {
-  // Supabase에서 자산 데이터 로드 — 실패 시 로컬 샘플 데이터로 자동 폴백
-  var assets = window.APP_DATA.assets;  // 기본값: 로컬 샘플 데이터
-  var _dbSource = 'local';
-  try {
-    var loaded = await window.DB.loadAssets();
-    if (loaded && loaded.length > 0) {
-      assets = loaded;
-      window.APP_DATA.assets = assets;
-      _dbSource = 'supabase';
-    }
-  } catch (e) {
-    console.warn('[DB] Supabase 로드 실패, 로컬 데이터 사용:', e.message);
-  } finally {
-    var _dbOverlay = document.getElementById('db-loading');
-    if (_dbOverlay) _dbOverlay.hidden = true;
-  }
+(function () {
+  var assets = window.APP_DATA.assets;
+  var _dbOverlay = document.getElementById('db-loading');
+  if (_dbOverlay) _dbOverlay.hidden = true;
   var DASH = window.APP_DATA.dashboard;
   function won(n) { return n.toLocaleString("ko-KR") + "원"; }
+  var _lifeMap = { '노트북':5,'모니터':5,'서버':7,'복합기':5,'책상':10,'의자':10,'차량':10,'에어컨':10,'프로젝터':5,'기타':5 };
 
   var navItems = document.querySelectorAll(".nav-item");
   var tabs = document.querySelectorAll(".tab");
@@ -961,8 +949,7 @@ var INTRO_ENABLED = false;
     if (!a) return;
 
     // 감가상각 계산
-    var lifeMap = { '노트북':5,'모니터':5,'서버':7,'복합기':5,'책상':10,'의자':10,'차량':10,'에어컨':10,'프로젝터':5,'기타':5 };
-    var life = lifeMap[a.category] || 5;
+    var life = _lifeMap[a.category] || 5;
     var residual = Math.round(a.price * 0.1);
     var annualDep = Math.round((a.price - residual) / life);
     var acqYear = a.acquireDate ? parseInt(a.acquireDate.slice(0,4)) : new Date().getFullYear();
@@ -1382,7 +1369,7 @@ var INTRO_ENABLED = false;
       '</div>';
 
     if (_aiCurrentScript.resultType === 'pc') {
-      var life = 5, used = asset.usedYears, depRate = Math.min(100, Math.round(used / life * 100));
+      var life = _lifeMap[asset.category] || 5, used = asset.usedYears, depRate = Math.min(100, Math.round(used / life * 100));
       var isDanger = used >= life;
       html += '<div class="detail-section"><div class="detail-section-title">기본 정보</div>' +
         _detailRow('분류', asset.category) + _detailRow('모델', asset.model) +
@@ -1744,13 +1731,6 @@ var INTRO_ENABLED = false;
   renderDashboard();
   renderListView();
   renderAgentInit();
-  // DB 연결 상태 토스트
-  setTimeout(function () {
-    var msg = _dbSource === 'supabase'
-      ? '🟢 Supabase DB 연결됨 · 자산 ' + assets.length + '건 로드'
-      : '🟡 오프라인 모드 · 로컬 샘플 데이터 사용 중';
-    showDbToast(msg, _dbSource === 'supabase' ? 'ok' : 'warn');
-  }, 400);
   // 해시가 있으면 그 화면으로, 없으면 대시보드를 기본으로
   if (location.hash && location.hash.length > 2) {
     _renderView(location.hash);
@@ -1758,11 +1738,7 @@ var INTRO_ENABLED = false;
     history.replaceState(null, "", "#/dashboard"); // hashchange 없이 URL만 교체
     _renderView("#/dashboard");
   }
-})().catch(function (e) {
-  console.error('[App] 초기화 오류:', e);
-  var el = document.getElementById('db-loading');
-  if (el) el.hidden = true;
-});
+})();
 
 // ===== 알림 팝업 =====
 (function () {
@@ -1947,12 +1923,6 @@ function saveNewAsset() {
   closeRegisterModal();
   location.hash = '#/list';
   if (window._assetApplyFilter) { window._assetApplyFilter(); }
-  // Supabase에 비동기 저장 (실패해도 화면에는 이미 반영됨)
-  if (window.DB && window.DB.insertAsset) {
-    window.DB.insertAsset(newAsset).catch(function (e) {
-      console.warn('[DB] 자산 등록 저장 실패 (화면에는 표시됨):', e.message);
-    });
-  }
 }
 
 // ===== 사이드바 토글 =====
@@ -2257,13 +2227,15 @@ function buildReqSection() {
       if (e.target === this) closeReqEditModal();
     });
   }
+  var _catCounts = {};
+  REQ_DATA.forEach(function(r) { _catCounts[r.cat] = (_catCounts[r.cat] || 0) + 1; });
   var catData = [
-    {k:'ALL',label:'전체',count:50},
-    {k:'DSH',label:'DSH',count:6},
-    {k:'AST',label:'AST',count:10},
-    {k:'BUD',label:'BUD',count:7},
-    {k:'WKF',label:'WKF',count:7},
-    {k:'AI',label:'AI',count:4},
+    {k:'ALL',label:'전체',count:REQ_DATA.length},
+    {k:'DSH',label:'DSH',count:_catCounts['DSH']||0},
+    {k:'AST',label:'AST',count:_catCounts['AST']||0},
+    {k:'BUD',label:'BUD',count:_catCounts['BUD']||0},
+    {k:'WKF',label:'WKF',count:_catCounts['WKF']||0},
+    {k:'AI',label:'AI',count:_catCounts['AI']||0},
     {k:'RPT',label:'RPT',count:4},
     {k:'EXT',label:'EXT',count:5},
     {k:'SYS',label:'SYS',count:4},
@@ -2439,13 +2411,10 @@ function buildReqSection() {
 
       function scrollToAnchor() {
         var anchor = document.getElementById('req-anchor-' + rid);
-        if (!anchor) {
-          if (location.protocol !== 'file:') alert('작성된 내용이 없습니다.');
-          return;
-        }
+        if (!anchor) return;
         anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
         anchor.classList.remove('req-anchor-flash');
-        void anchor.offsetWidth; // reflow for re-trigger
+        void anchor.offsetWidth;
         anchor.classList.add('req-anchor-flash');
         setTimeout(function() { anchor.classList.remove('req-anchor-flash'); }, 2500);
       }
@@ -2453,17 +2422,8 @@ function buildReqSection() {
       var viewer = document.getElementById('req-md-viewer');
       var isOpen = viewer && viewer.style.display !== 'none';
 
-      if (_mdReqCache) {
-        if (!isOpen) {
-          if (viewer) viewer.style.display = '';
-          var btn2 = document.getElementById('btn-req-md-toggle');
-          if (btn2) btn2.textContent = '📄 전체 요구사항 접기';
-        }
-        setTimeout(scrollToAnchor, 80);
-      } else {
-        _mdReqCallbacks.push(function() { setTimeout(scrollToAnchor, 120); });
-        if (!isOpen) toggleReqMd();
-      }
+      if (!isOpen) toggleReqMd();
+      setTimeout(scrollToAnchor, 80);
     });
   }
 }
@@ -2521,46 +2481,68 @@ function toggleDevReqs() {
   _applyReqFilter();
 }
 
+function buildReqMdHtml() {
+  var catOrder = ['DSH','AST','BUD','WKF','AI','RPT','EXT','SYS','UI','UX'];
+  var catGroups = {};
+  REQ_DATA.forEach(function(r) {
+    if (!catGroups[r.cat]) catGroups[r.cat] = [];
+    catGroups[r.cat].push(r);
+  });
+  var html = '';
+  catOrder.forEach(function(cat) {
+    var items = catGroups[cat];
+    if (!items || !items.length) return;
+    html += '<h2>' + items[0].catName + '</h2>\n';
+    items.forEach(function(r) {
+      var starHtml = r.star ? ' <span class="req-star">★</span>' : '';
+      html += '<h3 id="req-anchor-' + r.id + '">' + r.id + ' ' + r.name + starHtml + '</h3>\n';
+      html += '<table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>';
+      html += '<tr><td>우선순위</td><td><strong>' + r.pri + '</strong></td></tr>';
+      html += '<tr><td>오픈 단계</td><td>' + r.stage + '</td></tr>';
+      html += '<tr><td>분류</td><td>' + r.type + '</td></tr>';
+      html += '<tr><td>출처</td><td>' + formatSrcTip(r.srcTip || r.src || '') + '</td></tr>';
+      html += '<tr><td>주요 사용자</td><td>' + (r.user || '') + '</td></tr>';
+      html += '<tr><td>As-Is 대응</td><td>' + (r.asIs || '') + '</td></tr>';
+      html += '<tr><td>담당</td><td>' + (r.by || '') + '</td></tr>';
+      html += '</tbody></table>\n';
+      if (r.basicReqs && r.basicReqs.length) {
+        html += '<p><strong>기본 요건</strong></p>\n<ul>';
+        r.basicReqs.forEach(function(req) { html += '<li>' + req + '</li>'; });
+        html += '</ul>\n';
+      }
+      if (r.extReqs && r.extReqs.length) {
+        html += '<p><strong>확장·예측 요건 ★</strong></p>\n<ul>';
+        r.extReqs.forEach(function(req) { html += '<li>' + req + '</li>'; });
+        html += '</ul>\n';
+      }
+      if (r.tbd && r.tbd.length) {
+        html += '<p><strong>TBD / 협의 필요</strong></p>\n<ul>';
+        r.tbd.forEach(function(req) { html += '<li>' + req + '</li>'; });
+        html += '</ul>\n';
+      }
+    });
+  });
+  return html;
+}
+
 function toggleReqMd() {
   var viewer = document.getElementById('req-md-viewer');
   var btn = document.getElementById('btn-req-md-toggle');
   if (!viewer) return;
   if (viewer.style.display !== 'none') {
     viewer.style.display = 'none';
-    if (btn) btn.textContent = '📄 전체 요구사항 보기 (요구사항_상세정의.md)';
-    return;
-  }
-  if (btn) btn.textContent = '📄 전체 요구사항 접기';
-  if (_mdReqCache) {
-    viewer.style.display = '';
-    var cbs = _mdReqCallbacks.splice(0);
-    cbs.forEach(function(cb) { cb(); });
+    if (btn) btn.textContent = '📄 전체 요구사항 보기';
     return;
   }
   var content = document.getElementById('req-md-content');
-  if (!content) return;
-  if (location.protocol === 'file:') {
-    content.innerHTML = '<div class="md-file-notice">⚠️ 로컬 파일(file://)로 열었을 때는 보안 제한으로 파일을 직접 읽을 수 없습니다.<br>배포 버전에서 확인해 주세요: <a href="https://atg-asset.vercel.app" target="_blank" rel="noopener">🔗 atg-asset.vercel.app</a></div>';
-    viewer.style.display = '';
-    var cbs2 = _mdReqCallbacks.splice(0);
-    cbs2.forEach(function(cb) { cb(); });
-    return;
+  if (content && !content.innerHTML) {
+    content.innerHTML = buildReqMdHtml();
+    _mdReqCache = true;
   }
-  content.innerHTML = '<div class="md-loading">로딩 중…</div>';
   viewer.style.display = '';
-  fetch('요구사항_상세정의.md')
-    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-    .then(function(text) {
-      _mdReqCache = text;
-      content.innerHTML = renderMarkdown(text);
-      postProcessReqMdSrc(content);
-      var cbs3 = _mdReqCallbacks.splice(0);
-      cbs3.forEach(function(cb) { cb(); });
-    })
-    .catch(function(err) {
-      content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>';
-      _mdReqCallbacks = [];
-    });
+  if (btn) btn.textContent = '📄 전체 요구사항 접기';
+  var cbs = _mdReqCallbacks.splice(0);
+  cbs.forEach(function(cb) { cb(); });
 }
 
 function renderMarkdown(md) {
