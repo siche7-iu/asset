@@ -2120,28 +2120,28 @@
 
                 <!-- ② 자산 신청·승인 (Swimlane) -->
                 <div class="fc-card" id="fc-approval">
-                  <div class="fc-card-title">② 자산 신청 → 검증 → 결재 → 승인 흐름</div>
+                  <div class="fc-card-title">② 자산 신청 → 검증 → 결재 → 승인 → 사후관리 흐름</div>
                   <div class="fc-card-sub">신청자 / 자산담당자 / 결재자 / 시스템 역할별 책임 분담 Swimlane Diagram</div>
                   <div class="fc-chart">
-                    <svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg">
+                    <svg viewBox="0 0 1020 400" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <marker id="fc2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                           <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
                         </marker>
                       </defs>
                       <!-- 레인 배경 -->
-                      <rect x="80" y="40" width="780" height="90" fill="#F8FAFF"/>
-                      <rect x="80" y="130" width="780" height="90" fill="#EFF6FF"/>
-                      <rect x="80" y="220" width="780" height="90" fill="#FFF9F0"/>
-                      <rect x="80" y="310" width="780" height="90" fill="#F0FDF4"/>
+                      <rect x="80" y="40" width="940" height="90" fill="#F8FAFF"/>
+                      <rect x="80" y="130" width="940" height="90" fill="#EFF6FF"/>
+                      <rect x="80" y="220" width="940" height="90" fill="#FFF9F0"/>
+                      <rect x="80" y="310" width="940" height="90" fill="#F0FDF4"/>
                       <!-- 레인 헤더 배경 -->
                       <rect x="0" y="40" width="80" height="90" fill="#1B2B4B"/>
                       <rect x="0" y="130" width="80" height="90" fill="#1B3060"/>
                       <rect x="0" y="220" width="80" height="90" fill="#1B4080"/>
                       <rect x="0" y="310" width="80" height="90" fill="#1B5090"/>
                       <!-- 열 헤더 -->
-                      <rect x="0" y="0" width="860" height="40" fill="#1B2B4B"/>
-                      <text x="430" y="20" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12" font-weight="700">자산 신청 · 검증 · 결재 프로세스</text>
+                      <rect x="0" y="0" width="1020" height="40" fill="#1B2B4B"/>
+                      <text x="510" y="20" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="12" font-weight="700">자산 신청 · 검증 · 결재 · 사후관리 프로세스</text>
                       <!-- 레인 이름 -->
                       <text x="40" y="85" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">신청자</text>
                       <text x="40" y="175" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">자산</text>
@@ -2149,9 +2149,9 @@
                       <text x="40" y="265" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">결재자</text>
                       <text x="40" y="355" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">시스템</text>
                       <!-- 레인 구분선 -->
-                      <line x1="80" y1="130" x2="860" y2="130" stroke="#D1D5DB" stroke-width="1"/>
-                      <line x1="80" y1="220" x2="860" y2="220" stroke="#D1D5DB" stroke-width="1"/>
-                      <line x1="80" y1="310" x2="860" y2="310" stroke="#D1D5DB" stroke-width="1"/>
+                      <line x1="80" y1="130" x2="1020" y2="130" stroke="#D1D5DB" stroke-width="1"/>
+                      <line x1="80" y1="220" x2="1020" y2="220" stroke="#D1D5DB" stroke-width="1"/>
+                      <line x1="80" y1="310" x2="1020" y2="310" stroke="#D1D5DB" stroke-width="1"/>
                       <line x1="80" y1="40" x2="80" y2="400" stroke="#D1D5DB" stroke-width="1"/>
 
                       <!-- Step 1: 신청서 작성 (신청자) -->
@@ -2173,6 +2173,10 @@
                       <rect x="565" y="67" width="120" height="36" rx="7" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
                       <text x="625" y="85" text-anchor="middle" dominant-baseline="central" fill="#991B1B" font-size="11.5">반려 처리</text>
 
+                      <!-- Step 6: 사후관리 (시스템) -->
+                      <rect x="865" y="337" width="130" height="36" rx="7" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+                      <text x="930" y="355" text-anchor="middle" dominant-baseline="central" fill="#166534" font-size="11.5">사후관리</text>
+
                       <!-- 화살표 -->
                       <!-- Step1 → Step2 (신청자 → 자산담당자) -->
                       <path d="M225,85 L245,85 L245,175 L270,175" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc2a)"/>
@@ -2183,6 +2187,8 @@
                       <!-- Step4 Yes → Step5 (결재자 → 시스템) -->
                       <path d="M675,265 L780,265 L780,337" fill="none" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc2a)"/>
                       <text x="720" y="256" text-anchor="middle" fill="#16A34A" font-size="10.5" font-weight="600">승인</text>
+                      <!-- Step5 → Step6 (자산 등록 → 사후관리) -->
+                      <line x1="845" y1="355" x2="865" y2="355" stroke="#4B5563" stroke-width="1.5" marker-end="url(#fc2a)"/>
                       <!-- Step4 No → 반려 (결재자 → 신청자) -->
                       <path d="M575,265 L540,265 L540,85 L565,85" fill="none" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#fc2a)"/>
                       <text x="526" y="232" text-anchor="end" fill="#EF4444" font-size="10.5" font-weight="600">반려</text>
@@ -2352,8 +2358,8 @@
 
                 <!-- ⑤ 예산 흐름 -->
                 <div class="fc-card" id="fc-budget">
-                  <div class="fc-card-title">⑤ 예산 흐름 (편성 → 집행 → 이월 / 완료)</div>
-                  <div class="fc-card-sub">부서 예산 편성 신청부터 집행·잔여예산 이월 또는 집행 완료까지의 Process Flow</div>
+                  <div class="fc-card-title">⑤ 예산 흐름 (편성 → 집행 → 재배정 / 완료)</div>
+                  <div class="fc-card-sub">부서 예산 편성 신청부터 집행·잔여예산 재배정 또는 집행 완료까지의 Process Flow</div>
                   <div class="fc-chart">
                     <svg viewBox="0 0 860 220" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -2383,7 +2389,7 @@
                       <text x="170" y="175" text-anchor="middle" dominant-baseline="central" fill="#92400E" font-size="10.5" font-weight="500">잔여예산?</text>
                       <!-- 이월 -->
                       <rect x="30" y="130" width="70" height="36" rx="7" fill="#EFF6FF" stroke="#3B73C8" stroke-width="1.5"/>
-                      <text x="65" y="148" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11">이월</text>
+                      <text x="65" y="148" text-anchor="middle" dominant-baseline="central" fill="#1F2937" font-size="11">재배정</text>
                       <!-- 완료 -->
                       <ellipse cx="65" cy="195" rx="46" ry="19" fill="#1B2B4B"/>
                       <text x="65" y="195" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="11" font-weight="600">집행 완료</text>
