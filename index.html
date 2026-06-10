@@ -44,6 +44,30 @@
     </div>
   </div>
 
+  <!-- ===== 사이트 진입 인증 팝업 (데스크탑 — 첫 접속 시 빈 화면에 표시) ===== -->
+  <div id="site-auth-overlay" class="site-auth-overlay">
+    <div class="site-auth-card">
+      <div class="site-auth-logo">
+        <img src="images/Icon.svg" alt="NH 로고">
+        <div class="site-auth-logo-text">
+          <span class="site-auth-logo-title">NH 고정자산관리</span>
+          <span class="site-auth-logo-sub">Fixed Asset Management</span>
+        </div>
+      </div>
+      <hr class="site-auth-divider">
+      <span class="site-auth-badge">🔒 내부 전용 워크스페이스</span>
+      <h2 class="site-auth-title">관리자 인증</h2>
+      <p class="site-auth-desc">이 시스템은 내부 전용입니다.<br>비밀번호를 입력하세요.</p>
+      <div class="site-auth-input-wrap">
+        <input type="password" id="site-auth-input" class="site-auth-input"
+               placeholder="비밀번호 입력" autocomplete="off">
+        <p class="site-auth-error" id="site-auth-error" hidden>비밀번호가 올바르지 않습니다.</p>
+      </div>
+      <button id="site-auth-ok" class="site-auth-btn">확인</button>
+      <p class="site-auth-version">v0.9.3 · NH Demo Build</p>
+    </div>
+  </div>
+
   <div class="layout">
 
     <!-- ===== 사이드바 ===== -->

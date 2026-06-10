@@ -81,6 +81,70 @@
 @keyframes introFadeOut { from { opacity:1 } to { opacity:0 } }
 @keyframes introSlideUp { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:translateY(0) } }
 
+/* ===== 사이트 진입 인증 팝업 ===== */
+#site-auth-overlay {
+  position: fixed; inset: 0;
+  background: linear-gradient(180deg, #033072 0%, #002B6C 60%, #002257 100%);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+body.is-mobile #site-auth-overlay { display: none; }
+#site-auth-overlay.hidden { display: none; }
+
+.site-auth-card {
+  width: 100%; max-width: 380px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; padding: 36px 36px 28px;
+}
+.site-auth-card.shake { animation: mShake .35s ease both; }
+
+.site-auth-logo { display: flex; align-items: center; gap: 12px; padding-bottom: 4px; }
+.site-auth-logo img { width: 36px; height: 30px; filter: brightness(0) invert(1); opacity: .9; }
+.site-auth-logo-text { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.site-auth-logo-title { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: -.2px; }
+.site-auth-logo-sub { color: rgba(255,255,255,.5); font-size: 10px; letter-spacing: .4px; }
+
+.site-auth-divider {
+  width: 100%; border: none;
+  border-top: 1px solid rgba(255,255,255,.15); margin: 2px 0;
+}
+
+.site-auth-badge {
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.75); font-size: 12px; font-weight: 600;
+  padding: 5px 16px; border-radius: 20px; letter-spacing: .2px;
+}
+
+.site-auth-title { color: #fff; font-size: 24px; font-weight: 700; margin: 0; letter-spacing: -.3px; }
+.site-auth-desc { color: rgba(255,255,255,.6); font-size: 14px; line-height: 1.7; margin: 0; text-align: center; }
+
+.site-auth-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+
+.site-auth-input {
+  width: 100%; height: 52px; border-radius: 12px;
+  border: 1.5px solid rgba(255,255,255,.25); background: rgba(255,255,255,.1);
+  color: #fff; font-size: 16px; text-align: center; letter-spacing: .12em;
+  outline: none; transition: border-color .2s, background .2s; padding: 0 16px;
+}
+.site-auth-input::placeholder { color: rgba(255,255,255,.35); letter-spacing: 0; }
+.site-auth-input:focus { border-color: rgba(255,255,255,.55); background: rgba(255,255,255,.15); }
+
+.site-auth-error {
+  color: #FCA5A5; font-size: 12.5px; text-align: center; margin: 0;
+  animation: mShake .35s ease both;
+}
+
+.site-auth-btn {
+  width: 100%; height: 52px; border: none; border-radius: 14px;
+  background: var(--c-primary); color: #fff; font-size: 16px; font-weight: 700;
+  cursor: pointer; letter-spacing: -.1px;
+  transition: background .15s, transform .1s;
+}
+.site-auth-btn:hover { background: var(--c-primary-strong); }
+.site-auth-btn:active { background: var(--c-primary-strong); transform: scale(.98); }
+
+.site-auth-version { color: rgba(255,255,255,.28); font-size: 11px; margin: 4px 0 0; }
+
 body {
   font-family: "Pretendard", "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif;
   background: #CDD3DE;

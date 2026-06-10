@@ -361,7 +361,7 @@ var INTRO_ENABLED = false;
   if (secretBtn) {
     secretBtn.addEventListener('click', function () {
       if (window._projectMode) exitProjectMode();
-      else openPwModal();
+      else enterProjectMode();
     });
   }
   if (pwModal) {
@@ -401,6 +401,42 @@ var INTRO_ENABLED = false;
       });
     });
   }
+
+  // ===== 사이트 진입 인증 (데스크탑 전용) =====
+  (function () {
+    if (document.body.classList.contains('is-mobile')) return;
+    var saOverlay = document.getElementById('site-auth-overlay');
+    var saInput   = document.getElementById('site-auth-input');
+    var saError   = document.getElementById('site-auth-error');
+    var saOkBtn   = document.getElementById('site-auth-ok');
+    if (!saOverlay) return;
+
+    function saSubmit() {
+      if (!saInput) return;
+      var val = saInput.value.trim();
+      if (sha256(PW_SALT + val) === PW_HASH) {
+        saOverlay.classList.add('hidden');
+        saInput.value = '';
+        navigate('dashboard');
+        _renderView(location.hash);
+      } else {
+        if (saError) saError.hidden = false;
+        var card = saOverlay.querySelector('.site-auth-card');
+        if (card) { card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake'); }
+        saInput.value = '';
+        saInput.focus();
+      }
+    }
+
+    if (saOkBtn) saOkBtn.addEventListener('click', saSubmit);
+    if (saInput) {
+      saInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); saSubmit(); }
+        if (saError && !saError.hidden) saError.hidden = true;
+      });
+    }
+    setTimeout(function () { if (saInput) saInput.focus(); }, 120);
+  })();
 
   // ===== 적응형 디자인 — 모바일 인증 + 드로어 =====
   // sha256·PW_HASH·PW_SALT·enterProjectMode 가 이 IIFE 스코프 안에 있어 그대로 사용
