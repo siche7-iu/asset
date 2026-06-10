@@ -3,13 +3,13 @@
 > 이 문서는 "지금까지 무엇을 했고, 어디까지 동작하며, 어떻게 이어서 작업하는지"를 정리한 것입니다.
 > 다음에 할 일은 [TODO.md](TODO.md), 디자인 규칙은 [DESIGN.md](DESIGN.md), 프로젝트 안내는 [CLAUDE.md](CLAUDE.md)를 참고하세요.
 
-최종 업데이트: **2026-06-08 (요구사항 정의 섹션 신설 + 출처 표시 전면 개선)**
+최종 업데이트: **2026-06-10 (Supabase 완전 제거 + 사이트 인증 팝업 + 데이터 중복 제거)**
 
 ---
 
 ## 1. 한 줄 요약
 **고정자산관리시스템(NH 고정자산관리)의 시연용 웹 프로토타입.** `index.html`을 더블클릭하면 브라우저에서 바로 열립니다.
-인터넷이 있으면 **Supabase DB**에서 자산 데이터를 읽고, 오프라인이면 로컬 샘플 데이터로 자동 전환됩니다.
+**외부 서버 없이 100% 로컬 데이터**로만 동작합니다 (Supabase 제거 완료).
 배포 주소: **https://블루비-asset.vercel.app** (GitHub push 시 자동 배포)
 
 ---
@@ -18,7 +18,9 @@
 
 ### 기본 인프라
 - ✅ **순수 HTML + CSS + JS** — 외부 라이브러리·서버 없이 더블클릭만으로 실행
-- ✅ **Supabase DB 연동** (`js/db.js`): 자산 **71건** + 이력 **190건**이 Supabase에 저장됨. 앱 시작 시 DB에서 읽어오고, 실패 시 로컬 샘플 데이터로 자동 폴백.
+- ✅ **로컬 데이터 전용** (`js/data.js`): Supabase 완전 제거. 자산 샘플 데이터 로컬에만 존재. 외부 네트워크 의존 없음.
+- ✅ **Chart.js 4.4.9 + Plotly.js basic 2.35.2** 로컬 파일로 도입 (`js/lib/`). 인터넷 없이도 차트 동작.
+- ✅ **사이트 진입 인증 팝업** — 데스크탑 첫 접속 시 "관리자 인증" 팝업 → 비밀번호 입력 → 대시보드. `v0.9.3 · NH Demo Build` 클릭 시 팝업 없이 프로젝트 관리로 직행.
 - ✅ **GitHub 백업**: `siche7-iu/asset` 저장소 `main` 브랜치. push 시 Vercel 자동 배포.
 - ✅ **Playwright 자동 테스트** (`npm test`): 대시보드·목록·상세 스크린샷 + 기본 동작 + AI Agent + 프로젝트 화면 등 총 9건.
 
@@ -62,11 +64,9 @@
 ```
 index.html                    화면 전체 (대시보드·AI Agent·목록·상세·프로젝트 관리 등)
 css/style.css                 디자인 (맨 위 :root 토큰 = DESIGN.md 규칙)
-js/data.js                    샘플 자산 데이터 + 대시보드 요약 수치 — 오프라인 폴백용
-js/db.js                      Supabase 연결 모듈 (loadAssets / insertAsset)
+js/data.js                    샘플 자산 데이터 + 대시보드 요약 수치 (단일 데이터 소스)
 js/app.js                     화면 동작 전부 (라우팅·대시보드·AI Agent·보고서·팝업·프로젝트관리)
-supabase/schema.sql           Supabase 테이블 생성 SQL (1회 실행 완료)
-supabase/seed.html            샘플 데이터 71건 삽입 도구 (1회 실행 완료)
+js/lib/                       Chart.js 4.4.9 + Plotly.js basic 2.35.2 로컬 번들
 images/                       SVG 아이콘 + 프로젝트 관리용 이미지
   proj-screens/               To-Be 화면 디자인 14장 (비밀번호 인증 후에만 src 주입)
   ai-agent/                   AI 에이전트 분석 이미지 47장
@@ -95,15 +95,10 @@ backup/                       주요 시점 백업
 ```
 index.html 더블클릭  → 브라우저에서 바로 열림
 ```
-- 인터넷이 있으면 Supabase DB에서 자산 데이터를 읽어옵니다. 🟢 토스트로 확인.
-- 오프라인이면 `js/data.js`의 로컬 샘플 데이터를 자동으로 사용합니다. 🟡 토스트 표시.
+- "관리자 인증" 팝업이 뜨면 비밀번호 입력 → 대시보드 진입.
+- `js/data.js`의 로컬 샘플 데이터만 사용합니다 (인터넷 불필요).
 - 코드 수정 후 브라우저 **새로고침(F5)** 하면 반영됩니다.
 - `git push` 하면 Vercel이 자동으로 https://블루비-asset.vercel.app 에 배포합니다.
-
-### Supabase 정보
-- **프로젝트 URL**: `https://znlcgszxhrbxkhggqbry.supabase.co`
-- **테이블**: `assets` (71건) / `asset_history` (190건)
-- **비밀번호·API 키**: Claude 메모리(`reference-credentials.md`)에 저장됨 (git 비포함)
 
 ---
 
