@@ -1,5 +1,6 @@
 # 도구 전용 로컬 설정/임시 기록 (이 컴퓨터에서만 사용)
-.claude/
+.claude/*
+!.claude/settings.json
 .omc/
 
 # OS가 만드는 잡파일

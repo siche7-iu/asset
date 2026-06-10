@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(git status*)",
+      "PowerShell(git log*)",
+      "PowerShell(git diff*)",
+      "PowerShell(Start-Process *)",
+      "PowerShell(claude plugin list*)",
+      "PowerShell(claude mcp list*)",
+      "PowerShell(Test-Path *)",
+      "PowerShell(if (Test-Path *)",
+      "PowerShell((Get-Content *)*)"
+    ]
+  }
+}
