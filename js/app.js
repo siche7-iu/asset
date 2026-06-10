@@ -658,120 +658,132 @@ var INTRO_ENABLED = false;
   // ===== 지역별 관리 현황 (코로플레스 지도 + 말풍선) =====
   // 도·광역시 SVG 경로 (viewBox 0 0 480 580, 근사값)
   // r: DASH.regions 인덱스 (0=서울, 1=강원, 2=경상, 3=전라, 4=제주)
-  var PROVINCES = [
-    { id:'gyeonggi', r:0, fill:'#1D4ED8',
-      d:'M108,120 L155,82 L200,68 L242,76 L268,98 L275,132 L268,172 L238,198 L205,215 L172,210 L142,196 L118,178 L100,155 L102,132 Z' },
-    { id:'seoul', r:0, fill:'#1E3A8A',
-      d:'M188,130 L205,122 L220,132 L218,152 L200,162 L183,154 Z' },
-    { id:'gangwon', r:1, fill:'#1E40AF',
-      d:'M242,76 L268,42 L308,22 L368,26 L425,58 L445,105 L442,158 L418,188 L382,205 L342,212 L298,202 L268,172 L275,132 L268,98 Z' },
-    { id:'chungbuk', r:0, fill:'#3B82F6',
-      d:'M205,215 L238,198 L268,172 L298,202 L322,218 L320,262 L294,278 L262,282 L232,268 L215,248 Z' },
-    { id:'chungnam', r:0, fill:'#60A5FA',
-      d:'M100,212 L118,198 L142,196 L172,210 L205,215 L215,248 L208,278 L188,298 L158,308 L126,300 L100,280 L88,255 L90,228 Z' },
-    { id:'jeonbuk', r:3, fill:'#93C5FD',
-      d:'M90,288 L126,302 L158,308 L188,300 L215,312 L228,335 L222,368 L195,384 L162,390 L128,380 L100,362 L86,338 Z' },
-    { id:'jeonnam', r:3, fill:'#BAD6F7',
-      d:'M86,340 L100,365 L128,382 L162,392 L195,386 L220,402 L225,438 L208,462 L176,472 L144,464 L110,448 L86,418 L74,388 Z' },
-    { id:'gyeongbuk', r:2, fill:'#2563EB',
-      d:'M298,202 L342,212 L382,205 L418,188 L440,218 L445,268 L428,308 L402,330 L368,344 L334,332 L308,312 L298,278 L320,262 L322,218 Z' },
-    { id:'gyeongnam', r:2, fill:'#3B82F6',
-      d:'M222,370 L255,358 L292,348 L334,335 L368,345 L402,332 L428,362 L422,402 L395,428 L358,440 L318,438 L280,422 L252,404 L228,382 Z' },
-    { id:'jeju', r:4, fill:'#DBEAFE',
-      d:'M145,515 L178,507 L215,508 L238,520 L230,538 L200,545 L165,542 L143,528 Z' }
-  ];
-  var W_ISLANDS = [
-    {cx:68,cy:198,r:9},{cx:55,cy:213,r:6},{cx:60,cy:232,r:8},
-    {cx:72,cy:252,r:5},{cx:48,cy:245,r:4},{cx:52,cy:268,r:6},{cx:60,cy:285,r:5}
-  ];
-  var S_ISLANDS = [
-    {cx:225,cy:445,r:7,ri:3},{cx:248,cy:455,r:5,ri:3},{cx:268,cy:450,r:6,ri:2},
-    {cx:295,cy:458,r:5,ri:2},{cx:318,cy:450,r:4,ri:2},{cx:338,cy:442,r:6,ri:2}
-  ];
-  var ACTIVE_FILLS = ['#1E3A8A','#172554','#1D4ED8','#60A5FA','#BFDBFE'];
+  // ===== 지역별 관리 현황 — Leaflet + TopoJSON =====
+  // KOSTAT 2012 시도코드(앞 2자리) → DASH.regions 인덱스 (0=서울, 1=강원, 2=경상, 3=전라, 4=제주)
+  var REGION_CODE_MAP = {
+    '11':0,'23':0,'25':0,'29':0,'31':0,'33':0,'34':0,
+    '32':1,
+    '21':2,'22':2,'26':2,'37':2,'38':2,
+    '24':3,'35':3,'36':3,
+    '39':4
+  };
+  // 권역별 채우기 색상 (자산 많을수록 진한 파랑: 서울>경상>전라>강원>제주)
+  var REGION_FILL   = ['#1E3A8A','#2563EB','#3B82F6','#60A5FA','#BFDBFE'];
+  var REGION_HOVER  = ['#172554','#1d4ed8','#2563EB','#3B82F6','#93C5FD'];
+  var _leafletMap = null;
 
   function renderMap() {
     var regions = DASH.regions;
-    var activeIdx = -1;
+    var mapEl = document.getElementById('map-box');
+    if (!mapEl) return;
 
-    var mapImgHtml = '<img class="map-bg-img" src="images/korea-map.png" alt="한국 지도">';
+    // 재진입: 이미 초기화된 경우 크기만 갱신
+    if (_leafletMap) {
+      setTimeout(function(){ _leafletMap.invalidateSize(); }, 50);
+      return;
+    }
 
-    // 도(道) 별 투명 SVG 히트 영역 — 지도 이미지 위에 겹쳐 마우스오버 감지용
-    var svgPaths = PROVINCES.map(function(p) {
-      return '<path data-r="'+p.r+'" d="'+p.d+'" fill="'+p.fill+'" class="prov-hit"/>';
-    }).join('');
-    var svgSIslands = S_ISLANDS.map(function(c) {
-      return '<circle data-r="'+c.ri+'" cx="'+c.cx+'" cy="'+c.cy+'" r="'+c.r+'" class="prov-hit"/>';
-    }).join('');
-    var mapSvgHtml = '<svg class="map-overlay-svg" viewBox="0 0 480 580" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-      svgPaths + svgSIslands + '</svg>';
+    var topo = window.MUNICIPALITIES_TOPO;
+    if (!topo) return;
 
-    // 핀 아이콘
-    var pinIco = '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.4-3.6-8-8-8z" fill="currentColor"/><circle cx="12" cy="10" r="3.5" fill="#fff" opacity=".85"/></svg>';
+    // 부모 카드 실제 크기로 px 값 직접 주입 (container-query 계산 우회)
+    var parentCard = mapEl.closest('.dr-map-card') || mapEl.parentElement;
+    var rect = parentCard ? parentCard.getBoundingClientRect() : null;
+    var mapSize = rect ? Math.min(rect.width - 10, rect.height - 10) : 0;
+    if (mapSize < 50) { setTimeout(renderMap, 80); return; }
+    mapEl.style.width  = mapSize + 'px';
+    mapEl.style.height = mapSize + 'px';
 
-    // 지역 마커 (말풍선 + 핀) 조립
-    var markersHtml = regions.map(function(r, i) {
-      var rows = r.detail.map(function(d) {
+    // TopoJSON → GeoJSON 변환
+    var objKey = Object.keys(topo.objects)[0];
+    var geojson = topojson.feature(topo, topo.objects[objKey]);
+
+    // Leaflet 지도 초기화 (타일 없음 — 순수 벡터, 오프라인 동작)
+    _leafletMap = L.map(mapEl, {
+      zoomControl:       false,
+      attributionControl:false,
+      scrollWheelZoom:   false,
+      doubleClickZoom:   false,
+      dragging:          false,
+      touchZoom:         false,
+      boxZoom:           false,
+      keyboard:          false
+    });
+    _leafletMap.setView([36.5, 127.8], 7);
+
+    // 툴팁 div (Leaflet sticky tooltip 대신 직접 생성 — 스타일 제어 용이)
+    var ttEl = document.createElement('div');
+    ttEl.className = 'map-lf-tooltip';
+    ttEl.style.display = 'none';
+    document.body.appendChild(ttEl);
+
+    function showTip(e, rIdx) {
+      var r = regions[rIdx];
+      var rows = r.detail.map(function(d){
         return '<div class="cb-row"><span>'+d[0]+'</span><b>'+d[1]+'</b></div>';
       }).join('');
-      var expExtra = (r.expDir==='left' ? ' exp-dir-left' : '') + (r.expAbove ? ' exp-above' : '');
-      // expAdjust: 오른쪽으로 N px 이동 → right = calc(100% + (6-N)px)
-      var expRightOverride = (r.expDir==='left' && r.expAdjust)
-        ? ' style="right: calc(100% + ' + (6 - r.expAdjust) + 'px) !important"' : '';
-      return '<div class="region-marker dir-'+r.dir+'" data-i="'+i+'" style="left:'+r.x+'%;top:'+r.y+'%">' +
-        '<div class="callout callout-exp'+expExtra+'"' + expRightOverride + ' id="callout-exp-'+i+'">' +
-          '<div class="cb-name">'+r.name+'</div>' +
-          '<div class="cb-num">'+r.count+'</div>' +
-          '<div class="cb-div"></div>' + rows +
-        '</div>' +
-        '<div class="callout callout-cmp" id="callout-cmp-'+i+'">' +
-          '<div class="cb-name">'+r.name+'</div>' +
-          '<div class="cb-num">'+r.count+'</div>' +
-        '</div>' +
-        '<div class="cb-pin">'+pinIco+'</div>' +
-      '</div>';
-    }).join('');
+      ttEl.innerHTML =
+        '<div class="cb-name">'+r.name+'</div>'+
+        '<div class="cb-num">'+r.count+'개</div>'+
+        '<div class="cb-div"></div>'+rows;
+      ttEl.style.display = 'block';
+      moveTip(e);
+    }
+    function moveTip(e) {
+      var orig = e.originalEvent || e;
+      var x = orig.clientX, y = orig.clientY;
+      var tw = ttEl.offsetWidth || 200, th = ttEl.offsetHeight || 160;
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var left = (x + 14 + tw > vw) ? (x - tw - 14) : (x + 14);
+      var top  = (y - 14 - th < 0)  ? (y + 14)       : (y - 14 - th);
+      ttEl.style.left = left + 'px';
+      ttEl.style.top  = top  + 'px';
+    }
+    function hideTip() { ttEl.style.display = 'none'; }
 
-    document.getElementById('map-box').innerHTML = mapImgHtml + mapSvgHtml + markersHtml;
+    // GeoJSON 레이어 (변수로 저장 — getBounds 사용)
+    var geoLayer = L.geoJSON(geojson, {
+      style: function(feat) {
+        var prefix = (feat.properties.code||'').substring(0,2);
+        var ri = REGION_CODE_MAP[prefix];
+        return {
+          color:       '#ffffff',
+          weight:      0.5,
+          fillColor:   ri !== undefined ? REGION_FILL[ri] : '#D1D5DB',
+          fillOpacity: 0.85
+        };
+      },
+      onEachFeature: function(feat, layer) {
+        var prefix = (feat.properties.code||'').substring(0,2);
+        var ri = REGION_CODE_MAP[prefix];
+        if (ri === undefined) return;
+        layer.on({
+          mouseover: function(e) {
+            layer.setStyle({ fillColor: REGION_HOVER[ri], fillOpacity: 1 });
+            showTip(e, ri);
+          },
+          mousemove: function(e) { moveTip(e); },
+          mouseout:  function()  {
+            layer.setStyle({ fillColor: REGION_FILL[ri], fillOpacity: 0.85 });
+            hideTip();
+          }
+        });
+      }
+    }).addTo(_leafletMap);
 
-    var hideTimer = null;
+    // 실제 GeoJSON 범위로 맞춤
+    var geoBounds = geoLayer.getBounds();
+    if (geoBounds.isValid()) {
+      _leafletMap.fitBounds(geoBounds, { padding: [8, 8] });
+    }
 
-    function setActive(idx) {
-      activeIdx = idx;
-      regions.forEach(function(_, i) {
-        var exp = document.getElementById('callout-exp-'+i);
-        var cmp = document.getElementById('callout-cmp-'+i);
-        var marker = document.querySelector('.region-marker[data-i="'+i+'"]');
-        if (exp) exp.classList.toggle('is-active', i === idx);
-        if (cmp) cmp.style.display = (i === idx) ? 'none' : 'flex';
-        if (marker) { marker.style.zIndex = (i === idx) ? '20' : '10'; marker.classList.toggle('is-active', i === idx); }
+    // 애니메이션 종료 후 크기 재확인
+    setTimeout(function() {
+      _leafletMap.invalidateSize();
+      requestAnimationFrame(function() {
+        if (geoBounds.isValid()) _leafletMap.fitBounds(geoBounds, { padding: [8, 8] });
       });
-    }
-
-    function showRegion(idx) {
-      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-      setActive(idx);
-    }
-
-    function hideRegionDelayed() {
-      if (hideTimer) clearTimeout(hideTimer);
-      hideTimer = setTimeout(function() {
-        hideTimer = null;
-        setActive(-1);
-      }, 500);
-    }
-
-    document.querySelectorAll('.region-marker').forEach(function(m) {
-      m.addEventListener('mouseenter', function() { showRegion(+m.dataset.i); });
-      m.addEventListener('mouseleave', function() { hideRegionDelayed(); });
-    });
-
-    document.querySelectorAll('.prov-hit').forEach(function(p) {
-      p.addEventListener('mouseenter', function() { showRegion(+p.dataset.r); });
-      p.addEventListener('mouseleave', function() { hideRegionDelayed(); });
-    });
-
-    setActive(-1);
+    }, 400);
   }
 
   function top5Row(r) {

@@ -1574,10 +1574,9 @@ table { width: 100%; border-collapse: collapse; }
 }
 .dr-map-card .map-box {
   flex: none;
-  overflow: visible;
+  overflow: hidden;
   aspect-ratio: 1 / 1;
   width: min(calc(100cqw - 10px), calc(100cqh - 10px));
-  height: auto;
 }
 
 /* 노후도 섹션 구분 헤더 */
@@ -2786,3 +2785,47 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
   background: var(--color-primary, #1D5EC7);
   color: #fff;
 }
+
+/* ===== Leaflet 지도 — 지역별 관리 현황 ===== */
+.dr-map-card .map-box.leaflet-container {
+  background: #EEF2FF;
+  border-radius: 10px;
+}
+
+/* 지도 위 툴팁 */
+.map-lf-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: #1e2d5e;
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  min-width: 190px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.28);
+  pointer-events: none;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.map-lf-tooltip .cb-name {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.map-lf-tooltip .cb-num {
+  font-size: 18px;
+  font-weight: 800;
+  color: #93C5FD;
+  margin-bottom: 6px;
+}
+.map-lf-tooltip .cb-div {
+  border-top: 1px solid rgba(255,255,255,0.2);
+  margin: 6px 0;
+}
+.map-lf-tooltip .cb-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 3px;
+}
+.map-lf-tooltip .cb-row span { opacity: 0.75; }
+.map-lf-tooltip .cb-row b   { font-weight: 600; }

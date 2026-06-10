@@ -3,7 +3,7 @@
 > 이 문서는 "지금까지 무엇을 했고, 어디까지 동작하며, 어떻게 이어서 작업하는지"를 정리한 것입니다.
 > 다음에 할 일은 [TODO.md](TODO.md), 디자인 규칙은 [DESIGN.md](DESIGN.md), 프로젝트 안내는 [CLAUDE.md](CLAUDE.md)를 참고하세요.
 
-최종 업데이트: **2026-06-10 (개발사 정보 메뉴 추가 + 플로우차트 제안서 기준 검수 + 권한 allowlist + 팀장 기동 규칙)**
+최종 업데이트: **2026-06-10 (Leaflet 지도 구현 진행 중 — Stage 2까지 작업, 내일 계속)**
 
 ---
 
@@ -112,4 +112,28 @@ index.html 더블클릭  → 브라우저에서 바로 열림
 1. `index.html`을 브라우저로 열어 현재 모습 확인.
 2. [TODO.md](TODO.md)에서 다음 작업을 고른다.
 3. 작업 완료 후 `CLAUDE.md` 맨 아래 "작업 로그"에 한 줄 기록하고, 이 문서의 "최종 업데이트" 날짜를 갱신한다.
+
+---
+
+## 7. 진행 중인 작업 — Leaflet 지도 (2026-06-10, 내일 계속)
+
+### 현재 상태
+- **Stage 1 완료**: Leaflet 1.9.4 + topojson-client 3 + municipalities-topo.js 로컬 저장 (`js/lib/`)
+- **Stage 2 진행 중**: renderMap() 구현 완료, Leaflet 초기화까지 도달. 지도 색상이 렌더링되기 시작했으나 완전하지 않음.
+- **수정된 버그 3건**:
+  1. CSS 선택자 `.map-box .leaflet-container` → `.map-box.leaflet-container` (공백 제거)
+  2. `.dr-map-card .map-box`의 `height: auto` 제거
+  3. `height: 100% !important`가 Leaflet 초기화 시 0으로 해석되는 타이밍 버그 → CSS에서 제거, `setView` 추가, `invalidateSize` 딜레이 400ms + `requestAnimationFrame` 적용
+
+### 내일 해야 할 것 (Stage 2 마무리 → Stage 3)
+- 지도가 올바르게 렌더링되는지 확인 (한국 지형 + 5개 권역 파란색 구분)
+- 안 되면 추가 디버깅 (Playwright로 SVG path 좌표 확인)
+- Stage 3: hover 툴팁 연동 + 권역별 자산 수 실제 데이터 반영
+
+### 관련 파일
+- `js/app.js` — `renderMap()` 함수 (675~787줄)
+- `css/style.css` — `.dr-map-card .map-box` (1575줄), `.map-box.leaflet-container` (2790줄)
+- `js/lib/leaflet/` — leaflet.js, leaflet.css
+- `js/lib/topojson-client.min.js`
+- `js/lib/municipalities-topo.js` — `window.MUNICIPALITIES_TOPO` (KOSTAT 2012, 228개 시군구)
 
