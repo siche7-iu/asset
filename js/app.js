@@ -695,14 +695,34 @@ var INTRO_ENABLED = false;
             }).join('');
           // Chart.js 도넛
           var segs = r.segments.filter(function (s) { return s.count > 0; });
-          _riskChartInstance = new Chart(document.getElementById('risk-chart-canvas'), {
+          var rCanvas = document.getElementById('risk-chart-canvas');
+          // 중앙 텍스트 플러그인 (afterDraw 훅)
+          var centerTextPlugin = {
+            id: 'riskCenter',
+            afterDraw: function (chart) {
+              var ctx = chart.ctx;
+              var cx = chart.chartArea ? (chart.chartArea.left + chart.chartArea.right) / 2 : chart.width / 2;
+              var cy = chart.chartArea ? (chart.chartArea.top + chart.chartArea.bottom) / 2 : chart.height / 2;
+              ctx.save();
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillStyle = '#9CA3AF'; ctx.font = '11px Pretendard,sans-serif';
+              ctx.fillText('Total', cx, cy - 18);
+              ctx.fillStyle = '#002B6C'; ctx.font = 'bold 18px Pretendard,sans-serif';
+              ctx.fillText(r.centerTotal, cx, cy + 1);
+              ctx.fillStyle = '#6B7280'; ctx.font = '9px Pretendard,sans-serif';
+              ctx.fillText(r.centerSub, cx, cy + 18);
+              ctx.restore();
+            }
+          };
+          _riskChartInstance = new Chart(rCanvas, {
             type: 'doughnut',
             data: {
               labels: segs.map(function (s) { return s.key; }),
               datasets: [{
                 data: segs.map(function (s) { return s.count; }),
                 backgroundColor: segs.map(function (s) { return s.color; }),
-                borderWidth: 3, borderColor: '#ffffff', hoverOffset: 8
+                borderWidth: 3, borderColor: '#ffffff',
+                hoverOffset: 0, hoverBorderWidth: 3
               }]
             },
             options: {
@@ -711,18 +731,24 @@ var INTRO_ENABLED = false;
               animation: { animateRotate: true, duration: 800 },
               plugins: {
                 legend: { display: false },
-                tooltip: {
-                  callbacks: {
-                    title: function (ctx) { return segs[ctx[0].dataIndex].key; },
-                    label: function (ctx) {
-                      var s = segs[ctx.dataIndex];
-                      return ' ' + s.label + ' (' + s.pct + ')';
-                    }
-                  }
-                }
+                tooltip: { enabled: false }  // 기본 툴팁 끄고 커스텀 showTip 사용
               }
-            }
+            },
+            plugins: [centerTextPlugin]
           });
+          // 커스텀 hover 툴팁 (SVG 버전과 동일한 showTip)
+          rCanvas.addEventListener('mousemove', function (e) {
+            if (!_riskChartInstance) return;
+            var els = _riskChartInstance.getElementsAtEventForMode(e, 'nearest', { intersect: true }, false);
+            if (!els.length) { hideTip(); return; }
+            var s = segs[els[0].index];
+            var html = '<div class="ctt-title">' + s.key +
+              (s.note ? ' <span style="font-weight:400;font-size:11px;opacity:.75">(' + s.note + ')</span>' : '') + '</div>' +
+              '<div class="ctt-row"><span class="ctt-dot" style="background:' + s.color + '"></span>' +
+              '<span class="ctt-val">' + s.label + ' (' + s.pct + ')</span></div>';
+            showTip(e.clientX, e.clientY, html);
+          });
+          rCanvas.addEventListener('mouseleave', hideTip);
         } else {
           svgWrap.style.display   = '';
           chartWrap.style.display = 'none';
