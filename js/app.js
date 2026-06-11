@@ -749,17 +749,39 @@ var INTRO_ENABLED = false;
   }
 
   // ===== 지역별 관리 현황 — Leaflet + TopoJSON (상세 모드) =====
-  // KOSTAT 2012 시도코드(앞 2자리) → DASH.regions 인덱스 (0=서울, 1=강원, 2=경상, 3=전라, 4=제주)
+  // KOSTAT 시도코드(앞 2자리) → 6개 권역 인덱스
+  // 0=수도권, 1=충청권, 2=호남권, 3=영남권, 4=강원권, 5=제주권
   var REGION_CODE_MAP = {
-    '11':0,'23':0,'25':0,'29':0,'31':0,'33':0,'34':0,
-    '32':1,
-    '21':2,'22':2,'26':2,'37':2,'38':2,
-    '24':3,'35':3,'36':3,
-    '39':4
+    '11':0, '23':0, '31':0,
+    '25':1, '29':1, '33':1, '34':1,
+    '24':2, '35':2, '36':2,
+    '21':3, '22':3, '26':3, '37':3, '38':3,
+    '32':4,
+    '39':5
   };
-  // 권역별 채우기 색상 (자산 많을수록 진한 파랑: 서울>경상>전라>강원>제주)
-  var REGION_FILL   = ['#1E3A8A','#2563EB','#3B82F6','#60A5FA','#BFDBFE'];
-  var REGION_HOVER  = ['#172554','#1d4ed8','#2563EB','#3B82F6','#93C5FD'];
+  var REGION_FILL  = ['#1E3A8A','#2563EB','#3B82F6','#1D4ED8','#1E40AF','#93C5FD'];
+  var REGION_HOVER = ['#172554','#1D4ED8','#2563EB','#1E3A8A','#172554','#60A5FA'];
+  // Leaflet 전용 6권역 데이터 (SVG 이미지 지도 regions와 독립)
+  var LEAFLET_REGIONS = [
+    { name:'수도권', count:'3,218', lat:37.56, lng:126.98,
+      detail:[['고위험 자산','10개 [HIGH]'],['점검 예정','31개 (7일 이내 5개)'],
+              ['계약 만료 임박','4개'],['노후 자산(8년+)','720개'],['유지보수 가동률','97.8%']] },
+    { name:'충청권', count:'980',   lat:36.37, lng:127.38,
+      detail:[['고위험 자산','5개 [HIGH]'],['점검 예정','12개 (7일 이내 2개)'],
+              ['계약 만료 임박','2개'],['노후 자산(8년+)','215개'],['유지보수 가동률','96.5%']] },
+    { name:'호남권', count:'1,587', lat:35.10, lng:126.90,
+      detail:[['고위험 자산','7개 [HIGH]'],['점검 예정','21개 (7일 이내 4개)'],
+              ['계약 만료 임박','3개'],['노후 자산(8년+)','312개'],['유지보수 가동률','97.4%']] },
+    { name:'영남권', count:'2,193', lat:35.53, lng:128.62,
+      detail:[['고위험 자산','11개 [HIGH]'],['점검 예정','29개 (7일 이내 5개)'],
+              ['계약 만료 임박','4개'],['노후 자산(8년+)','498개'],['유지보수 가동률','98.0%']] },
+    { name:'강원권', count:'1,124', lat:37.75, lng:128.10,
+      detail:[['고위험 자산','8개 [HIGH]'],['점검 예정','14개 (7일 이내 3개)'],
+              ['계약 만료 임박','2개'],['노후 자산(8년+)','286개'],['유지보수 가동률','96.1%']] },
+    { name:'제주권', count:'412',   lat:33.44, lng:126.53,
+      detail:[['고위험 자산','4개 [HIGH]'],['점검 예정','6개 (7일 이내 1개)'],
+              ['계약 만료 임박','1개'],['노후 자산(8년+)','115개'],['유지보수 가동률','95.6%']] }
+  ];
   var _leafletMap = null;
   var _geoLayerBounds = null;
 
@@ -803,6 +825,7 @@ var INTRO_ENABLED = false;
 
   function _initLeafletMap(mapEl, regions) {
     if (_leafletMap) return;  // 지연 중 재진입 방지
+    var regions = LEAFLET_REGIONS;  // 6권역 데이터로 교체
 
     var topo = window.MUNICIPALITIES_TOPO;
     if (!topo) return;
@@ -893,6 +916,25 @@ var INTRO_ENABLED = false;
         });
       }
     }).addTo(_leafletMap);
+
+    // 6개 권역 핀 마커 + 컴팩트 배지 (항상 표시)
+    var pinSvg = '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.4-3.6-8-8-8z" fill="currentColor"/><circle cx="12" cy="10" r="3.5" fill="#fff" opacity=".85"/></svg>';
+    regions.forEach(function(r, i) {
+      var fill = REGION_FILL[i] || '#2563EB';
+      var icon = L.divIcon({
+        className: '',
+        html: '<div class="lf-rpin" style="--rc:'+fill+'">' +
+              '  <div class="lf-rcmp"><span class="lf-rname">'+r.name+'</span><span class="lf-rnum">'+r.count+'</span></div>' +
+              '  <div class="lf-rico">'+pinSvg+'</div>' +
+              '</div>',
+        iconSize:   [0, 0],
+        iconAnchor: [0, 0]
+      });
+      var mk = L.marker([r.lat, r.lng], { icon: icon, interactive: true }).addTo(_leafletMap);
+      mk.on('mouseover', function(e) { showTip(e, i); });
+      mk.on('mousemove', function(e) { moveTip(e); });
+      mk.on('mouseout',  function()  { hideTip(); });
+    });
 
     // GeoJSON 범위로 fitBounds (animation 완료 후 초기화했으므로 안정적으로 계산됨)
     var geoBounds = geoLayer.getBounds();
