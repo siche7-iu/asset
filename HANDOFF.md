@@ -3,7 +3,7 @@
 > 이 문서는 "지금까지 무엇을 했고, 어디까지 동작하며, 어떻게 이어서 작업하는지"를 정리한 것입니다.
 > 다음에 할 일은 [TODO.md](TODO.md), 디자인 규칙은 [DESIGN.md](DESIGN.md), 프로젝트 안내는 [CLAUDE.md](CLAUDE.md)를 참고하세요.
 
-최종 업데이트: **2026-06-11 (Leaflet 지도 렌더링 버그 수정 완료)**
+최종 업데이트: **2026-06-11 (Chart.js KPI·도넛 토글 + Leaflet 인터랙션 전면 완성)**
 
 ---
 
@@ -38,8 +38,12 @@
 
 #### 대시보드 (`#/dashboard`)
 - KPI 6칸(게이지·카운터·hover 효과) + AI 인사이트 배너(shimmer)
-- 노후 위험도 도넛 / 내용연수 도래 자산 타임라인 / 지역별 관리 현황 지도
-- 위험 자산 TOP5 / 최근 이슈 / 계약·점검 일정 / 자산 노후도 분석
+  - KPI 게이지 2개(유지보수 가동률·감가상각률): SVG ↔ Chart.js 토글 스위치
+- 노후 위험도 도넛: SVG ↔ Chart.js 토글 스위치 (Chart.js 버전: afterDraw 센터 텍스트 + 커스텀 툴팁)
+- 내용연수 도래 자산 타임라인 / 자산 노후도 분석
+- 지역별 관리 현황 지도: SVG 이미지 지도 ↔ Leaflet 폴리곤 지도 토글
+  - Leaflet: 6개 권역 merged 레이어(zoom<9) + 228개 시군구 상세(zoom≥9), 핀 마커 배지, 인터랙션(줌/홈/축척바)
+- 위험 자산 TOP5 / 최근 이슈 / 계약·점검 일정
 - 진입 애니메이션 매번 재생 / FAB 버튼(ai_insight.svg)
 
 #### AI Agent (`#/ai-agent`)
@@ -115,30 +119,40 @@ index.html 더블클릭  → 브라우저에서 바로 열림
 
 ---
 
-## 7. 완료된 작업 — Leaflet 지도 (2026-06-11 완료)
+## 7. 완료된 작업 — Leaflet 지도 + Chart.js 토글 (2026-06-11 완료)
 
-### 최종 상태: ✅ 완료
-- **Stage 1 완료**: Leaflet 1.9.4 + topojson-client 3 + municipalities-topo.js 로컬 저장 (`js/lib/`)
-- **Stage 2 완료**: renderMap() 구현, 5개 권역 파란색 농도 차이 정상 렌더링
-- **Stage 3 완료**: hover 툴팁 + 권역별 자산 수 데이터 연동 (코드에 포함됨)
+### Leaflet 지도 최종 상태: ✅ 완료
 
-### 최종 버그 원인 (CSS 전역 규칙 충돌)
+| 기능 | 상태 |
+|------|------|
+| 228개 시군구 TopoJSON 폴리곤 렌더링 | ✅ |
+| 6개 권역 merged 레이어 (zoom<9 깔끔한 뷰) | ✅ |
+| zoom≥9 시군구 상세 레이어 전환 | ✅ |
+| 권역 핀 마커 배지 (항상 표시) + hover 툴팁 | ✅ |
+| 스크롤/드래그 줌, +/- 버튼, 홈 버튼, 거리 축척 바 | ✅ |
+| zoom 단계별 경계선 두께 (없음/일반/두꺼움) | ✅ |
+| 지도 배경(바다) 흰색 | ✅ |
+| SVG 이미지 지도 ↔ Leaflet 토글 스위치 | ✅ |
 
-Playwright 진단으로 정확한 원인 확인:
-- `svgPaths: 251개` (폴리곤은 DOM에 존재)
-- `overlayPane.compWidth/Height: 0px` (SVG가 0×0으로 계산됨)
+**핵심 버그 원인 기록** (재발 방지용):
+- `css/style.css` 전역 규칙 `.map-box svg { height: auto }` → Leaflet SVG에도 적용 → 0×0으로 클리핑
+- 수정: `.map-box:not(.leaflet-container) svg` + `unset` 보정 규칙
+- 폴리곤 단편화(조각 유리): 228개 폴리곤 독립 단순화 시 공유 경계 어긋남 → `topojson.merge()` 6-region 레이어로 해결
 
-**원인**: `css/style.css:592` 전역 규칙 `.map-box svg { height: auto }` 가 Leaflet SVG에도 적용됨. Leaflet SVG는 `position: absolute`라서 `height: auto` → 부모 컨테이너(0 height 상속) 기준으로 **0px 계산됨**. 폴리곤 251개가 DOM에 있어도 SVG가 0×0이어서 `overflow: hidden`에 전부 클리핑됨.
+### Chart.js 토글 최종 상태: ✅ 완료
 
-**수정 내용 2건**:
-1. `css/style.css:592` — `.map-box svg` → `.map-box:not(.leaflet-container) svg` (Leaflet 컨테이너 제외)
-2. `css/style.css:2795` — `.dr-map-card .map-box.leaflet-container svg { width: unset; height: unset; }` 추가
-3. `js/app.js:735` — `L.map()` 직후 `_leafletMap.setView([36.5, 127.5], 7)` 삽입 (CRS 좌표계 선확정)
+| 기능 | 상태 |
+|------|------|
+| KPI 게이지 SVG ↔ Chart.js 토글 (유지보수 가동률·감가상각률) | ✅ |
+| 노후 위험도 분포 도넛 SVG ↔ Chart.js 토글 | ✅ |
+| Chart.js 도넛 센터 텍스트 (afterDraw 플러그인) | ✅ |
+| Chart.js 도넛 커스텀 hover 툴팁 (showTip 재사용) | ✅ |
+
+**다음 단계**: 이미지 버전 검증 후 토글 제거, Chart.js 단일 버전으로 정리 예정
 
 ### 관련 파일
-- `js/app.js` — `renderMap()` / `_initLeafletMap()` 함수
-- `css/style.css` — 592줄(전역 SVG 규칙), 2791~2800줄(Leaflet 전용 규칙)
-- `js/lib/leaflet/` — leaflet.js, leaflet.css
-- `js/lib/topojson-client.min.js`
-- `js/lib/municipalities-topo.js` — `window.MUNICIPALITIES_TOPO` (KOSTAT 2012, 228개 시군구)
+- `js/app.js` — `_initLeafletMap()`, `renderMap()`, `renderKpis()`, `renderRiskDonut()`, `centerTextPlugin`
+- `css/style.css` — Leaflet 전용 규칙, 토글 스위치 스타일, KPI/리스크 Chart.js 캔버스 스타일
+- `index.html` — 지도 토글, KPI 토글, 노후 위험도 토글 마크업
+- `js/lib/leaflet/`, `js/lib/topojson-client.min.js`, `js/lib/municipalities-topo.js`
 
