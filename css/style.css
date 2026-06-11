@@ -2825,7 +2825,7 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 
 /* ===== Leaflet 지도 — 지역별 관리 현황 ===== */
 .dr-map-card .map-box.leaflet-container {
-  background: #EEF2FF;
+  background: #ffffff;
   border-radius: 10px;
 }
 .dr-map-card .map-box.leaflet-container svg {
