@@ -3,7 +3,7 @@
 > 이 문서는 "지금까지 무엇을 했고, 어디까지 동작하며, 어떻게 이어서 작업하는지"를 정리한 것입니다.
 > 다음에 할 일은 [TODO.md](TODO.md), 디자인 규칙은 [DESIGN.md](DESIGN.md), 프로젝트 안내는 [CLAUDE.md](CLAUDE.md)를 참고하세요.
 
-최종 업데이트: **2026-06-10 (Leaflet 지도 구현 진행 중 — Stage 2까지 작업, 내일 계속)**
+최종 업데이트: **2026-06-11 (Leaflet 지도 렌더링 버그 수정 완료)**
 
 ---
 
@@ -115,41 +115,29 @@ index.html 더블클릭  → 브라우저에서 바로 열림
 
 ---
 
-## 7. 진행 중인 작업 — Leaflet 지도 (2026-06-10, 내일 계속)
+## 7. 완료된 작업 — Leaflet 지도 (2026-06-11 완료)
 
-### 현재 상태
+### 최종 상태: ✅ 완료
 - **Stage 1 완료**: Leaflet 1.9.4 + topojson-client 3 + municipalities-topo.js 로컬 저장 (`js/lib/`)
-- **Stage 2 진행 중**: renderMap() 구현 완료, Leaflet 초기화까지 도달. 지도 색상이 렌더링되기 시작했으나 완전하지 않음.
-- **수정된 버그 3건**:
-  1. CSS 선택자 `.map-box .leaflet-container` → `.map-box.leaflet-container` (공백 제거)
-  2. `.dr-map-card .map-box`의 `height: auto` 제거
-  3. `height: 100% !important`가 Leaflet 초기화 시 0으로 해석되는 타이밍 버그 → CSS에서 제거, `setView` 추가, `invalidateSize` 딜레이 400ms + `requestAnimationFrame` 적용
+- **Stage 2 완료**: renderMap() 구현, 5개 권역 파란색 농도 차이 정상 렌더링
+- **Stage 3 완료**: hover 툴팁 + 권역별 자산 수 데이터 연동 (코드에 포함됨)
 
-### 버그 3번 — 왜 지도가 안 보였는가 (상세 원인)
+### 최종 버그 원인 (CSS 전역 규칙 충돌)
 
-Leaflet이 초기화됐는데도 지도가 흰 화면으로 보인 이유:
+Playwright 진단으로 정확한 원인 확인:
+- `svgPaths: 251개` (폴리곤은 DOM에 존재)
+- `overlayPane.compWidth/Height: 0px` (SVG가 0×0으로 계산됨)
 
-1. `renderMap()`이 `.map-box`에 inline 스타일 `width: 270px; height: 270px` 설정
-2. `L.map(mapEl)` 호출 → Leaflet이 즉시 `.map-box`에 `.leaflet-container` 클래스 추가
-3. **이 순간** CSS 규칙 `.map-box.leaflet-container { height: 100% !important }` 발동
-4. 브라우저가 `height: 100%`를 계산할 때 부모 `.dr-map-card`의 높이가 flex 레이아웃 계산 중 → **0으로 해석**
-5. Leaflet이 `clientHeight = 0`을 읽어 **내부 pane을 0×0으로 생성**
-6. GeoJSON 폴리곤들이 0×0짜리 SVG 안에 그려지고, SVG 자체가 컨테이너 완전 바깥(`x: 992, y: 445`)에 위치
-7. `.map-box`의 `overflow: hidden`이 바깥 영역을 잘라냄 → 아무것도 안 보임
+**원인**: `css/style.css:592` 전역 규칙 `.map-box svg { height: auto }` 가 Leaflet SVG에도 적용됨. Leaflet SVG는 `position: absolute`라서 `height: auto` → 부모 컨테이너(0 height 상속) 기준으로 **0px 계산됨**. 폴리곤 251개가 DOM에 있어도 SVG가 0×0이어서 `overflow: hidden`에 전부 클리핑됨.
 
-> Leaflet은 정상 동작했지만, 그림을 그린 캔버스 자체가 보이지 않는 곳에 있었던 것.
-> 200ms 후 `invalidateSize()` 호출도 SVG 좌표 계산이 0×0 기준으로 이미 꼬여 있어서 재배치 위치도 틀렸음.
-
-**수정 방향**: `height: 100% !important` 제거(CSS 간섭 차단) + `setView` 추가(초기 좌표계 명시) + 딜레이 400ms+rAF(레이아웃 확정 후 재계산)
-
-### 내일 해야 할 것 (Stage 2 마무리 → Stage 3)
-- 지도가 올바르게 렌더링되는지 확인 (한국 지형 + 5개 권역 파란색 구분)
-- 안 되면 추가 디버깅 (Playwright로 SVG path 좌표 확인)
-- Stage 3: hover 툴팁 연동 + 권역별 자산 수 실제 데이터 반영
+**수정 내용 2건**:
+1. `css/style.css:592` — `.map-box svg` → `.map-box:not(.leaflet-container) svg` (Leaflet 컨테이너 제외)
+2. `css/style.css:2795` — `.dr-map-card .map-box.leaflet-container svg { width: unset; height: unset; }` 추가
+3. `js/app.js:735` — `L.map()` 직후 `_leafletMap.setView([36.5, 127.5], 7)` 삽입 (CRS 좌표계 선확정)
 
 ### 관련 파일
-- `js/app.js` — `renderMap()` 함수 (675~787줄)
-- `css/style.css` — `.dr-map-card .map-box` (1575줄), `.map-box.leaflet-container` (2790줄)
+- `js/app.js` — `renderMap()` / `_initLeafletMap()` 함수
+- `css/style.css` — 592줄(전역 SVG 규칙), 2791~2800줄(Leaflet 전용 규칙)
 - `js/lib/leaflet/` — leaflet.js, leaflet.css
 - `js/lib/topojson-client.min.js`
 - `js/lib/municipalities-topo.js` — `window.MUNICIPALITIES_TOPO` (KOSTAT 2012, 228개 시군구)

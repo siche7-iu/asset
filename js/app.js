@@ -679,7 +679,7 @@ var INTRO_ENABLED = false;
 
     // 재진입: 이미 초기화된 경우 크기만 갱신
     if (_leafletMap) {
-      setTimeout(function(){ _leafletMap.invalidateSize(); }, 50);
+      _leafletMap.invalidateSize({ animate: false });
       return;
     }
 
@@ -691,8 +691,30 @@ var INTRO_ENABLED = false;
     var rect = parentCard ? parentCard.getBoundingClientRect() : null;
     var mapSize = rect ? Math.min(rect.width - 10, rect.height - 10) : 0;
     if (mapSize < 50) { setTimeout(renderMap, 80); return; }
-    mapEl.style.width  = mapSize + 'px';
-    mapEl.style.height = mapSize + 'px';
+    mapEl.style.width    = mapSize + 'px';
+    mapEl.style.height   = mapSize + 'px';
+    mapEl.style.overflow = 'hidden';
+
+    // .dg-right 패널에 0.50s delay + 0.42s duration CSS animation이 있어
+    // animation 중 container 위치가 변동되므로 Leaflet 초기화를 animation 완료 후로 지연.
+    // delay 500ms + duration 420ms + 여유 100ms = 1020ms 후 실제 초기화 진행.
+    setTimeout(function() { _initLeafletMap(mapEl, regions); }, 1050);
+  }
+
+  function _initLeafletMap(mapEl, regions) {
+    if (_leafletMap) return;  // 지연 중 재진입 방지
+
+    var topo = window.MUNICIPALITIES_TOPO;
+    if (!topo) return;
+
+    // 크기 재확인 (대시보드 패널이 visible 상태에서 다시 계산)
+    var parentCard = mapEl.closest('.dr-map-card') || mapEl.parentElement;
+    var rect = parentCard ? parentCard.getBoundingClientRect() : null;
+    var mapSize = rect ? Math.min(rect.width - 10, rect.height - 10) : 0;
+    if (mapSize >= 50) {
+      mapEl.style.width  = mapSize + 'px';
+      mapEl.style.height = mapSize + 'px';
+    }
 
     // TopoJSON → GeoJSON 변환
     var objKey = Object.keys(topo.objects)[0];
@@ -709,7 +731,8 @@ var INTRO_ENABLED = false;
       boxZoom:           false,
       keyboard:          false
     });
-    _leafletMap.setView([36.5, 127.8], 7);
+    // 좌표계(CRS 투영 행렬) 확정 — GeoJSON 추가 전에 반드시 setView 호출
+    _leafletMap.setView([36.5, 127.5], 7);
 
     // 툴팁 div (Leaflet sticky tooltip 대신 직접 생성 — 스타일 제어 용이)
     var ttEl = document.createElement('div');
@@ -771,19 +794,22 @@ var INTRO_ENABLED = false;
       }
     }).addTo(_leafletMap);
 
-    // 실제 GeoJSON 범위로 맞춤
+    // GeoJSON 범위로 fitBounds (animation 완료 후 초기화했으므로 안정적으로 계산됨)
     var geoBounds = geoLayer.getBounds();
     if (geoBounds.isValid()) {
-      _leafletMap.fitBounds(geoBounds, { padding: [8, 8] });
+      _leafletMap.fitBounds(geoBounds, { padding: [10, 10], animate: false });
     }
 
-    // 애니메이션 종료 후 크기 재확인
-    setTimeout(function() {
-      _leafletMap.invalidateSize();
-      requestAnimationFrame(function() {
-        if (geoBounds.isValid()) _leafletMap.fitBounds(geoBounds, { padding: [8, 8] });
-      });
-    }, 400);
+    // 레이아웃 확정 후 한 번 더 보정 (rAF + 150ms)
+    requestAnimationFrame(function() {
+      setTimeout(function() {
+        if (!_leafletMap) return;
+        _leafletMap.invalidateSize({ animate: false });
+        if (geoBounds.isValid()) {
+          _leafletMap.fitBounds(geoBounds, { padding: [10, 10], animate: false });
+        }
+      }, 150);
+    });
   }
 
   function top5Row(r) {

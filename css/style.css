@@ -589,7 +589,7 @@ nav { flex: none; }
 /* 지역별 관리 현황 (지도 + 말풍선) */
 .map-bg-img { display: block; width: 100%; height: auto; border-radius: 10px; }
 .map-box { position: relative; width: 100%; overflow: visible; }
-.map-box svg { display: block; width: 100%; height: auto; }
+.map-box:not(.leaflet-container) svg { display: block; width: 100%; height: auto; }
 /* 도(道) 히트 영역 SVG 오버레이 */
 .map-overlay-svg {
   position: absolute !important;
@@ -1575,6 +1575,7 @@ table { width: 100%; border-collapse: collapse; }
 .dr-map-card .map-box {
   flex: none;
   overflow: hidden;
+  isolation: isolate;       /* 자체 stacking context → SVG composite layer를 포함 */
   aspect-ratio: 1 / 1;
   width: min(calc(100cqw - 10px), calc(100cqh - 10px));
 }
@@ -2790,6 +2791,10 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 .dr-map-card .map-box.leaflet-container {
   background: #EEF2FF;
   border-radius: 10px;
+}
+.dr-map-card .map-box.leaflet-container svg {
+  width: unset;
+  height: unset;
 }
 
 /* 지도 위 툴팁 */
