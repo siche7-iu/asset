@@ -427,9 +427,17 @@
 
             <!-- Col 3 rows 1-2: 지역별 관리 현황 + 자산 노후도 분석 -->
             <div class="panel dg-right">
-              <div class="panel-head"><h3 class="panel-title">지역별 관리 현황</h3></div>
+              <div class="panel-head map-panel-head">
+                <h3 class="panel-title">지역별 관리 현황</h3>
+                <label class="map-mode-toggle" title="Leaflet 상세 지도로 전환">
+                  <span class="map-mode-label">상세 지도</span>
+                  <input type="checkbox" id="map-mode-cb" class="map-mode-cb">
+                  <span class="map-mode-track"><span class="map-mode-thumb"></span></span>
+                </label>
+              </div>
               <div class="dr-map-card">
-                <div class="map-box" id="map-box"></div>
+                <div class="map-box" id="map-box-svg"></div>
+                <div class="map-box" id="map-box" style="display:none;"></div>
               </div>
               <div class="panel-head dr-aging-head"><h3 class="panel-title">자산 노후도 분석</h3></div>
               <div class="dr-aging-wrap">

@@ -587,15 +587,15 @@ nav { flex: none; }
 .repl-total b { color: #DC2626; font-weight: 800; }
 
 /* 지역별 관리 현황 (지도 + 말풍선) */
-.map-bg-img { display: block; width: 100%; height: auto; border-radius: 10px; }
+.map-bg-img { display: block; width: 100%; height: 100%; object-fit: fill; }
 .map-box { position: relative; width: 100%; overflow: visible; }
 .map-box:not(.leaflet-container) svg { display: block; width: 100%; height: auto; }
 /* 도(道) 히트 영역 SVG 오버레이 */
 .map-overlay-svg {
-  position: absolute !important;
+  position: absolute;
   top: 0; left: 0;
-  width: 100% !important;
-  height: 100% !important;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 5;
 }
@@ -1579,6 +1579,43 @@ table { width: 100%; border-collapse: collapse; }
   aspect-ratio: 1 / 1;
   width: min(calc(100cqw - 10px), calc(100cqh - 10px));
 }
+
+/* SVG 이미지 지도 박스 */
+#map-box-svg {
+  flex: none;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: 1 / 1;
+  width: min(calc(100cqw - 10px), calc(100cqh - 10px));
+}
+
+/* 지도 패널 헤더 — 타이틀 + 토글 */
+.map-panel-head { display: flex; align-items: center; justify-content: space-between; }
+
+/* 지도 모드 토글 스위치 */
+.map-mode-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+.map-mode-label { font-size: 11px; color: var(--c-text-2, #6B7280); white-space: nowrap; }
+.map-mode-cb { display: none; }
+.map-mode-track {
+  position: relative;
+  width: 34px; height: 18px;
+  background: var(--c-border, #E5E7EB);
+  border-radius: 9px;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.map-mode-cb:checked + .map-mode-track { background: var(--c-primary, #3B82F6); }
+.map-mode-thumb {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  transition: transform .2s;
+}
+.map-mode-cb:checked + .map-mode-track .map-mode-thumb { transform: translateX(16px); }
 
 /* 노후도 섹션 구분 헤더 */
 .dr-aging-head {
