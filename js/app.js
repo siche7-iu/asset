@@ -843,6 +843,17 @@ var INTRO_ENABLED = false;
     var objKey = Object.keys(topo.objects)[0];
     var geojson = topojson.feature(topo, topo.objects[objKey]);
 
+    // 6개 권역별 merged polygon 생성 (topojson.merge로 내부 경계 완전 제거 → 깨진 조각 없음)
+    var allGeom = topo.objects[objKey].geometries;
+    var regionFeatures = LEAFLET_REGIONS.map(function(r, i) {
+      var group = allGeom.filter(function(g) {
+        return REGION_CODE_MAP[(g.properties.code || '').substring(0, 2)] === i;
+      });
+      var merged = topojson.merge(topo, group);
+      return { type: 'Feature', geometry: merged, properties: { ri: i } };
+    });
+    var regionGeojson = { type: 'FeatureCollection', features: regionFeatures };
+
     // Leaflet 지도 초기화 (타일 없음 — 순수 벡터, 오프라인 동작)
     _leafletMap = L.map(mapEl, {
       zoomControl:        false,  // 아래에서 position 지정해 직접 추가
@@ -906,7 +917,30 @@ var INTRO_ENABLED = false;
     }
     function hideTip() { ttEl.style.display = 'none'; }
 
-    // GeoJSON 레이어 (변수로 저장 — getBounds 사용)
+    // ── 권역 레이어 (zoom < 9, 기본) — 6개 merged polygon, 조각 없는 깔끔한 형태
+    var _regionLayer = L.geoJSON(regionGeojson, {
+      style: function(feat) {
+        var ri = feat.properties.ri;
+        return { color:'#ffffff', weight:1.2, smoothFactor:1.5,
+                 fillColor:REGION_FILL[ri], fillOpacity:0.87 };
+      },
+      onEachFeature: function(feat, layer) {
+        var ri = feat.properties.ri;
+        layer.on({
+          mouseover: function(e) {
+            layer.setStyle({ fillColor:REGION_HOVER[ri], fillOpacity:1 });
+            showTip(e, ri);
+          },
+          mousemove: function(e) { moveTip(e); },
+          mouseout:  function()  {
+            layer.setStyle({ fillColor:REGION_FILL[ri], fillOpacity:0.87 });
+            hideTip();
+          }
+        });
+      }
+    }).addTo(_leafletMap);
+
+    // ── 시군구 레이어 (zoom ≥ 9, 확대 시) — 228개 상세 폴리곤, 처음엔 숨김
     var geoLayer = L.geoJSON(geojson, {
       style: function(feat) {
         var prefix = (feat.properties.code||'').substring(0,2);
@@ -929,16 +963,23 @@ var INTRO_ENABLED = false;
           }
         });
       }
-    }).addTo(_leafletMap);
+    }); // addTo 없음 — zoom 9 이상일 때만 추가
 
-    // 줌 레벨 변경 시 폴리곤 스타일 갱신 (경계선 on/off)
+    // 줌에 따라 레이어 전환 (zoom < 9: 권역 덩어리, zoom ≥ 9: 시군구 상세)
     _leafletMap.on('zoomend', function() {
-      geoLayer.eachLayer(function(lyr) {
-        if (!lyr.feature) return;
-        var prefix = (lyr.feature.properties.code || '').substring(0, 2);
-        var ri = REGION_CODE_MAP[prefix];
-        lyr.setStyle(getStyle(ri, false));
-      });
+      var z = _leafletMap.getZoom();
+      if (z >= 9) {
+        if (_leafletMap.hasLayer(_regionLayer)) _leafletMap.removeLayer(_regionLayer);
+        if (!_leafletMap.hasLayer(geoLayer))    geoLayer.addTo(_leafletMap);
+        geoLayer.eachLayer(function(lyr) {
+          if (!lyr.feature) return;
+          var ri = REGION_CODE_MAP[(lyr.feature.properties.code||'').substring(0,2)];
+          lyr.setStyle(getStyle(ri, false));
+        });
+      } else {
+        if (_leafletMap.hasLayer(geoLayer))      _leafletMap.removeLayer(geoLayer);
+        if (!_leafletMap.hasLayer(_regionLayer)) _regionLayer.addTo(_leafletMap);
+      }
     });
 
     // 홈(전체보기) 커스텀 컨트롤
@@ -978,8 +1019,8 @@ var INTRO_ENABLED = false;
       mk.on('mouseout',  function()  { hideTip(); });
     });
 
-    // GeoJSON 범위로 fitBounds (animation 완료 후 초기화했으므로 안정적으로 계산됨)
-    var geoBounds = geoLayer.getBounds();
+    // 권역 레이어 기준으로 fitBounds (merged 폴리곤이 실제 표시 기준)
+    var geoBounds = _regionLayer.getBounds();
     _geoLayerBounds = geoBounds.isValid() ? geoBounds : null;
     if (geoBounds.isValid()) {
       _leafletMap.fitBounds(geoBounds, { padding: [10, 10], animate: false });
