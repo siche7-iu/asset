@@ -845,17 +845,36 @@ var INTRO_ENABLED = false;
 
     // Leaflet 지도 초기화 (타일 없음 — 순수 벡터, 오프라인 동작)
     _leafletMap = L.map(mapEl, {
-      zoomControl:       false,
-      attributionControl:false,
-      scrollWheelZoom:   false,
-      doubleClickZoom:   false,
-      dragging:          false,
-      touchZoom:         false,
-      boxZoom:           false,
-      keyboard:          false
+      zoomControl:        false,  // 아래에서 position 지정해 직접 추가
+      attributionControl: false,
+      scrollWheelZoom:    true,
+      doubleClickZoom:    true,
+      dragging:           true,
+      touchZoom:          true,
+      boxZoom:            false,
+      keyboard:           true
     });
     // 좌표계(CRS 투영 행렬) 확정 — GeoJSON 추가 전에 반드시 setView 호출
     _leafletMap.setView([36.5, 127.5], 7);
+    // 줌 컨트롤 (+/- 버튼)
+    L.control.zoom({ position: 'topright' }).addTo(_leafletMap);
+    // 축척 바 (거리 기준, 미터법만)
+    L.control.scale({ position: 'bottomright', imperial: false, maxWidth: 80 }).addTo(_leafletMap);
+
+    // 줌 레벨에 따른 폴리곤 스타일 계산
+    function getStyle(ri, hovered) {
+      var z = _leafletMap.getZoom();
+      var hasBorder = z >= 9;
+      return {
+        color:        hasBorder ? '#ffffff' : 'transparent',
+        weight:       hasBorder ? (z >= 11 ? 0.8 : 0.5) : 0,
+        smoothFactor: z >= 11 ? 1.0 : 2.0,
+        fillColor:    ri !== undefined
+                        ? (hovered ? (REGION_HOVER[ri] || REGION_FILL[ri]) : REGION_FILL[ri])
+                        : '#D1D5DB',
+        fillOpacity:  hovered ? 1.0 : 0.85
+      };
+    }
 
     // 툴팁 div (Leaflet sticky tooltip 대신 직접 생성 — 스타일 제어 용이)
     var ttEl = document.createElement('div');
@@ -892,12 +911,7 @@ var INTRO_ENABLED = false;
       style: function(feat) {
         var prefix = (feat.properties.code||'').substring(0,2);
         var ri = REGION_CODE_MAP[prefix];
-        return {
-          color:       '#ffffff',
-          weight:      0.5,
-          fillColor:   ri !== undefined ? REGION_FILL[ri] : '#D1D5DB',
-          fillOpacity: 0.85
-        };
+        return getStyle(ri, false);
       },
       onEachFeature: function(feat, layer) {
         var prefix = (feat.properties.code||'').substring(0,2);
@@ -905,17 +919,45 @@ var INTRO_ENABLED = false;
         if (ri === undefined) return;
         layer.on({
           mouseover: function(e) {
-            layer.setStyle({ fillColor: REGION_HOVER[ri], fillOpacity: 1 });
+            layer.setStyle(getStyle(ri, true));
             showTip(e, ri);
           },
           mousemove: function(e) { moveTip(e); },
           mouseout:  function()  {
-            layer.setStyle({ fillColor: REGION_FILL[ri], fillOpacity: 0.85 });
+            layer.setStyle(getStyle(ri, false));
             hideTip();
           }
         });
       }
     }).addTo(_leafletMap);
+
+    // 줌 레벨 변경 시 폴리곤 스타일 갱신 (경계선 on/off)
+    _leafletMap.on('zoomend', function() {
+      geoLayer.eachLayer(function(lyr) {
+        if (!lyr.feature) return;
+        var prefix = (lyr.feature.properties.code || '').substring(0, 2);
+        var ri = REGION_CODE_MAP[prefix];
+        lyr.setStyle(getStyle(ri, false));
+      });
+    });
+
+    // 홈(전체보기) 커스텀 컨트롤
+    var HomeControl = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd: function() {
+        var c = L.DomUtil.create('div', 'leaflet-bar leaflet-control lf-home-ctrl');
+        var a = L.DomUtil.create('a', 'lf-home-btn', c);
+        a.title = '전체 보기';
+        a.innerHTML = '<svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z" fill="currentColor"/></svg>';
+        L.DomEvent.on(a, 'click', function(e) {
+          L.DomEvent.stop(e);
+          if (_geoLayerBounds) _leafletMap.fitBounds(_geoLayerBounds, { padding: [10, 10], animate: true });
+          else _leafletMap.setView([36.5, 127.5], 7, { animate: true });
+        });
+        return c;
+      }
+    });
+    new HomeControl().addTo(_leafletMap);
 
     // 6개 권역 핀 마커 + 컴팩트 배지 (항상 표시)
     var pinSvg = '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.4-3.6-8-8-8z" fill="currentColor"/><circle cx="12" cy="10" r="3.5" fill="#fff" opacity=".85"/></svg>';

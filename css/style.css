@@ -2897,3 +2897,35 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 .lf-rnum  { font-size: 15px; font-weight: 800; letter-spacing: -.3px; }
 .lf-rico  { color: var(--rc, #1E3A8A); line-height: 0; }
 .lf-rico svg path { fill: var(--rc, #1E3A8A); }
+
+/* ===== Leaflet 컨트롤 오버라이드 ===== */
+#map-box .leaflet-bar { border: none !important; box-shadow: 0 2px 8px rgba(0,0,0,.20); border-radius: 6px; overflow: hidden; }
+#map-box .leaflet-control-zoom-in,
+#map-box .leaflet-control-zoom-out {
+  width: 28px !important; height: 28px !important; line-height: 28px !important;
+  font-size: 17px !important; font-weight: 500;
+  background: #1e2d5e !important; color: #fff !important;
+  border-bottom: 1px solid rgba(255,255,255,.15) !important;
+  transition: background .15s;
+}
+#map-box .leaflet-control-zoom-in:hover,
+#map-box .leaflet-control-zoom-out:hover { background: #2563EB !important; }
+#map-box .leaflet-control-zoom-out { border-bottom: none !important; }
+
+.lf-home-ctrl { margin-top: 4px !important; }
+.lf-home-btn {
+  display: flex !important; align-items: center; justify-content: center;
+  width: 28px !important; height: 28px !important;
+  background: #1e2d5e !important; color: #fff !important;
+  cursor: pointer; text-decoration: none;
+  transition: background .15s;
+}
+.lf-home-btn:hover { background: #2563EB !important; }
+
+#map-box .leaflet-control-scale { margin: 6px !important; }
+#map-box .leaflet-control-scale-line {
+  border: 1.5px solid #1e2d5e; border-top: none;
+  color: #1e2d5e; font-size: 9px; font-weight: 600;
+  background: rgba(255,255,255,.82); padding: 2px 4px; border-radius: 0 0 3px 3px;
+  white-space: nowrap;
+}
