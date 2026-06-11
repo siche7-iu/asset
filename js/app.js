@@ -566,16 +566,22 @@ var INTRO_ENABLED = false;
   }
 
   function renderKpis() {
+    var _gc = 0; // gauge counter (클로저)
     document.getElementById("kpi-row").innerHTML = DASH.kpis.map(function (k, i) {
       var bi = k.badgeIcon ? icon(k.badgeIcon) : "";
+      var gaugeHtml = '';
+      if (k.gauge) {
+        var gIdx = _gc++;
+        gaugeHtml = gaugeSvg(k.gauge.pct, k.gauge.color) +
+          '<canvas class="kpi-gauge-canvas" id="kpi-canvas-' + gIdx + '" width="56" height="56" style="display:none"></canvas>';
+      }
       var main = '<div class="kpi-main' + (k.gauge ? " with-gauge" : "") + '">' +
-        (k.gauge ? gaugeSvg(k.gauge.pct, k.gauge.color) : "") +
+        gaugeHtml +
         '<span class="kpi-value">' + k.value + (k.unit ? '<span class="u">' + k.unit + '</span>' : "") + '</span></div>';
       return '<div class="kpi-card" style="--card-delay:' + (0.08 + i * 0.04).toFixed(2) + 's">' +
         '<div class="kpi-label">' + k.label + '</div>' + main +
         '<span class="kpi-badge ' + k.tone + '">' + bi + k.badge + '</span></div>';
     }).join("");
-    // KPI 카드 hover: 호버된 카드 확대, 나머지 축소 (JS 이벤트 방식 — 브라우저 호환)
     var kpiCards = document.querySelectorAll('#kpi-row .kpi-card');
     kpiCards.forEach(function (card) {
       card.addEventListener('mouseenter', function () {
@@ -585,6 +591,47 @@ var INTRO_ENABLED = false;
         kpiCards.forEach(function (c) { c.classList.remove('kpi-dimmed'); });
       });
     });
+    // KPI 게이지 토글 리스너 (1회만 등록)
+    var kpiCb = document.getElementById('kpi-chart-cb');
+    if (kpiCb && !kpiCb._kpiInit) {
+      kpiCb._kpiInit = true;
+      kpiCb.addEventListener('change', function () {
+        var svgs = document.querySelectorAll('#kpi-row .kpi-gauge');
+        var canvases = document.querySelectorAll('#kpi-row .kpi-gauge-canvas');
+        var gaugeKpis = DASH.kpis.filter(function (k) { return k.gauge; });
+        if (this.checked) {
+          svgs.forEach(function (el) { el.style.display = 'none'; });
+          _kpiChartInstances.forEach(function (c) { if (c) c.destroy(); });
+          _kpiChartInstances = [];
+          canvases.forEach(function (el, i) {
+            el.style.display = 'block';
+            var gk = gaugeKpis[i];
+            if (!gk) return;
+            _kpiChartInstances[i] = new Chart(el, {
+              type: 'doughnut',
+              data: {
+                datasets: [{
+                  data: [gk.gauge.pct, 100 - gk.gauge.pct],
+                  backgroundColor: [gk.gauge.color, '#EEF1F5'],
+                  borderWidth: 0, hoverOffset: 0
+                }]
+              },
+              options: {
+                cutout: '72%', rotation: -90, circumference: 360,
+                responsive: false,
+                animation: { animateRotate: true, duration: 800 },
+                plugins: { legend: { display: false }, tooltip: { enabled: false } }
+              }
+            });
+          });
+        } else {
+          svgs.forEach(function (el) { el.style.display = ''; });
+          canvases.forEach(function (el) { el.style.display = 'none'; });
+          _kpiChartInstances.forEach(function (c) { if (c) c.destroy(); });
+          _kpiChartInstances = [];
+        }
+      });
+    }
   }
 
   function renderRiskDonut() {
@@ -628,6 +675,61 @@ var INTRO_ENABLED = false;
         '<div class="lg-val">' + s.label + ' (' + s.pct + ')</div></div></li>';
     }).join("");
     document.getElementById("risk-formula").textContent = r.formula;
+    // 노후 위험도 토글 리스너 (1회만 등록)
+    var riskCb = document.getElementById('risk-chart-cb');
+    if (riskCb && !riskCb._riskInit) {
+      riskCb._riskInit = true;
+      riskCb.addEventListener('change', function () {
+        var svgWrap   = document.getElementById('risk-svg-wrap');
+        var chartWrap = document.getElementById('risk-chart-wrap');
+        if (this.checked) {
+          svgWrap.style.display   = 'none';
+          chartWrap.style.display = '';
+          if (_riskChartInstance) { _riskChartInstance.destroy(); _riskChartInstance = null; }
+          // 범례 (SVG 버전과 동일)
+          document.getElementById('risk-legend-chart').innerHTML =
+            r.segments.map(function (s) {
+              return '<li><span class="sq" style="background:' + s.color + '"></span><div>' +
+                '<div class="lg-key"><b>' + s.key + '</b> <span>' + (s.note ? '(' + s.note + ')' : '') + '</span></div>' +
+                '<div class="lg-val">' + s.label + ' (' + s.pct + ')</div></div></li>';
+            }).join('');
+          // Chart.js 도넛
+          var segs = r.segments.filter(function (s) { return s.count > 0; });
+          _riskChartInstance = new Chart(document.getElementById('risk-chart-canvas'), {
+            type: 'doughnut',
+            data: {
+              labels: segs.map(function (s) { return s.key; }),
+              datasets: [{
+                data: segs.map(function (s) { return s.count; }),
+                backgroundColor: segs.map(function (s) { return s.color; }),
+                borderWidth: 3, borderColor: '#ffffff', hoverOffset: 8
+              }]
+            },
+            options: {
+              cutout: '62%',
+              responsive: true, maintainAspectRatio: true,
+              animation: { animateRotate: true, duration: 800 },
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    title: function (ctx) { return segs[ctx[0].dataIndex].key; },
+                    label: function (ctx) {
+                      var s = segs[ctx.dataIndex];
+                      return ' ' + s.label + ' (' + s.pct + ')';
+                    }
+                  }
+                }
+              }
+            }
+          });
+        } else {
+          svgWrap.style.display   = '';
+          chartWrap.style.display = 'none';
+          if (_riskChartInstance) { _riskChartInstance.destroy(); _riskChartInstance = null; }
+        }
+      });
+    }
   }
 
   function renderTimeline() {
@@ -782,6 +884,8 @@ var INTRO_ENABLED = false;
       detail:[['고위험 자산','4개 [HIGH]'],['점검 예정','6개 (7일 이내 1개)'],
               ['계약 만료 임박','1개'],['노후 자산(8년+)','115개'],['유지보수 가동률','95.6%']] }
   ];
+  var _kpiChartInstances = [];
+  var _riskChartInstance = null;
   var _leafletMap = null;
   var _geoLayerBounds = null;
 

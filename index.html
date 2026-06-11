@@ -393,6 +393,13 @@
 
           <!-- KPI 6칸 -->
           <div class="kpi-section">
+            <div class="kpi-chart-head">
+              <label class="map-mode-toggle" title="Chart.js 게이지로 전환">
+                <span class="map-mode-label">차트 버전</span>
+                <input type="checkbox" id="kpi-chart-cb" class="map-mode-cb">
+                <span class="map-mode-track"><span class="map-mode-thumb"></span></span>
+              </label>
+            </div>
             <div class="kpi-row" id="kpi-row"></div>
           </div>
 
@@ -403,14 +410,27 @@
             <div class="panel dg-donut">
               <div class="panel-head">
                 <h3 class="panel-title">노후 위험도 분포</h3>
-                <label class="mini-select"><span>자산 유형 :</span>
-                  <select id="risk-type"><option>ATM</option><option>서버</option><option>네트워크</option><option>전체</option></select>
-                </label>
+                <div class="panel-head-controls">
+                  <label class="mini-select"><span>자산 유형 :</span>
+                    <select id="risk-type"><option>ATM</option><option>서버</option><option>네트워크</option><option>전체</option></select>
+                  </label>
+                  <label class="map-mode-toggle" title="Chart.js 도넛으로 전환">
+                    <span class="map-mode-label">차트 버전</span>
+                    <input type="checkbox" id="risk-chart-cb" class="map-mode-cb">
+                    <span class="map-mode-track"><span class="map-mode-thumb"></span></span>
+                  </label>
+                </div>
               </div>
               <div class="panel-body card-white">
-                <div class="risk-wrap">
+                <div class="risk-wrap" id="risk-svg-wrap">
                   <div class="risk-donut" id="risk-donut"></div>
                   <ul class="risk-legend" id="risk-legend"></ul>
+                </div>
+                <div class="risk-wrap" id="risk-chart-wrap" style="display:none;">
+                  <div class="risk-donut" id="risk-donut-chart">
+                    <canvas id="risk-chart-canvas"></canvas>
+                  </div>
+                  <ul class="risk-legend" id="risk-legend-chart"></ul>
                 </div>
                 <p class="risk-formula" id="risk-formula"></p>
               </div>

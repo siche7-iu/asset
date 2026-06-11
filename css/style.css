@@ -507,6 +507,8 @@ nav { flex: none; }
 
 /* ===== KPI 6칸 ===== */
 .kpi-section { margin-bottom: 18px; }
+.kpi-chart-head { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.kpi-gauge-canvas { width: 56px; height: 56px; flex-shrink: 0; }
 .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
 .kpi-card {
   background: var(--c-surface); border: 1px solid #EDF0F4; border-radius: var(--radius-card);
@@ -538,6 +540,7 @@ nav { flex: none; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .panel { background: var(--c-panel); border-radius: var(--radius-panel); padding: 18px; display: flex; flex-direction: column; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; min-height: 24px; }
+.panel-head-controls { display: flex; align-items: center; gap: 10px; }
 .panel-title { position: relative; padding-left: 14px; font-size: 16px; font-weight: 700; color: #1f2937; }
 .panel-title::before { content: ""; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 2px; background: var(--c-navy); }
 .panel-body { flex: 1; display: flex; flex-direction: column; }
@@ -558,6 +561,8 @@ nav { flex: none; }
 .risk-wrap { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 4%, 28px); flex: 1; min-height: 0; container-type: size; }
 .risk-donut { width: min(46cqw, 76cqh); min-width: 120px; max-width: 280px; aspect-ratio: 1; flex-shrink: 0; }
 .risk-donut svg { width: 100%; height: 100%; display: block; }
+#risk-donut-chart { display: flex; align-items: center; justify-content: center; }
+#risk-donut-chart canvas { width: 100% !important; height: 100% !important; }
 .risk-legend { list-style: none; display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; }
 .risk-legend li { display: flex; align-items: flex-start; gap: 9px; }
 .risk-legend .sq { width: 13px; height: 13px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
@@ -1702,6 +1707,7 @@ table { width: 100%; border-collapse: collapse; }
     gap: 8px;
   }
   .kpi-gauge { width: 44px; height: 44px; }
+  .kpi-gauge-canvas { width: 44px; height: 44px; }
   .kpi-section { margin-bottom: 8px; }
 
   /* 대시보드 그리드 간격 축소 (kpi-row도 동일하게 줄여 열 정렬 유지) */
