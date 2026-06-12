@@ -147,6 +147,22 @@
               <button class="nav-item nav-subitem" data-view="asis-prop-contract" data-title="계약 관리"><span class="nav-item-label">계약 관리</span></button>
             </div>
           </div>
+
+          <!-- AI Agent 예상안 서브그룹 -->
+          <div class="nav-sub-grp" id="nav-aiph-grp">
+            <button class="nav-item nav-sub-grp-head" id="nav-aiph-toggle" onclick="toggleAiphMenu()" type="button">
+              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="10" r="2"/><circle cx="15" cy="10" r="2"/><path d="M9 15s1 1 3 1 3-1 3-1"/></svg></span>
+              <span class="nav-item-label">AI Agent 예상안</span>
+              <span class="nav-sub-grp-caret" id="nav-aiph-caret">▸</span>
+            </button>
+            <div class="nav-sub-grp-items" id="nav-aiph-items">
+              <div class="nav-sub-grp-label">사용자 레이어</div>
+              <button class="nav-item nav-subitem" data-view="aiph-copilot" data-title="AI Copilot"><span class="nav-item-label">AI Copilot</span></button>
+              <button class="nav-item nav-subitem" data-view="aiph-anomaly" data-title="이상탐지 보드"><span class="nav-item-label">이상탐지 보드</span></button>
+              <div class="nav-sub-grp-label">관리 레이어</div>
+              <button class="nav-item nav-subitem" data-view="aiph-monitor" data-title="모니터링"><span class="nav-item-label">모니터링</span></button>
+            </div>
+          </div>
         </div>
       </nav>
 
@@ -683,6 +699,17 @@
         </section>
         <section id="view-asis-prop-contract" class="view asis-view">
           <div class="asis-loading"><div class="asis-spinner"></div><span>계약 관리 로딩 중…</span></div>
+        </section>
+
+        <!-- ===== AI Agent 예상안 화면들 ===== -->
+        <section id="view-aiph-copilot" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>AI Copilot 로딩 중…</span></div>
+        </section>
+        <section id="view-aiph-anomaly" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>이상탐지 보드 로딩 중…</span></div>
+        </section>
+        <section id="view-aiph-monitor" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>모니터링 로딩 중…</span></div>
         </section>
 
         <!-- ===== 프로젝트 관리 화면 (비밀 모드) ===== -->
@@ -2802,6 +2829,9 @@
   <script src="js/screens/asis-b.js"></script>
   <script src="js/screens/asis-c.js"></script>
   <script src="js/screens/asis-d.js"></script>
+  <script src="js/screens/aiph-copilot.js"></script>
+  <script src="js/screens/aiph-anomaly.js"></script>
+  <script src="js/screens/aiph-monitor.js"></script>
 
   <!-- 요구사항 편집 모달 -->
   <div id="req-edit-modal" class="req-modal-backdrop" style="display:none">

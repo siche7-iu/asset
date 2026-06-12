@@ -54,7 +54,8 @@ var INTRO_ENABLED = false;
     "asis-gis", "asis-lifecycle", "asis-report",
     "asis-vehicle", "asis-acquire", "asis-closing",
     "asis-prop-lifecycle", "asis-prop-operation", "asis-prop-lease",
-    "asis-prop-extract", "asis-prop-contract"
+    "asis-prop-extract", "asis-prop-contract",
+    "aiph-copilot", "aiph-anomaly", "aiph-monitor"
   ];
 
   // ===== 차트 공용 툴팁 =====
@@ -174,6 +175,23 @@ var INTRO_ENABLED = false;
           "asis-prop-contract": window.renderAsisPropContract
         };
         var fn = _fnMap[view];
+        if (typeof fn === "function") fn();
+      }
+      return;
+    }
+    if (view.startsWith("aiph-")) {
+      showSection(view);
+      activateSidebar(view);
+      activateTab(null);
+      var el = document.getElementById("view-" + view);
+      if (el && !el.dataset.rendered) {
+        el.dataset.rendered = "1";
+        var _aiphMap = {
+          "aiph-copilot": window.renderAiphCopilot,
+          "aiph-anomaly": window.renderAiphAnomaly,
+          "aiph-monitor": window.renderAiphMonitor
+        };
+        var fn = _aiphMap[view];
         if (typeof fn === "function") fn();
       }
       return;
@@ -2155,6 +2173,15 @@ var INTRO_ENABLED = false;
   window.toggleAsisMenu = function () {
     var items = document.getElementById('nav-asis-items');
     var caret = document.getElementById('nav-asis-caret');
+    if (!items) return;
+    var open = items.classList.toggle('open');
+    if (caret) caret.textContent = open ? '▾' : '▸';
+  };
+
+  // ===== AI Agent 예상안 서브메뉴 토글 =====
+  window.toggleAiphMenu = function () {
+    var items = document.getElementById('nav-aiph-items');
+    var caret = document.getElementById('nav-aiph-caret');
     if (!items) return;
     var open = items.classList.toggle('open');
     if (caret) caret.textContent = open ? '▾' : '▸';

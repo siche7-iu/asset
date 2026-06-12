@@ -257,6 +257,7 @@ nav { flex: none; }
 .nav-item .ic svg { width: 16px; height: 16px; }
 .nav-item .ic img { width: 16px; height: 16px; }
 .nav-item .ic .ic-default { width: 22px; height: 22px; }
+.nav-item .ic .ic-active { width: 22px; height: 22px; }
 .nav-item .ic-active { display: none; }
 .nav-item.active .ic-default { display: none; }
 .nav-item.active .ic-active { display: block; }
