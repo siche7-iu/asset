@@ -50,7 +50,12 @@ var INTRO_ENABLED = false;
   var navItems = document.querySelectorAll(".nav-item");
   var tabs = document.querySelectorAll(".tab");
   var soonTitle = document.getElementById("soon-title");
-  var sectionIds = ["dashboard", "list", "detail", "soon", "ai-agent", "report"];
+  var sectionIds = ["dashboard", "list", "detail", "soon", "ai-agent", "report",
+    "asis-gis", "asis-lifecycle", "asis-report",
+    "asis-vehicle", "asis-acquire", "asis-closing",
+    "asis-prop-lifecycle", "asis-prop-operation", "asis-prop-lease",
+    "asis-prop-extract", "asis-prop-contract"
+  ];
 
   // ===== 차트 공용 툴팁 =====
   var _tipEl = null;
@@ -146,6 +151,31 @@ var INTRO_ENABLED = false;
       activateSidebar("ai-agent");
       activateTab(null);
       renderReportPage();
+      return;
+    }
+    if (view.startsWith("asis-")) {
+      showSection(view);
+      activateSidebar(view);
+      activateTab(null);
+      var el = document.getElementById("view-" + view);
+      if (el && !el.dataset.rendered) {
+        el.dataset.rendered = "1";
+        var _fnMap = {
+          "asis-gis": window.renderAsisGis,
+          "asis-lifecycle": window.renderAsisLifecycle,
+          "asis-report": window.renderAsisReport,
+          "asis-vehicle": window.renderAsisVehicle,
+          "asis-acquire": window.renderAsisAcquire,
+          "asis-closing": window.renderAsisClosing,
+          "asis-prop-lifecycle": window.renderAsisPropLifecycle,
+          "asis-prop-operation": window.renderAsisPropOperation,
+          "asis-prop-lease": window.renderAsisPropLease,
+          "asis-prop-extract": window.renderAsisPropExtract,
+          "asis-prop-contract": window.renderAsisPropContract
+        };
+        var fn = _fnMap[view];
+        if (typeof fn === "function") fn();
+      }
       return;
     }
     showSection(view);
@@ -2120,6 +2150,15 @@ var INTRO_ENABLED = false;
   window.showReportDraft = showReportDraft;
   window.selectReportType = selectReportType;
   window.renderReportPage = renderReportPage;
+
+  // ===== As-is → To-be 서브메뉴 토글 =====
+  window.toggleAsisMenu = function () {
+    var items = document.getElementById('nav-asis-items');
+    var caret = document.getElementById('nav-asis-caret');
+    if (!items) return;
+    var open = items.classList.toggle('open');
+    if (caret) caret.textContent = open ? '▾' : '▸';
+  };
 
   // ===== 시작 =====
   renderDashboard();

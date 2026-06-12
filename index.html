@@ -122,6 +122,31 @@
           <div class="nav-group-label">시스템</div>
           <button class="nav-item" data-view="soon" data-title="시스템관리">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="nav-item-label">시스템관리</span></button>
+
+          <!-- As-is → To-be 서브그룹 -->
+          <div class="nav-sub-grp" id="nav-asis-grp">
+            <button class="nav-item nav-sub-grp-head" id="nav-asis-toggle" onclick="toggleAsisMenu()" type="button">
+              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+              <span class="nav-item-label">As-is → To-be</span>
+              <span class="nav-sub-grp-caret" id="nav-asis-caret">▸</span>
+            </button>
+            <div class="nav-sub-grp-items" id="nav-asis-items">
+              <div class="nav-sub-grp-label">대시보드 계열</div>
+              <button class="nav-item nav-subitem" data-view="asis-gis" data-title="GIS 현황"><span class="nav-item-label">GIS 현황</span></button>
+              <button class="nav-item nav-subitem" data-view="asis-lifecycle" data-title="생애주기 모니터링"><span class="nav-item-label">생애주기 모니터링</span></button>
+              <button class="nav-item nav-subitem" data-view="asis-report" data-title="통계 분석 리포트"><span class="nav-item-label">통계 분석 리포트</span></button>
+              <div class="nav-sub-grp-label">현행 개선</div>
+              <button class="nav-item nav-subitem" data-view="asis-vehicle" data-title="차량 관리"><span class="nav-item-label">차량 관리</span></button>
+              <button class="nav-item nav-subitem" data-view="asis-acquire" data-title="자산 취득"><span class="nav-item-label">자산 취득</span></button>
+              <button class="nav-item nav-subitem" data-view="asis-closing" data-title="자산 폐기"><span class="nav-item-label">자산 폐기</span></button>
+              <div class="nav-sub-grp-label">개발업무 제안</div>
+              <button class="nav-item nav-subitem" data-view="asis-prop-lifecycle" data-title="건물 생애주기"><span class="nav-item-label">건물 생애주기</span></button>
+              <button class="nav-item nav-subitem" data-view="asis-prop-operation" data-title="건물 운영 관리"><span class="nav-item-label">건물 운영 관리</span></button>
+              <button class="nav-item nav-subitem" data-view="asis-prop-lease" data-title="임대정보 관리"><span class="nav-item-label">임대정보 관리</span></button>
+              <button class="nav-item nav-subitem" data-view="asis-prop-extract" data-title="데이터 추출"><span class="nav-item-label">데이터 추출</span></button>
+              <button class="nav-item nav-subitem" data-view="asis-prop-contract" data-title="계약 관리"><span class="nav-item-label">계약 관리</span></button>
+            </div>
+          </div>
         </div>
       </nav>
 
@@ -623,6 +648,41 @@
             <div class="report-type-cards" id="report-type-cards"></div>
             <div class="report-content-area" id="report-content-area"></div>
           </div>
+        </section>
+
+        <!-- ===== As-is → To-be 구현 화면들 ===== -->
+        <section id="view-asis-gis" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>GIS 현황 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-lifecycle" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>생애주기 모니터링 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-report" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>통계 분석 리포트 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-vehicle" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>차량 관리 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-acquire" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>자산 취득 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-closing" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>자산 폐기 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-prop-lifecycle" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>건물 생애주기 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-prop-operation" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>건물 운영 관리 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-prop-lease" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>임대정보 관리 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-prop-extract" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>데이터 추출 로딩 중…</span></div>
+        </section>
+        <section id="view-asis-prop-contract" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>계약 관리 로딩 중…</span></div>
         </section>
 
         <!-- ===== 프로젝트 관리 화면 (비밀 모드) ===== -->
@@ -2738,6 +2798,10 @@
 
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/screens/asis-a.js"></script>
+  <script src="js/screens/asis-b.js"></script>
+  <script src="js/screens/asis-c.js"></script>
+  <script src="js/screens/asis-d.js"></script>
 
   <!-- 요구사항 편집 모달 -->
   <div id="req-edit-modal" class="req-modal-backdrop" style="display:none">
