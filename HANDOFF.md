@@ -3,7 +3,7 @@
 > 이 문서는 "지금까지 무엇을 했고, 어디까지 동작하며, 어떻게 이어서 작업하는지"를 정리한 것입니다.
 > 다음에 할 일은 [TODO.md](TODO.md), 디자인 규칙은 [DESIGN.md](DESIGN.md), 프로젝트 안내는 [CLAUDE.md](CLAUDE.md)를 참고하세요.
 
-최종 업데이트: **2026-06-11 (Chart.js KPI·도넛 토글 + Leaflet 인터랙션 전면 완성)**
+최종 업데이트: **2026-06-12 (AI Agent 예상안 9개 화면 전체 완성)**
 
 ---
 
@@ -24,7 +24,7 @@
 - ✅ **GitHub 백업**: `siche7-iu/asset` 저장소 `main` 브랜치. push 시 Vercel 자동 배포.
 - ✅ **Playwright 자동 테스트** (`npm test`): 대시보드·목록·상세 스크린샷 + 기본 동작 + AI Agent + 프로젝트 화면 등 총 9건.
 
-### 화면 (7개)
+### 화면 (전체)
 
 | 화면 | URL | 상태 |
 |------|-----|------|
@@ -35,6 +35,8 @@
 | 자산 상세 | `#/detail/AST-…` | ✅ 완성 |
 | 프로젝트 관리 | 비밀번호 입력 후 진입 | ✅ 완성 |
 | 준비 중 | `#/soon` | ✅ 안내 화면 |
+| **As-is → To-be** (11개 서브화면) | `#/asis-*` | ✅ 완성 |
+| **AI Agent 예상안** (9개 서브화면) | `#/aiph-*` | ✅ 완성 |
 
 #### 대시보드 (`#/dashboard`)
 - KPI 6칸(게이지·카운터·hover 효과) + AI 인사이트 배너(shimmer)
@@ -50,6 +52,43 @@
 - 3열 레이아웃(추천질문·채팅·분석 패널) — 각 패널 내부 스크롤
 - 퍼지 매칭으로 오타·띄어쓰기 허용 / 분석 단계 스피너 / 보고서 작성 버튼
 - 입력창 클릭 시 한 세션 1회 자동 타이핑·전송
+
+#### As-is → To-be (11개 서브화면, 사이드바 아코디언)
+
+| 서브화면 | view ID | 내용 |
+|---------|---------|------|
+| GIS 현황 | `asis-gis` | Leaflet 마커 25개 + 범례 + 탭 |
+| 생애주기 모니터링 | `asis-lifecycle` | KPI4 + 아크 게이지 4개 + stacked bar |
+| 통계 분석 리포트 | `asis-report` | 도넛 + 수평 막대 + 자산대금 원장 |
+| 차량 관리 | `asis-vehicle` | KPI4 + 필터 바 + 테이블 |
+| 자산 취득 | `asis-acquire` | KPI3 + 5단계 스텝 + 테이블 |
+| 자산 폐기 | `asis-closing` | 상태 카드 + 도넛 차트 |
+| 건물 생애주기 | `asis-prop-lifecycle` | 그룹 접기/펼치기 |
+| 건물 운영 관리 | `asis-prop-operation` | 탭 + 월별 관리비 라인 차트 |
+| 임대정보 관리 | `asis-prop-lease` | 탭 필터 |
+| 데이터 추출 | `asis-prop-extract` | 체크박스 동적 컬럼 |
+| 계약 관리 | `asis-prop-contract` | D-day 배지 + KPI4 |
+
+#### AI Agent 예상안 (9개 서브화면, 사이드바 아코디언)
+
+**사용자 레이어 (4개)**
+
+| 서브화면 | view ID | 핵심 내용 |
+|---------|---------|----------|
+| AI Copilot | `aiph-copilot` | 3열 레이아웃 · 추론 Trace · 신뢰도 배지 · 멀티에이전트 진행표시 · 추천질문 6개 mock 답변 |
+| 이상탐지 보드 | `aiph-anomaly` | KPI4 · 탐지 카드 그리드 · Chart.js 바 차트 · 탐지 이력 |
+| AI 결재함 | `aiph-approval` | KPI4 · 결재 대기 6행 · 우측 상세 패널(클릭 토글) · AI 분석 근거 · 승인/반려 |
+| 자동 리포트 | `aiph-report` | KPI4 · Chart.js 월별 발송 바 차트 · 스케줄 설정 · 발송 이력 |
+
+**관리 레이어 (5개)**
+
+| 서브화면 | view ID | 핵심 내용 |
+|---------|---------|----------|
+| 모니터링 | `aiph-monitor` | 6축 운영 현황 · KPI4 · Chart.js 2개(질의량·응답시간) · 세션 상세 패널 · 가드레일 현황 |
+| 에이전트 빌더 | `aiph-builder` | 활성 에이전트 카드 4개 · 블록 팔레트 · SVG 플로우 다이어그램 · 노드 클릭 속성 패널 |
+| 지식베이스 | `aiph-kb` | 문서 10건 · 카테고리 탭 필터 · 실시간 검색 · RAG 임베딩 현황 |
+| 평가·품질 | `aiph-eval` | Chart.js 레이더 차트(3에이전트·5축) · 에이전트 성적표 · 테스트 케이스 이력 |
+| 거버넌스 | `aiph-governance` | 역할·권한 매트릭스(3역할×10기능) · 가드레일 정책 5건 · 감사 로그 |
 
 #### 프로젝트 관리 (비밀 버튼 `v0.9.3 · NH Demo Build` → 비밀번호 입력)
 - 비밀번호: SHA-256 해시 처리 완료 (로컬 메모리에만 원문 보관)
@@ -71,6 +110,20 @@ css/style.css                 디자인 (맨 위 :root 토큰 = DESIGN.md 규칙
 js/data.js                    샘플 자산 데이터 + 대시보드 요약 수치 (단일 데이터 소스)
 js/app.js                     화면 동작 전부 (라우팅·대시보드·AI Agent·보고서·팝업·프로젝트관리)
 js/lib/                       Chart.js 4.4.9 + Plotly.js basic 2.35.2 로컬 번들
+js/screens/                   화면별 분리 모듈 (lazy-init, window.renderXXX 패턴)
+  asis-a.js                   GIS현황·생애주기모니터링·통계분석리포트
+  asis-b.js                   차량관리·자산취득·자산폐기
+  asis-c.js                   건물생애주기·건물운영관리·임대정보관리
+  asis-d.js                   데이터추출·계약관리
+  aiph-copilot.js             AI Copilot (3열·추론Trace·멀티에이전트)
+  aiph-anomaly.js             이상탐지 보드
+  aiph-approval.js            AI 결재함 (상세 패널 토글)
+  aiph-report.js              자동 리포트 (Chart.js 바 차트)
+  aiph-monitor.js             모니터링 (6축 도식·세션 상세)
+  aiph-builder.js             에이전트 빌더 (SVG 플로우 다이어그램)
+  aiph-kb.js                  지식베이스 (RAG 임베딩 현황)
+  aiph-eval.js                평가·품질 (Chart.js 레이더 차트)
+  aiph-governance.js          거버넌스 (역할 매트릭스·가드레일·감사 로그)
 images/                       SVG 아이콘 + 프로젝트 관리용 이미지
   proj-screens/               To-Be 화면 디자인 14장 (비밀번호 인증 후에만 src 주입)
   ai-agent/                   AI 에이전트 분석 이미지 47장
@@ -83,7 +136,8 @@ DESIGN.md                     디자인 시스템 규칙 (Figma 실측값 반영
 FIGMA_SYNC_PLAN.md            Figma 원본 vs 현재 구현 차이 + 단계별 수정 계획
 HANDOFF.md                    이 문서
 TODO.md                       다음에 할 일
-AI_AGENT_제안분석.md           우리은행 AI에이전트 제안 3계층 분석
+AI_AGENT_설계초안.md           NH 고정자산 AI Agent 관리 콘솔 설계 초안 v1.0 (9개 화면)
+AI_AGENT_제안분析.md           우리은행 AI에이전트 제안 3계층 분석 ⚠️ 참고 용도만
 제안서_Asis_정리.md            RFP·제안서(57p)·As-Is 화면 21장 정리
 플로우차트_학습정리.md          플로우차트 17유형 학습 및 작도 후보 정리
 HASHGEN.md                    비밀번호 해시 생성 방법 안내
@@ -119,7 +173,36 @@ index.html 더블클릭  → 브라우저에서 바로 열림
 
 ---
 
-## 7. 완료된 작업 — Leaflet 지도 + Chart.js 토글 (2026-06-11 완료)
+## 7. 완료된 작업 — AI Agent 예상안 전체 + As-is→To-be (2026-06-12 완료)
+
+### AI Agent 예상안 9개 화면 구현 완료
+
+| Phase | 화면 | 파일 | 주요 컴포넌트 |
+|-------|------|------|-------------|
+| 1 | AI Copilot | `aiph-copilot.js` | 3열 레이아웃·추론 Trace·신뢰도 배지·멀티에이전트 진행표시 |
+| 1 | 이상탐지 보드 | `aiph-anomaly.js` | KPI4·카테고리 탭·탐지 카드 그리드·Chart.js 바 차트 |
+| 1 | 모니터링 | `aiph-monitor.js` | 6축 운영 도식·Chart.js 2개·세션 상세 패널·가드레일 현황 |
+| 2 | AI 결재함 | `aiph-approval.js` | 결재 대기 6행·우측 상세 패널(클릭 토글)·AI 분석 근거·승인/반려 |
+| 2 | 에이전트 빌더 | `aiph-builder.js` | 활성 에이전트 카드·블록 팔레트·SVG 플로우 다이어그램·노드 속성 패널 |
+| 3 | 자동 리포트 | `aiph-report.js` | Chart.js 월별 바 차트·유형별 카드·스케줄 설정·발송 이력 |
+| 3 | 지식베이스 | `aiph-kb.js` | 카테고리 탭 필터·실시간 검색·문서 10건·RAG 임베딩 현황 |
+| 4 | 평가·품질 | `aiph-eval.js` | Chart.js 레이더 차트(3에이전트·5축)·성적표·테스트 케이스 이력 |
+| 4 | 거버넌스 | `aiph-governance.js` | 역할·권한 매트릭스(3×10)·역할 카드·가드레일 정책·감사 로그 |
+
+**공통 아키텍처 패턴**
+- 각 화면은 `js/screens/aiph-*.js` 독립 파일로 분리
+- `window.renderAiphXXX` 전역 함수 정의
+- `data-rendered` 플래그로 lazy-init (첫 진입 시 1회만 실행)
+- `Chart.getChart(canvas)` → destroy → 재생성 패턴으로 재진입 안전
+- 공통 CSS: `.asis-page`, `.asis-kpi-row`, `.asis-kpi-card.accent-*`, `.asis-panel`, `.asis-table`, `.asis-tabs`
+
+### As-is → To-be 11개 화면 구현 완료
+
+`js/screens/asis-a~d.js` 4개 파일, 총 11개 서브화면. 각 화면은 실제 NH 업무 도메인 기반 mock 데이터와 Chart.js 차트 포함.
+
+---
+
+## 8. 완료된 작업 — Leaflet 지도 + Chart.js 토글 (2026-06-11 완료)
 
 ### Leaflet 지도 최종 상태: ✅ 완료
 
