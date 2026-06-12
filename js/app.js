@@ -56,7 +56,8 @@ var INTRO_ENABLED = false;
     "asis-prop-lifecycle", "asis-prop-operation", "asis-prop-lease",
     "asis-prop-extract", "asis-prop-contract",
     "aiph-copilot", "aiph-anomaly", "aiph-monitor",
-    "aiph-approval", "aiph-builder"
+    "aiph-approval", "aiph-builder",
+    "aiph-report", "aiph-kb"
   ];
 
   // ===== 차트 공용 툴팁 =====
@@ -192,7 +193,9 @@ var INTRO_ENABLED = false;
           "aiph-anomaly": window.renderAiphAnomaly,
           "aiph-monitor": window.renderAiphMonitor,
           "aiph-approval": window.renderAiphApproval,
-          "aiph-builder": window.renderAiphBuilder
+          "aiph-builder": window.renderAiphBuilder,
+          "aiph-report": window.renderAiphReport,
+          "aiph-kb": window.renderAiphKb
         };
         var fn = _aiphMap[view];
         if (typeof fn === "function") fn();

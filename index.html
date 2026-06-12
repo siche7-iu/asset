@@ -160,9 +160,11 @@
               <button class="nav-item nav-subitem" data-view="aiph-copilot" data-title="AI Copilot"><span class="nav-item-label">AI Copilot</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-anomaly" data-title="이상탐지 보드"><span class="nav-item-label">이상탐지 보드</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-approval" data-title="AI 결재함"><span class="nav-item-label">AI 결재함</span></button>
+              <button class="nav-item nav-subitem" data-view="aiph-report" data-title="자동 리포트"><span class="nav-item-label">자동 리포트</span></button>
               <div class="nav-sub-grp-label">관리 레이어</div>
               <button class="nav-item nav-subitem" data-view="aiph-monitor" data-title="모니터링"><span class="nav-item-label">모니터링</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-builder" data-title="에이전트 빌더"><span class="nav-item-label">에이전트 빌더</span></button>
+              <button class="nav-item nav-subitem" data-view="aiph-kb" data-title="지식베이스"><span class="nav-item-label">지식베이스</span></button>
             </div>
           </div>
         </div>
@@ -718,6 +720,12 @@
         </section>
         <section id="view-aiph-builder" class="view asis-view">
           <div class="asis-loading"><div class="asis-spinner"></div><span>에이전트 빌더 로딩 중…</span></div>
+        </section>
+        <section id="view-aiph-report" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>자동 리포트 로딩 중…</span></div>
+        </section>
+        <section id="view-aiph-kb" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>지식베이스 로딩 중…</span></div>
         </section>
 
         <!-- ===== 프로젝트 관리 화면 (비밀 모드) ===== -->
@@ -2842,6 +2850,8 @@
   <script src="js/screens/aiph-monitor.js"></script>
   <script src="js/screens/aiph-approval.js"></script>
   <script src="js/screens/aiph-builder.js"></script>
+  <script src="js/screens/aiph-report.js"></script>
+  <script src="js/screens/aiph-kb.js"></script>
 
   <!-- 요구사항 편집 모달 -->
   <div id="req-edit-modal" class="req-modal-backdrop" style="display:none">
