@@ -66,15 +66,70 @@ window.renderAiphAnomaly = function () {
       location: '서울 마포',
       detail: '유휴 기간 9개월, 인근 부서 이전 후 방치',
       btnLabel: '재배치 검토'
+    },
+    {
+      category: '예산 초과·불용 위험',
+      badgeColor: '#2563eb',
+      badgeEmoji: '💰',
+      id: 'BDG-2026-031',
+      name: 'IT 장비 구매 예산 (서울중부)',
+      location: '서울 중부',
+      detail: '잔여 4,200만원 / 집행률 12% / AI 예측: 연말 소진 불가',
+      btnLabel: '재배분 요청'
+    },
+    {
+      category: '결산 잔액 불일치',
+      badgeColor: '#7c3aed',
+      badgeEmoji: '📒',
+      id: 'ACC-2026-017',
+      name: '유형자산 잔액대사 (인천지점)',
+      location: '인천 남동',
+      detail: '원장 잔액 vs 결산 금액 불일치 17,300만원 / AI 추정 원인: 이수관 누락',
+      btnLabel: '검토 요청'
+    },
+    {
+      category: '리스·계약 만기 임박',
+      badgeColor: '#dc2626',
+      badgeEmoji: '📋',
+      id: 'LS-2023-041',
+      name: '서울논현지점 임차 계약',
+      location: '서울 강남',
+      detail: '계약 만기 D-7 (2026-06-19) / 월 임차료 2,400만원 / AI 권고: 재협상',
+      btnLabel: '갱신 검토'
+    },
+    {
+      category: '세무 이상 패턴',
+      badgeColor: '#b45309',
+      badgeEmoji: '🧾',
+      id: 'TAX-2026-009',
+      name: '세금계산서 이상 (부산지점)',
+      location: '부산 해운대',
+      detail: '동일 거래처 반복 청구 패턴 탐지 / 3개월 연속 유사 금액 / AI 리스크: 중간',
+      btnLabel: '세무 검토'
+    },
+    {
+      category: '재물조사 원장 불일치',
+      badgeColor: '#0891b2',
+      badgeEmoji: '🏷️',
+      id: 'INV-2026-043',
+      name: '서버 랙 A (전산센터)',
+      location: '서울 전산센터 3F',
+      detail: '원장 위치: 서울 전산센터 3F / 실물 위치: 부산 데이터센터 / AI 위험도: 고위험',
+      btnLabel: '이수관 등록'
     }
   ];
 
   var FILTER_TABS = [
-    { label: '전체', count: 23, category: '' },
+    { label: '전체', count: 37, category: '' },
     { label: '노후 고위험', count: 8, category: '노후 고위험' },
     { label: '장기 유휴', count: 7, category: '장기 유휴' },
     { label: '보험 만료 임박', count: 5, category: '보험 만료 임박' },
-    { label: '감가 이상', count: 3, category: '감가 이상' }
+    { label: '감가 이상', count: 3, category: '감가 이상' },
+    { label: '예산 초과', count: 3, category: '예산 초과·불용 위험' },
+    { label: '결산 불일치', count: 2, category: '결산 잔액 불일치' },
+    { label: '리스 만기', count: 4, category: '리스·계약 만기 임박' },
+    { label: '세무 이상', count: 2, category: '세무 이상 패턴' },
+    { label: '재물조사', count: 3, category: '재물조사 원장 불일치' }
   ];
 
   var HISTORY = [
@@ -87,7 +142,10 @@ window.renderAiphAnomaly = function () {
     { date: '2026-06-09', type: '보험 만료 임박', name: '화물차 12가1234', dept: '물류부',      statusEmoji: '✅', status: '완료',   person: '김담당' },
     { date: '2026-06-09', type: '노후 고위험', name: 'UPS 전원장치',      dept: '정보기술부',  statusEmoji: '✅', status: '완료',   person: '이담당' },
     { date: '2026-06-08', type: '감가 이상',   name: '서버 랙 C동',       dept: '정보기술부',  statusEmoji: '✅', status: '완료',   person: '박담당' },
-    { date: '2026-06-07', type: '장기 유휴',   name: '빔프로젝터',        dept: '인재개발부',  statusEmoji: '✅', status: '완료',   person: '최담당' }
+    { date: '2026-06-07', type: '장기 유휴',   name: '빔프로젝터',        dept: '인재개발부',  statusEmoji: '✅', status: '완료',   person: '최담당' },
+    { date: '2026-06-12', type: '리스·계약 만기 임박', name: '서울논현지점 임차', dept: '자산관리부', statusEmoji: '🔴', status: '미처리', person: '김담당' },
+    { date: '2026-06-11', type: '예산 초과·불용 위험', name: 'IT장비 구매예산',   dept: '정보기술부', statusEmoji: '🟡', status: '검토중', person: '이담당' },
+    { date: '2026-06-11', type: '재물조사 원장 불일치', name: '서버 랙 A',        dept: '정보기술부', statusEmoji: '🔴', status: '미처리', person: '박담당' }
   ];
 
   var CHART_CANVAS_ID = 'aiph-anomaly-trend-chart';
@@ -157,6 +215,11 @@ window.renderAiphAnomaly = function () {
     '.aiph-anomaly-card[data-category="장기 유휴"]{border-left:4px solid #f97316;}',
     '.aiph-anomaly-card[data-category="보험 만료 임박"]{border-left:4px solid #ef4444;}',
     '.aiph-anomaly-card[data-category="감가 이상"]{border-left:4px solid #7c3aed;}',
+    '.aiph-anomaly-card[data-category="예산 초과·불용 위험"]{border-left:4px solid #2563eb;}',
+    '.aiph-anomaly-card[data-category="결산 잔액 불일치"]{border-left:4px solid #7c3aed;}',
+    '.aiph-anomaly-card[data-category="리스·계약 만기 임박"]{border-left:4px solid #dc2626;}',
+    '.aiph-anomaly-card[data-category="세무 이상 패턴"]{border-left:4px solid #b45309;}',
+    '.aiph-anomaly-card[data-category="재물조사 원장 불일치"]{border-left:4px solid #0891b2;}',
     '.aiph-anomaly-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}',
     '.aiph-anomaly-badge{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap;}',
     '.aiph-anomaly-id{font-size:11px;color:#aaa;font-family:monospace;}',
@@ -193,12 +256,12 @@ window.renderAiphAnomaly = function () {
     '  <div class="asis-kpi-row" style="grid-template-columns:repeat(4,1fr);">',
     '    <div class="asis-kpi-card" style="border-top:3px solid #ef4444;">',
     '      <div class="asis-kpi-label">신규 탐지</div>',
-    '      <div class="asis-kpi-value">5<span class="asis-kpi-sub">건</span></div>',
+    '      <div class="asis-kpi-value">8<span class="asis-kpi-sub">건</span></div>',
     '      <div style="font-size:11.5px;color:#888;margin-top:4px;">오늘 새로 발견</div>',
     '    </div>',
     '    <div class="asis-kpi-card accent-orange">',
     '      <div class="asis-kpi-label">위험 자산 합계</div>',
-    '      <div class="asis-kpi-value">23<span class="asis-kpi-sub">건</span></div>',
+    '      <div class="asis-kpi-value">37<span class="asis-kpi-sub">건</span></div>',
     '      <div style="font-size:11.5px;color:#888;margin-top:4px;">현재 모니터링 중</div>',
     '    </div>',
     '    <div class="asis-kpi-card accent-green">',
@@ -300,7 +363,7 @@ window.renderAiphAnomaly = function () {
         labels: ['6/1', '6/2', '6/3', '6/4', '6/5', '6/6', '6/7', '6/8', '6/9', '6/10', '6/11', '6/12'],
         datasets: [{
           label: '탐지 건수',
-          data: [2, 3, 1, 4, 2, 3, 5, 2, 4, 3, 2, 5],
+          data: [2, 3, 1, 4, 2, 3, 5, 2, 4, 3, 2, 8],
           backgroundColor: 'rgba(220,38,38,0.7)',
           borderColor: 'rgba(220,38,38,1)',
           borderWidth: 1,
@@ -327,7 +390,7 @@ window.renderAiphAnomaly = function () {
           },
           y: {
             min: 0,
-            max: 8,
+            max: 10,
             ticks: {
               stepSize: 2,
               font: { size: 12 }

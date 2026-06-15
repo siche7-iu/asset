@@ -12,7 +12,11 @@ window.renderAiphReport = function () {
     { id: "RPT-2026-056", name: "노후 자산 위험 분석 보고서", type: "수시", status: "발송완료", agent: "현황분석 에이전트", recipients: 5, generated: "05-30 14:22", sent: "05-30 14:25", size: "3.1MB" },
     { id: "RPT-2026-055", name: "자산현황 일일보고 (6월 10일)", type: "일일", status: "발송완료", agent: "자동리포트 에이전트", recipients: 12, generated: "06-10 09:00", sent: "06-10 09:01", size: "1.9MB" },
     { id: "RPT-2026-054", name: "취득 예산 집행 현황 (Q2)", type: "수시", status: "발송완료", agent: "예산분석 에이전트", recipients: 9, generated: "06-07 11:00", sent: "06-07 11:04", size: "2.8MB" },
-    { id: "RPT-2026-053", name: "이상탐지 주간 요약 (6월 1주)", type: "주간", status: "발송완료", agent: "이상탐지 에이전트", recipients: 7, generated: "06-03 18:00", sent: "06-03 18:02", size: "2.2MB" }
+    { id: "RPT-2026-053", name: "이상탐지 주간 요약 (6월 1주)", type: "주간", status: "발송완료", agent: "이상탐지 에이전트", recipients: 7, generated: "06-03 18:00", sent: "06-03 18:02", size: "2.2MB" },
+    { id: "RPT-2026-052", name: "예산 집행 현황 보고서 (Q2)", type: "예산집행현황", status: "발송완료", agent: "예산분석 에이전트", recipients: 9, generated: "06-30 11:00", sent: "06-30 11:03", size: "3.4MB" },
+    { id: "RPT-2026-051", name: "주석공시 검증 보고서 (상반기)", type: "주석공시검증", status: "결재대기", agent: "결산검증 에이전트", recipients: 6, generated: "06-28 16:00", sent: "—", size: "2.1MB" },
+    { id: "RPT-2026-050", name: "리스·임대 만기 현황 (6월)", type: "리스만기현황", status: "발송완료", agent: "리스만기 알림 에이전트", recipients: 8, generated: "06-01 08:30", sent: "06-01 08:33", size: "1.6MB" },
+    { id: "RPT-2026-049", name: "2026년 상반기 재물조사 결과 요약", type: "재물조사요약", status: "발송완료", agent: "재물조사 대사 에이전트", recipients: 14, generated: "05-31 17:00", sent: "05-31 17:05", size: "4.8MB" }
   ];
 
   var SCHEDULES = [
@@ -20,10 +24,14 @@ window.renderAiphReport = function () {
     { name: "이상탐지 주간 요약", cycle: "매주 월요일 18:00", agent: "이상탐지 에이전트", recipients: 7, active: true, next: "06-16 18:00" },
     { name: "월간 자산 종합보고서", cycle: "매월 1일 08:00", agent: "자동리포트 에이전트", recipients: 18, active: true, next: "07-01 08:00" },
     { name: "분기별 예산 집행 현황", cycle: "분기 말 11:00", agent: "예산분석 에이전트", recipients: 9, active: true, next: "2026-06-30" },
-    { name: "노후 자산 긴급 알림", cycle: "조건 트리거", agent: "현황분석 에이전트", recipients: 5, active: false, next: "이상 탐지 시" }
+    { name: "노후 자산 긴급 알림", cycle: "조건 트리거", agent: "현황분석 에이전트", recipients: 5, active: false, next: "이상 탐지 시" },
+    { name: "예산 집행 현황 보고서", cycle: "분기 말 11:00", agent: "예산분석 에이전트", recipients: 9, active: true, next: "2026-09-30" },
+    { name: "주석공시 검증 보고서", cycle: "결산기 (6월/12월)", agent: "결산검증 에이전트", recipients: 6, active: true, next: "2026-12-28" },
+    { name: "리스·임대 만기 현황", cycle: "매월 1일 08:30", agent: "리스만기 알림 에이전트", recipients: 8, active: true, next: "07-01 08:30" },
+    { name: "재물조사 결과 요약", cycle: "조사 완료 후 자동", agent: "재물조사 대사 에이전트", recipients: 14, active: false, next: "조사 완료 시" }
   ];
 
-  var TYPE_COLOR = { "일일": "#EFF6FF|#1D4ED8", "주간": "#F0FDF4|#15803D", "월간": "#FDF4FF|#7C3AED", "수시": "#FFF7ED|#C2410C" };
+  var TYPE_COLOR = { "일일": "#EFF6FF|#1D4ED8", "주간": "#F0FDF4|#15803D", "월간": "#FDF4FF|#7C3AED", "수시": "#FFF7ED|#C2410C", "예산집행현황": "#FFF7ED|#B45309", "주석공시검증": "#EFF6FF|#1E40AF", "리스만기현황": "#F0FDF4|#15803D", "재물조사요약": "#ECFDF5|#065F46" };
   var STATUS_COLOR = { "발송완료": "#F0FDF4|#15803D", "결재대기": "#FFFBEB|#B45309", "오류": "#FEF2F2|#DC2626" };
 
   function chipStyle(map, key) {
@@ -81,7 +89,7 @@ window.renderAiphReport = function () {
       "</div>" +
       // KPI 행
       "<div class='asis-kpi-row' style='margin-bottom:24px;'>" +
-        "<div class='asis-kpi-card accent-blue'><div class='asis-kpi-label'>이번 달 발송</div><div class='asis-kpi-value'>27건</div><div class='asis-kpi-sub'>전월 60건 대비 진행 중</div></div>" +
+        "<div class='asis-kpi-card accent-blue'><div class='asis-kpi-label'>이번 달 발송</div><div class='asis-kpi-value'>31건</div><div class='asis-kpi-sub'>전월 60건 대비 진행 중</div></div>" +
         "<div class='asis-kpi-card accent-green'><div class='asis-kpi-label'>발송 성공률</div><div class='asis-kpi-value'>99.4%</div><div class='asis-kpi-sub'>최근 3개월 평균</div></div>" +
         "<div class='asis-kpi-card accent-orange'><div class='asis-kpi-label'>결재 대기</div><div class='asis-kpi-value'>1건</div><div class='asis-kpi-sub'>월간 종합보고서</div></div>" +
         "<div class='asis-kpi-card accent-red'><div class='asis-kpi-label'>오류 발생</div><div class='asis-kpi-value'>0건</div><div class='asis-kpi-sub'>이번 달 오류 없음</div></div>" +
@@ -101,6 +109,10 @@ window.renderAiphReport = function () {
             "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F0FDF4;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#15803D;'>주간</span><span style='font-size:18px;font-weight:700;color:#15803D;'>6건</span></div>" +
             "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FDF4FF;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#7C3AED;'>월간</span><span style='font-size:18px;font-weight:700;color:#7C3AED;'>1건</span></div>" +
             "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FFF7ED;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#C2410C;'>수시</span><span style='font-size:18px;font-weight:700;color:#C2410C;'>5건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FFF7ED;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#B45309;'>예산집행현황</span><span style='font-size:18px;font-weight:700;color:#B45309;'>1건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#EFF6FF;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#1E40AF;'>주석공시검증</span><span style='font-size:18px;font-weight:700;color:#1E40AF;'>1건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F0FDF4;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#15803D;'>리스만기현황</span><span style='font-size:18px;font-weight:700;color:#15803D;'>1건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#ECFDF5;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#065F46;'>재물조사요약</span><span style='font-size:18px;font-weight:700;color:#065F46;'>1건</span></div>" +
           "</div>" +
         "</div>" +
       "</div>" +
@@ -122,7 +134,7 @@ window.renderAiphReport = function () {
         "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;'>발송 이력</div>" +
           "<div style='display:flex;gap:8px;'>" +
-            "<select style='padding:5px 10px;border:1px solid #E2E8F0;border-radius:6px;font-size:12px;'><option>전체 유형</option><option>일일</option><option>주간</option><option>월간</option><option>수시</option></select>" +
+            "<select style='padding:5px 10px;border:1px solid #E2E8F0;border-radius:6px;font-size:12px;'><option>전체 유형</option><option>일일</option><option>주간</option><option>월간</option><option>수시</option><option>예산집행현황</option><option>주석공시검증</option><option>리스만기현황</option><option>재물조사요약</option></select>" +
             "<button onclick=\"alert('CSV로 내보냅니다.')\" style='padding:5px 12px;border:1px solid #E2E8F0;border-radius:6px;background:#F8FAFC;font-size:12px;cursor:pointer;'>📥 내보내기</button>" +
           "</div>" +
         "</div>" +

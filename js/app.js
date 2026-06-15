@@ -57,7 +57,7 @@ var INTRO_ENABLED = false;
     "asis-prop-extract", "asis-prop-contract",
     "aiph-copilot", "aiph-anomaly", "aiph-monitor",
     "aiph-approval", "aiph-builder",
-    "aiph-report", "aiph-kb",
+    "aiph-report", "aiph-budget", "aiph-kb",
     "aiph-eval", "aiph-governance"
   ];
 
@@ -196,6 +196,7 @@ var INTRO_ENABLED = false;
           "aiph-approval": window.renderAiphApproval,
           "aiph-builder": window.renderAiphBuilder,
           "aiph-report": window.renderAiphReport,
+          "aiph-budget": window.renderAiphBudget,
           "aiph-kb": window.renderAiphKb,
           "aiph-eval": window.renderAiphEval,
           "aiph-governance": window.renderAiphGovernance
