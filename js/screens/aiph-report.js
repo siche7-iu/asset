@@ -97,27 +97,27 @@ window.renderAiphReport = function () {
       // 2열: 차트 + 스케줄 현황
       "<div style='display:flex;gap:20px;margin-bottom:24px;align-items:flex-start;'>" +
         // 월별 발송 추이 차트
-        "<div class='asis-panel' style='flex:1;'>" +
+        "<div class='asis-panel' style='flex:1;padding:16px 20px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;margin-bottom:14px;'>월별 리포트 발송 추이</div>" +
           "<canvas id='report-monthly-chart' style='max-height:200px;'></canvas>" +
         "</div>" +
         // 유형별 현황
-        "<div class='asis-panel' style='width:260px;flex-shrink:0;'>" +
+        "<div class='asis-panel' style='width:260px;flex-shrink:0;padding:16px 20px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;margin-bottom:14px;'>유형별 현황</div>" +
-          "<div style='display:flex;flex-direction:column;gap:10px;'>" +
-            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#EFF6FF;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#1D4ED8;'>일일</span><span style='font-size:18px;font-weight:700;color:#1D4ED8;'>15건</span></div>" +
-            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F0FDF4;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#15803D;'>주간</span><span style='font-size:18px;font-weight:700;color:#15803D;'>6건</span></div>" +
-            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FDF4FF;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#7C3AED;'>월간</span><span style='font-size:18px;font-weight:700;color:#7C3AED;'>1건</span></div>" +
-            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FFF7ED;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#C2410C;'>수시</span><span style='font-size:18px;font-weight:700;color:#C2410C;'>5건</span></div>" +
-            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FFF7ED;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#B45309;'>예산집행현황</span><span style='font-size:18px;font-weight:700;color:#B45309;'>1건</span></div>" +
-            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#EFF6FF;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#1E40AF;'>주석공시검증</span><span style='font-size:18px;font-weight:700;color:#1E40AF;'>1건</span></div>" +
-            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F0FDF4;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#15803D;'>리스만기현황</span><span style='font-size:18px;font-weight:700;color:#15803D;'>1건</span></div>" +
-            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#ECFDF5;border-radius:8px;'><span style='font-size:13px;font-weight:600;color:#065F46;'>재물조사요약</span><span style='font-size:18px;font-weight:700;color:#065F46;'>1건</span></div>" +
+          "<div style='display:flex;flex-direction:column;gap:8px;'>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#EFF6FF;border-radius:8px;margin-bottom:0;'><span style='font-size:13px;font-weight:600;color:#1D4ED8;'>일일</span><span style='font-size:18px;font-weight:700;color:#1D4ED8;'>15건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#F0FDF4;border-radius:8px;margin-bottom:0;'><span style='font-size:13px;font-weight:600;color:#15803D;'>주간</span><span style='font-size:18px;font-weight:700;color:#15803D;'>6건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#FDF4FF;border-radius:8px;margin-bottom:0;'><span style='font-size:13px;font-weight:600;color:#7C3AED;'>월간</span><span style='font-size:18px;font-weight:700;color:#7C3AED;'>1건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#FFF7ED;border-radius:8px;margin-bottom:0;'><span style='font-size:13px;font-weight:600;color:#C2410C;'>수시</span><span style='font-size:18px;font-weight:700;color:#C2410C;'>5건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#FFF7ED;border-radius:8px;margin-bottom:0;'><span style='font-size:13px;font-weight:600;color:#B45309;'>예산집행현황</span><span style='font-size:18px;font-weight:700;color:#B45309;'>1건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#EFF6FF;border-radius:8px;margin-bottom:0;'><span style='font-size:13px;font-weight:600;color:#1E40AF;'>주석공시검증</span><span style='font-size:18px;font-weight:700;color:#1E40AF;'>1건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#F0FDF4;border-radius:8px;margin-bottom:0;'><span style='font-size:13px;font-weight:600;color:#15803D;'>리스만기현황</span><span style='font-size:18px;font-weight:700;color:#15803D;'>1건</span></div>" +
+            "<div style='display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#ECFDF5;border-radius:8px;margin-bottom:0;'><span style='font-size:13px;font-weight:600;color:#065F46;'>재물조사요약</span><span style='font-size:18px;font-weight:700;color:#065F46;'>1건</span></div>" +
           "</div>" +
         "</div>" +
       "</div>" +
       // 스케줄 설정
-      "<div class='asis-panel' style='margin-bottom:24px;'>" +
+      "<div class='asis-panel' style='margin-bottom:24px;padding:16px 20px;'>" +
         "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;'>발송 스케줄 설정</div>" +
           "<button onclick=\"alert('새 스케줄을 추가합니다.')\" style='padding:6px 14px;background:#3B82F6;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;'>+ 새 스케줄</button>" +
@@ -130,7 +130,7 @@ window.renderAiphReport = function () {
         "</div>" +
       "</div>" +
       // 발송 이력
-      "<div class='asis-panel'>" +
+      "<div class='asis-panel' style='padding:16px 20px;'>" +
         "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;'>발송 이력</div>" +
           "<div style='display:flex;gap:8px;'>" +

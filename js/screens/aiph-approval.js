@@ -205,7 +205,7 @@ window.renderAiphApproval = function () {
       // 2열 레이아웃
       '<div style="display:flex;gap:20px;margin-bottom:28px;align-items:flex-start;">' +
         // 좌측: 결재 목록
-        '<div class="asis-panel" style="flex:1.5;">' +
+        '<div class="asis-panel" style="flex:1.5;padding:16px 20px;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">' +
             '<div style="font-size:15px;font-weight:700;color:#111827;">결재 대기 목록</div>' +
             '<span style="font-size:12px;color:#6B7280;">행을 클릭하면 상세 분석을 볼 수 있습니다</span>' +
@@ -220,12 +220,12 @@ window.renderAiphApproval = function () {
           '</div>' +
         '</div>' +
         // 우측: 상세 패널
-        '<div id="approval-detail-panel" class="asis-panel" style="flex:1;min-width:280px;display:none;">' +
+        '<div id="approval-detail-panel" class="asis-panel" style="flex:1;min-width:280px;display:none;padding:16px 20px;">' +
           '<div id="approval-detail-content"></div>' +
         '</div>' +
       '</div>' +
       // 처리 이력
-      '<div class="asis-panel">' +
+      '<div class="asis-panel" style="padding:16px 20px;">' +
         '<div style="font-size:15px;font-weight:700;color:#111827;margin-bottom:14px;">처리 이력 <span style="font-size:13px;font-weight:400;color:#6B7280;">(최근 30건)</span></div>' +
         '<div style="overflow-x:auto;">' +
           '<table class="asis-table">' +
