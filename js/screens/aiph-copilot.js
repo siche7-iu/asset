@@ -74,9 +74,8 @@ window.renderAiphCopilot = function () {
       '.acp-input-row{display:flex;gap:8px;align-items:flex-end}',
       '.acp-input{flex:1;border:1.5px solid #e5e7eb;border-radius:12px;padding:10px 14px;font-size:14px;outline:none;resize:none;min-height:42px;max-height:100px;line-height:1.5;font-family:inherit;transition:border-color .15s}',
       '.acp-input:focus{border-color:#2563eb}',
-      '.acp-send-btn{width:42px;height:42px;border-radius:12px;background:#2563eb;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}',
+      '.acp-send-btn{height:42px;border-radius:12px;background:#2563eb;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;color:#fff;}',
       '.acp-send-btn:hover{background:#1d4ed8}',
-      '.acp-send-btn svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
       /* 우측 패널 */
       '.acp-right{width:280px;min-width:240px;flex-shrink:0;background:#fff;border-left:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
       '.acp-right-head{padding:16px 16px 10px;font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f0f2f5}',
@@ -197,12 +196,12 @@ window.renderAiphCopilot = function () {
 
   // ── 추천 질문 목록 ────────────────────────────────────────────
   var SUGGESTIONS = [
-    { icon: '🏢', text: '서울 지역 유휴 자산 현황 알려줘' },
-    { icon: '📋', text: '내용연수 초과 자산 목록 보여줘' },
-    { icon: '📅', text: '이번 달 취득한 자산은?' },
-    { icon: '🏦', text: '부서별 자산 현황 요약해줘' },
-    { icon: '🛡️', text: '보험 만료 임박 자산 알려줘' },
-    { icon: '📊', text: '전체 자산 감가상각률은?' }
+    { icon: '🏢', color: '#EF4444', bg: '#FEF2F2', text: '서울 지역 유휴 자산 현황 알려줘' },
+    { icon: '📋', color: '#3B82F6', bg: '#EFF6FF', text: '내용연수 초과 자산 목록 보여줘' },
+    { icon: '📅', color: '#F59E0B', bg: '#FFFBEB', text: '이번 달 취득한 자산은?' },
+    { icon: '🏦', color: '#8B5CF6', bg: '#F5F3FF', text: '부서별 자산 현황 요약해줘' },
+    { icon: '🛡️', color: '#10B981', bg: '#F0FDF4', text: '보험 만료 임박 자산 알려줘' },
+    { icon: '📊', color: '#6366F1', bg: '#EEF2FF', text: '전체 자산 감가상각률은?' }
   ];
 
   // ── 에이전트 정의 ─────────────────────────────────────────────
@@ -298,7 +297,10 @@ window.renderAiphCopilot = function () {
     var btn = document.createElement('button');
     btn.className = 'acp-suggest-btn';
     btn.dataset.q = item.text;
-    btn.innerHTML = '<span style="margin-right:7px;font-size:14px;">' + item.icon + '</span>' + item.text;
+    btn.innerHTML = '<span style="display:flex;align-items:center;gap:10px;">'
+      + '<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:' + item.bg + ';flex-shrink:0;font-size:16px;">' + item.icon + '</span>'
+      + '<span style="font-size:13px;color:#374151;line-height:1.4;text-align:left;">' + item.text + '</span>'
+      + '</span>';
     suggestList.appendChild(btn);
   });
   leftPanel.appendChild(suggestList);
@@ -311,16 +313,18 @@ window.renderAiphCopilot = function () {
   var freqList = document.createElement('div');
   freqList.className = 'acp-suggest-list';
   [
-    { icon: '✅', text: '전체 자산 요약' },
-    { icon: '✅', text: '부서별 현황' },
-    { icon: '⚠️', text: '위험 자산 목록' },
-    { icon: '📈', text: '감가상각 현황' }
+    { icon: '✅', color: '#15803D', bg: '#F0FDF4', text: '전체 자산 요약' },
+    { icon: '🏛️', color: '#1D4ED8', bg: '#EFF6FF', text: '부서별 현황' },
+    { icon: '⚠️', color: '#B45309', bg: '#FFFBEB', text: '위험 자산 목록' },
+    { icon: '📈', color: '#7C3AED', bg: '#F5F3FF', text: '감가상각 현황' }
   ].forEach(function (item) {
     var btn = document.createElement('button');
     btn.className = 'acp-suggest-btn';
-    btn.style.color = '#6b7280';
     btn.dataset.q = item.text;
-    btn.innerHTML = '<span style="margin-right:7px;">' + item.icon + '</span>' + item.text;
+    btn.innerHTML = '<span style="display:flex;align-items:center;gap:10px;">'
+      + '<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:' + item.bg + ';flex-shrink:0;font-size:16px;">' + item.icon + '</span>'
+      + '<span style="font-size:13px;color:#6B7280;line-height:1.4;text-align:left;">' + item.text + '</span>'
+      + '</span>';
     freqList.appendChild(btn);
   });
   leftPanel.appendChild(freqList);
@@ -333,7 +337,12 @@ window.renderAiphCopilot = function () {
   chatHeader.className = 'acp-chat-header';
   chatHeader.innerHTML = '<span class="acp-ai-badge"><span class="acp-ai-dot"></span>AI</span>'
     + '<span class="acp-chat-title">자산 AI Copilot</span>'
-    + '<span class="acp-chat-subtitle" style="background:#f3f4f6;border-radius:12px;padding:2px 8px;font-size:11px;color:#6b7280;">NH 고정자산 특화 · Claude 3.5</span>'
+    + '<span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">'
+    + '<span style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;color:#1D4ED8;">고정자산관리</span>'
+    + '<span style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;color:#15803D;">NH농협</span>'
+    + '<span style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;color:#7C3AED;">Claude 3.5</span>'
+    + '<span style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;color:#C2410C;">12,492건</span>'
+    + '</span>'
     + '<div style="margin-left:auto;display:flex;gap:8px;">'
     + '<button onclick="alert(\'대화 이력 기능은 준비 중입니다.\')" style="padding:5px 12px;background:none;border:1px solid #e5e7eb;border-radius:8px;font-size:12px;color:#6b7280;cursor:pointer;white-space:nowrap;">이력 보기</button>'
     + '<button onclick="document.getElementById(\'acp-messages\').innerHTML=\'\'" style="padding:5px 12px;background:#2563eb;border:none;border-radius:8px;font-size:12px;color:#fff;cursor:pointer;white-space:nowrap;font-weight:600;">새 대화 시작</button>'
@@ -347,8 +356,9 @@ window.renderAiphCopilot = function () {
   inputWrap.className = 'acp-input-wrap';
   inputWrap.innerHTML = '<div class="acp-input-row">'
     + '<textarea class="acp-input" id="acp-input" rows="1" placeholder="자산에 대해 무엇이든 물어보세요..."></textarea>'
-    + '<button class="acp-send-btn" id="acp-send" title="전송">'
-    + '<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
+    + '<button class="acp-send-btn" id="acp-send" title="전송" style="width:auto;padding:0 18px;gap:6px;font-size:13px;font-weight:700;letter-spacing:.01em;">'
+    + '<svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
+    + '<span>전송</span>'
     + '</button>'
     + '</div>';
 
