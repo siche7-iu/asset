@@ -188,7 +188,6 @@ var INTRO_ENABLED = false;
       activateTab(null);
       var el = document.getElementById("view-" + view);
       if (el && !el.dataset.rendered) {
-        el.dataset.rendered = "1";
         var _aiphMap = {
           "aiph-copilot": window.renderAiphCopilot,
           "aiph-anomaly": window.renderAiphAnomaly,
@@ -206,7 +205,14 @@ var INTRO_ENABLED = false;
           "aiph-governance": window.renderAiphGovernance
         };
         var fn = _aiphMap[view];
-        if (typeof fn === "function") fn();
+        if (typeof fn === "function") {
+          el.dataset.rendered = "1";
+          try { fn(); } catch (e) {
+            el.innerHTML = '<div style="padding:24px;color:#DC2626;font-size:14px;">렌더링 오류: ' + e.message + '</div>';
+            el.dataset.rendered = "";
+            console.error("[aiph] " + view + " 렌더링 오류:", e);
+          }
+        }
       }
       return;
     }
