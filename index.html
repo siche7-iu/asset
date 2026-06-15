@@ -2593,5 +2593,63 @@
   <script src="js/data.js"></script>
   <script src="js/db.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- 요구사항 편집 모달 -->
+  <div id="req-edit-modal" class="req-modal-backdrop" style="display:none">
+    <div class="req-modal-box">
+      <div class="req-modal-head">
+        <span id="req-edit-title">요구사항 수정</span>
+        <button class="req-modal-close" onclick="closeReqEditModal()">✕</button>
+      </div>
+      <div class="req-modal-body">
+        <input type="hidden" id="req-edit-id">
+        <div class="req-form-row">
+          <label>기능명 <span class="req-required">*</span></label>
+          <input type="text" id="req-edit-name" class="req-form-input">
+        </div>
+        <div class="req-form-row req-form-row-3">
+          <div>
+            <label>우선순위</label>
+            <select id="req-edit-pri" class="req-form-select">
+              <option>Must</option><option>Should</option><option>Could</option>
+            </select>
+          </div>
+          <div>
+            <label>분류</label>
+            <select id="req-edit-type" class="req-form-select">
+              <option>신규</option><option>개선</option>
+            </select>
+          </div>
+          <div>
+            <label>오픈</label>
+            <select id="req-edit-stage" class="req-form-select">
+              <option>1차</option><option>2차</option>
+            </select>
+          </div>
+        </div>
+        <div class="req-form-row">
+          <label>출처</label>
+          <input type="text" id="req-edit-src" class="req-form-input">
+        </div>
+        <div class="req-form-row">
+          <label>주요 사용자</label>
+          <input type="text" id="req-edit-user" class="req-form-input">
+        </div>
+        <div class="req-form-row">
+          <label>As-Is 대응</label>
+          <input type="text" id="req-edit-asis" class="req-form-input">
+        </div>
+        <div class="req-form-row">
+          <label>담당</label>
+          <input type="text" id="req-edit-by" class="req-form-input">
+        </div>
+        <p class="req-edit-notice">⚠ 수정 내용은 현재 세션에서만 유지됩니다 (새로고침 시 초기화)</p>
+      </div>
+      <div class="req-modal-foot">
+        <button class="btn-req-save" onclick="saveReqEdit()">저장</button>
+        <button class="btn-req-cancel" onclick="closeReqEditModal()">취소</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

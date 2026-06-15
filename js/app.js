@@ -2062,6 +2062,13 @@ var _reqBuilt = false;
 function buildReqSection() {
   if (_reqBuilt) return;
   _reqBuilt = true;
+  // 편집 모달 바깥 클릭 시 닫기 (한 번만 등록)
+  var _reqModal = document.getElementById('req-edit-modal');
+  if (_reqModal) {
+    _reqModal.addEventListener('click', function(e) {
+      if (e.target === this) closeReqEditModal();
+    });
+  }
   var catData = [
     {k:'ALL',label:'전체',count:50},
     {k:'DSH',label:'DSH',count:6},
@@ -2144,7 +2151,7 @@ function buildReqSection() {
         ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + r.src + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
         : '<td class="req-src-cell">' + r.src + '</td>';
       rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '">' +
-        '<td><span class="req-id-cell">' + r.id + '</span></td>' +
+        '<td><span class="req-id-cell">' + r.id + '</span><button class="req-edit-btn" onclick="openReqEditModal(\'' + r.id + '\')" title="수정">✏</button></td>' +
         '<td><span class="req-name-cell" title="클릭하면 상세 정의서로 이동">' + r.name + starHtml + '</span></td>' +
         '<td>' + priBadge + '</td>' +
         '<td>' + typeBadge + '</td>' +
@@ -2502,4 +2509,86 @@ function toggleInterviewMd() {
     .catch(function(err) {
       content.innerHTML = '<div class="md-error">파일을 불러오지 못했습니다: ' + err.message + '</div>';
     });
+}
+
+// ── 요구사항 행 편집 ─────────────────────────────────────────────
+
+function openReqEditModal(rid) {
+  var r = null;
+  for (var i = 0; i < REQ_DATA.length; i++) {
+    if (REQ_DATA[i].id === rid) { r = REQ_DATA[i]; break; }
+  }
+  if (!r) return;
+  document.getElementById('req-edit-id').value = r.id;
+  document.getElementById('req-edit-title').textContent = '요구사항 수정 — ' + r.id;
+  document.getElementById('req-edit-name').value = r.name || '';
+  document.getElementById('req-edit-pri').value = r.pri || 'Should';
+  document.getElementById('req-edit-type').value = r.type || '신규';
+  document.getElementById('req-edit-stage').value = r.stage || '1차';
+  document.getElementById('req-edit-src').value = r.src || '';
+  document.getElementById('req-edit-user').value = r.user || '';
+  document.getElementById('req-edit-asis').value = r.asIs || '';
+  document.getElementById('req-edit-by').value = r.by || '';
+  document.getElementById('req-edit-modal').style.display = 'flex';
+  document.getElementById('req-edit-name').focus();
+}
+
+function closeReqEditModal() {
+  document.getElementById('req-edit-modal').style.display = 'none';
+}
+
+function saveReqEdit() {
+  var rid = document.getElementById('req-edit-id').value;
+  var name = document.getElementById('req-edit-name').value.trim();
+  if (!name) {
+    document.getElementById('req-edit-name').focus();
+    return;
+  }
+  for (var i = 0; i < REQ_DATA.length; i++) {
+    if (REQ_DATA[i].id === rid) {
+      REQ_DATA[i].name  = name;
+      REQ_DATA[i].pri   = document.getElementById('req-edit-pri').value;
+      REQ_DATA[i].type  = document.getElementById('req-edit-type').value;
+      REQ_DATA[i].stage = document.getElementById('req-edit-stage').value;
+      REQ_DATA[i].src   = document.getElementById('req-edit-src').value.trim();
+      REQ_DATA[i].user  = document.getElementById('req-edit-user').value.trim();
+      REQ_DATA[i].asIs  = document.getElementById('req-edit-asis').value.trim();
+      REQ_DATA[i].by    = document.getElementById('req-edit-by').value.trim();
+      break;
+    }
+  }
+  closeReqEditModal();
+  _refreshReqTable();
+}
+
+function _refreshReqTable() {
+  var tbody = document.getElementById('req-tbody');
+  if (!tbody) return;
+  var rows = '';
+  REQ_DATA.forEach(function(r) {
+    var priBadge = r.pri === 'Must' ? '<span class="badge-must">Must</span>'
+      : r.pri === 'Should' ? '<span class="badge-should">Should</span>'
+      : '<span class="badge-could">Could</span>';
+    var typeBadge = r.type === '신규' ? '<span class="badge-new">신규</span>' : '<span class="badge-imp">개선</span>';
+    var stgBadge  = r.stage === '1차' ? '<span class="badge-s1">1차</span>' : '<span class="badge-s2">2차</span>';
+    var starHtml  = r.star ? '<span class="req-star" title="고객 미명시 확장·예측 제안">★</span>' : '';
+    var isPre = r.src && r.src.indexOf('선제 제안') !== -1;
+    var tip = r.srcTip || (typeof REQ_SRC_TIPS !== 'undefined' && REQ_SRC_TIPS[r.id]) || '';
+    var srcCell = tip
+      ? '<td class="req-src-cell req-src-tip" data-tip="' + tip + '">' + r.src + (isPre ? ' <span class="req-tip-icon">?</span>' : '') + '</td>'
+      : '<td class="req-src-cell">' + r.src + '</td>';
+    rows += '<tr class="req-data-row' + (isPre ? ' req-row-pre' : '') + '" data-rid="' + r.id + '" data-cat="' + r.cat + '" data-pri="' + r.pri + '" data-stage="' + r.stage + '">' +
+      '<td><span class="req-id-cell">' + r.id + '</span><button class="req-edit-btn" onclick="openReqEditModal(\'' + r.id + '\')" title="수정">✏</button></td>' +
+      '<td><span class="req-name-cell" title="클릭하면 상세 정의서로 이동">' + r.name + starHtml + '</span></td>' +
+      '<td>' + priBadge + '</td>' +
+      '<td>' + typeBadge + '</td>' +
+      '<td>' + stgBadge + '</td>' +
+      srcCell +
+      '<td class="req-user-cell">' + r.user + '</td>' +
+      '<td class="req-asis-cell">' + r.asIs + '</td>' +
+      '<td class="req-by-cell">' + r.by + '</td>' +
+      '</tr>';
+  });
+  tbody.innerHTML = rows;
+  _applyReqFilter();
 }
