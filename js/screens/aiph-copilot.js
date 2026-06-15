@@ -420,15 +420,15 @@ window.renderAiphCopilot = function () {
 
   var wrapper = document.createElement('div');
   wrapper.className = 'asis-page';
-  wrapper.style.cssText = 'display:flex;flex-direction:column;height:100%;padding:0;';
+  wrapper.style.cssText = 'display:flex;flex-direction:column;height:100%;overflow:hidden;background:#F3F4F6;';
 
   var pageHeader = document.createElement('div');
-  pageHeader.style.cssText = 'padding:20px 24px 16px;flex-shrink:0;background:#fff;border-bottom:1px solid #E5E7EB;';
+  pageHeader.style.cssText = 'padding:0 0 16px;flex-shrink:0;';
   pageHeader.innerHTML = '<h2 style="font-size:22px;font-weight:700;color:#111827;margin:0 0 4px;">AI Copilot</h2>'
     + '<p style="font-size:14px;color:#6B7280;margin:0;">자산 데이터를 자연어로 질문하고 AI의 분석 결과를 즉시 확인합니다.</p>';
 
   var contentArea = document.createElement('div');
-  contentArea.style.cssText = 'flex:1;min-height:0;padding:8px 16px 16px;display:flex;flex-direction:column;background:#F3F4F6;';
+  contentArea.style.cssText = 'flex:1;min-height:0;display:flex;flex-direction:column;';
 
   root.style.cssText = 'flex:1;min-height:0;';
 
