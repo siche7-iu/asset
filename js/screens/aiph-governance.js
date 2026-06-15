@@ -77,9 +77,11 @@ window.renderAiphGovernance = function () {
         "<td style='font-weight:500;'>" + p.name + "</td>" +
         "<td style='font-size:12px;color:#6B7280;'>" + p.desc + "</td>" +
         "<td style='text-align:center;'>" +
-          "<span style='display:inline-block;width:36px;height:20px;background:" + (active ? "#16A34A" : "#9CA3AF") + ";border-radius:10px;position:relative;cursor:pointer;'>" +
-            "<span style='position:absolute;top:3px;" + (active ? "right:3px" : "left:3px") + ";width:14px;height:14px;background:#fff;border-radius:50%;'></span>" +
-          "</span>" +
+          "<div style='display:flex;align-items:center;justify-content:center;'>" +
+            "<span style='display:inline-block;width:36px;height:20px;background:" + (active ? "#16A34A" : "#9CA3AF") + ";border-radius:10px;position:relative;cursor:pointer;'>" +
+              "<span style='position:absolute;top:3px;" + (active ? "right:3px" : "left:3px") + ";width:14px;height:14px;background:#fff;border-radius:50%;'></span>" +
+            "</span>" +
+          "</div>" +
         "</td>" +
         "<td style='text-align:center;font-size:13px;" + (p.triggered > 0 ? "font-weight:600;color:#DC2626;" : "color:#9CA3AF;") + "'>" + p.triggered + "회</td>" +
         "<td><button onclick=\"alert('정책을 편집합니다.')\" style='padding:3px 10px;border:1px solid #E2E8F0;border-radius:5px;background:#fff;font-size:11px;cursor:pointer;'>편집</button></td>" +
@@ -109,7 +111,7 @@ window.renderAiphGovernance = function () {
           "<button onclick=\"alert('역할을 편집합니다.')\" style='padding:6px 14px;background:#3B82F6;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;'>역할 관리</button>" +
         "</div>" +
         // 역할 설명 카드
-        "<div style='display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;'>" +
+        "<div style='display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;'>" +
           "<div style='padding:12px 14px;background:#EFF6FF;border-radius:8px;border-left:3px solid #3B82F6;'>" +
             "<div style='font-size:13px;font-weight:700;color:#1D4ED8;margin-bottom:4px;'>현업담당자</div>" +
             "<div style='font-size:12px;color:#6B7280;'>자산관리 업무 담당자. AI 질의·알림 수신·보고서 열람 가능.</div>" +

@@ -274,14 +274,16 @@ window.renderAiphMonitor = function () {
   var tableHtml = '<div class="asis-panel">' +
     '<div class="asis-panel-head"><span class="asis-panel-title">에이전트별 오늘 실행 현황</span></div>' +
     '<div class="asis-panel-body">' +
-      '<table class="asis-table">' +
-        '<thead><tr>' +
-          '<th>에이전트명</th><th>유형</th><th style="text-align:right">오늘 호출</th>' +
-          '<th style="text-align:right">성공률</th><th style="text-align:right">평균 응답</th>' +
-          '<th>상태</th><th>세션</th>' +
-        '</tr></thead>' +
-        '<tbody>' + tableRowsHtml + '</tbody>' +
-      '</table>' +
+      '<div style="overflow-x:auto;">' +
+        '<table class="asis-table">' +
+          '<thead><tr>' +
+            '<th>에이전트명</th><th>유형</th><th style="text-align:right">오늘 호출</th>' +
+            '<th style="text-align:right">성공률</th><th style="text-align:right">평균 응답</th>' +
+            '<th>상태</th><th>세션</th>' +
+          '</tr></thead>' +
+          '<tbody>' + tableRowsHtml + '</tbody>' +
+        '</table>' +
+      '</div>' +
     '</div>' +
     '</div>';
 
@@ -304,10 +306,12 @@ window.renderAiphMonitor = function () {
         '<div class="am-stat-card"><div class="am-stat-num" style="color:#7c3aed">3</div><div class="am-stat-label">PII 탐지</div></div>' +
         '<div class="am-stat-card"><div class="am-stat-num" style="color:#d97706">1</div><div class="am-stat-label">권한 오류</div></div>' +
       '</div>' +
-      '<table class="asis-table">' +
-        '<thead><tr><th>시각</th><th>사용자</th><th>질의 요약</th><th>차단 유형</th><th>처리</th></tr></thead>' +
-        '<tbody>' + guardrailRowsHtml + '</tbody>' +
-      '</table>' +
+      '<div style="overflow-x:auto;">' +
+        '<table class="asis-table">' +
+          '<thead><tr><th>시각</th><th>사용자</th><th>질의 요약</th><th>차단 유형</th><th>처리</th></tr></thead>' +
+          '<tbody>' + guardrailRowsHtml + '</tbody>' +
+        '</table>' +
+      '</div>' +
     '</div>' +
     '</div>';
 
@@ -364,9 +368,10 @@ window.renderAiphMonitor = function () {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: { padding: { right: 16 } },
           plugins: { legend: { display: false } },
           scales: {
-            x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+            x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 0, autoSkip: true } },
             y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 11 } }, beginAtZero: true }
           }
         }

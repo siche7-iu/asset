@@ -50,10 +50,10 @@ window.renderAiphBudget = function () {
 
     var itemsHtml = ins.items.map(function (item) {
       return [
-        '<div style="background:#fff;border-radius:6px;padding:10px 12px;border:1px solid ' + borderColor + '30;margin-top:8px;">',
-        '  <div style="font-weight:600;font-size:13px;color:#1a1a2e;margin-bottom:4px;">' + item.name + '</div>',
-        '  <div style="font-size:12px;color:#666;margin-bottom:2px;">잔여: ' + item.remain + ' &nbsp;/&nbsp; 집행률: ' + item.rate + '%</div>',
-        '  <div style="font-size:12px;color:#888;margin-bottom:8px;">예측: ' + item.predict + '</div>',
+        '<div style="background:#fff;border-radius:6px;padding:12px 14px;border:1px solid ' + borderColor + '30;margin-top:8px;">',
+        '  <div style="font-weight:600;font-size:13px;color:#1a1a2e;margin-bottom:6px;">' + item.name + '</div>',
+        '  <div style="font-size:12px;color:#666;margin-bottom:4px;">잔여: ' + item.remain + ' &nbsp;/&nbsp; 집행률: ' + item.rate + '%</div>',
+        '  <div style="font-size:12px;color:#888;margin-bottom:10px;">예측: ' + item.predict + '</div>',
         '  <button onclick="alert(\'AI 결재함으로 요청이 전달되었습니다.\')" style="padding:4px 10px;background:' + borderColor + ';color:#fff;border:none;border-radius:5px;font-size:11.5px;cursor:pointer;">' + item.action + '</button>',
         '</div>'
       ].join('');
@@ -121,10 +121,10 @@ window.renderAiphBudget = function () {
     '  </div>',
 
     // 2열: 좌(차트 2개) / 우(AI 인사이트)
-    '  <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;margin-bottom:20px;">',
+    '  <div style="display:grid;grid-template-columns:1fr minmax(0,320px);gap:20px;margin-bottom:20px;overflow:hidden;">',
 
     // 좌측: 차트 패널
-    '    <div style="display:flex;flex-direction:column;gap:16px;">',
+    '    <div style="display:flex;flex-direction:column;gap:16px;min-width:0;">',
     '      <div class="asis-panel">',
     '        <div class="asis-panel-head"><span class="asis-panel-title">사무소별 예산 배정 vs 집행 현황</span></div>',
     '        <div class="asis-panel-body"><canvas id="budget-office-chart" style="max-height:220px;"></canvas></div>',
@@ -136,9 +136,9 @@ window.renderAiphBudget = function () {
     '    </div>',
 
     // 우측: AI 인사이트 패널
-    '    <div class="asis-panel" style="height:fit-content;">',
+    '    <div class="asis-panel" style="height:fit-content;min-width:0;overflow:hidden;">',
     '      <div class="asis-panel-head"><span class="asis-panel-title">🤖 AI 인사이트</span></div>',
-    '      <div class="asis-panel-body" style="display:flex;flex-direction:column;gap:14px;">',
+    '      <div class="asis-panel-body" style="display:flex;flex-direction:column;gap:14px;padding:14px;">',
     INSIGHT_ITEMS.map(renderInsightCard).join('\n'),
     '      </div>',
     '    </div>',
@@ -147,12 +147,12 @@ window.renderAiphBudget = function () {
 
     // 예산 집행 상세 테이블
     '  <div class="asis-panel">',
-    '    <div class="asis-panel-head">',
+    '    <div class="asis-panel-head" style="flex-wrap:wrap;gap:8px;">',
     '      <span class="asis-panel-title">예산 집행 상세</span>',
-    '      <button onclick="alert(\'CSV로 내보냅니다.\')" style="padding:5px 12px;border:1px solid #E2E8F0;border-radius:6px;background:#F8FAFC;font-size:12px;cursor:pointer;">📥 내보내기</button>',
+    '      <button onclick="alert(\'CSV로 내보냅니다.\')" style="padding:5px 12px;border:1px solid #E2E8F0;border-radius:6px;background:#F8FAFC;font-size:12px;cursor:pointer;flex-shrink:0;">📥 내보내기</button>',
     '    </div>',
     '    <div class="asis-panel-body">',
-    '      <div class="asis-table-wrap">',
+    '      <div class="asis-table-wrap" style="overflow-x:auto;">',
     '        <table class="asis-table">',
     '          <thead><tr>',
     '            <th>예산번호</th><th>사무소</th><th>항목</th><th style="text-align:right;">배정(만원)</th><th style="text-align:right;">집행(만원)</th><th style="text-align:right;">집행률</th><th>AI 예측</th><th>조치</th>',

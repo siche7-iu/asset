@@ -99,7 +99,7 @@ window.renderAiphEval = function () {
       "<div style='display:flex;gap:20px;margin-bottom:24px;align-items:flex-start;'>" +
         "<div class='asis-panel' style='flex:1;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;margin-bottom:14px;'>에이전트별 품질 레이더</div>" +
-          "<canvas id='eval-radar-chart' style='max-height:280px;'></canvas>" +
+          "<canvas id='eval-radar-chart' style='max-height:260px;height:260px;'></canvas>" +
         "</div>" +
         "<div class='asis-panel' style='width:300px;flex-shrink:0;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;margin-bottom:14px;'>평가 기준 안내</div>" +
@@ -119,7 +119,7 @@ window.renderAiphEval = function () {
         "</div>" +
         "<div style='overflow-x:auto;'>" +
           "<table class='asis-table'>" +
-            "<thead><tr><th>에이전트</th><th>정확도</th><th>충실도</th><th>관련성</th><th>응답속도</th><th>통과/전체</th><th>등급</th><th>관리</th></tr></thead>" +
+            "<thead><tr><th>에이전트</th><th style='min-width:120px;'>정확도</th><th style='min-width:120px;'>충실도</th><th style='min-width:120px;'>관련성</th><th>응답속도</th><th>통과/전체</th><th>등급</th><th>관리</th></tr></thead>" +
             "<tbody>" + buildAgentRows() + "</tbody>" +
           "</table>" +
         "</div>" +
@@ -135,7 +135,7 @@ window.renderAiphEval = function () {
         "</div>" +
         "<div style='overflow-x:auto;'>" +
           "<table class='asis-table'>" +
-            "<thead><tr><th>ID</th><th>에이전트</th><th>테스트 시나리오</th><th>기대 결과</th><th>판정</th><th>점수</th><th>실행 시각</th><th>로그</th></tr></thead>" +
+            "<thead><tr><th>ID</th><th>에이전트</th><th>테스트 시나리오</th><th>기대 결과</th><th>판정</th><th style='min-width:120px;'>점수</th><th>실행 시각</th><th>로그</th></tr></thead>" +
             "<tbody>" + buildTestRows() + "</tbody>" +
           "</table>" +
         "</div>" +

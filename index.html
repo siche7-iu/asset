@@ -964,6 +964,121 @@
               </div>
             </section>
 
+            <!-- 제안서 작성 요청 -->
+            <section id="pj-proposal-qa" class="pj-sec">
+              <h2 class="pj-sec-title">제안설명회 질의사항 — 작성 요청 (2026.06.10)</h2>
+              <p class="pj-lead">제안설명회 이후 IT관리개발팀에서 수행사에 전달한 질의사항 및 작성 요청. 총 15건 (요청 5 · 일정관리 3 · 요건정의 7).</p>
+              <table class="pj-table pj-table-qa">
+                <thead>
+                  <tr>
+                    <th style="width:8%;text-align:center">대분류</th>
+                    <th style="width:10%">중분류</th>
+                    <th style="width:37%">질의 / 요청 내용</th>
+                    <th style="width:6%;text-align:center">담당</th>
+                    <th>답변 내용</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 요청 (5건) -->
+                  <tr>
+                    <td rowspan="5" class="pj-qa-cat">요청</td>
+                    <td class="pj-qa-sub">사전분석<br>요청</td>
+                    <td class="pj-qa-q">○ 대면 인터뷰 요청 — NH통합IT센터<br>전산장비 자산 실물은 NH통합IT센터에 있으며 별도 ITSM시스템으로 관리되는 바, 고정자산시스템과 연동이 되지 않는 경우 전산장비 자산관리는 어려울 것으로 보입니다. 업무 프로세스 또는 시스템상 개선의견이 많으며, 건물·토지 등과 전산장비의 자산 도입·계약·검수·대금집행 및 기간 등 특징이 다릅니다.</td>
+                    <td class="pj-qa-person">하세호</td>
+                    <td class="pj-qa-ans"><span class="pj-qa-pending">확인 필요</span></td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">사전분석</td>
+                    <td class="pj-qa-q">○ 테스트 계획에 있어, 현재 운영 중인 시스템에서의 테스트에 대한 운영 리스크가 있습니다.<br>인프라 이슈 : 28년도 서버의 EOS, 동일서버 내 법인분리되지 않은 데이터 및 S/W 사용, 한 호스트 내 서로 다른 UI(신규UI 및 마이빌더)의 사용, 자바 버전·OS버전 종속성 여부 등에 대한 사전분석을 요청합니다.</td>
+                    <td class="pj-qa-person">하세호</td>
+                    <td class="pj-qa-ans">운영시스템에서의 테스트는 CBT로 진행 예정입니다. 기존 web/was 서버 내 신규 port 추가하여 tobe 시스템 운영이 가능한 것으로 답변 받았습니다. 서버 스펙 확인 후 WebSquare AI 버전 설치 및 가동 가능 여부 점검 예정.<br><small class="pj-qa-note">필요사항 : 서버스펙(OS버전, java 버전, 메모리 용량, 시스템 사용량)</small></td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">사전분석</td>
+                    <td class="pj-qa-q">○ AI 플랫폼 사용에 대한 인터페이스 이슈 등의 사전분석 요청<br>농협은행 생성형AI 플랫폼 활용 시 요구되는 GPU 자원·인터페이스 방법 등에 대한 사전분석 요청. 에이전트 설계·개발 투입인력이 1단계 분석/설계 기간에 없는 이유는 2단계 영역이라서라고 판단되는데, NH 생성형AI 플랫폼에 대한 선행 이해 없이는 2단계 계획 수행이 어려울 수 있습니다.</td>
+                    <td class="pj-qa-person">하세호</td>
+                    <td class="pj-qa-ans">농협은행 AI플랫폼에 대해서는 AX솔루션팀 방문, DAP 개발 환경 확인 등 사전에 확인한 바 있습니다. 인터페이스 방식에 대해서는 중앙회IT + 농협은행AI플랫폼 + 수행사 간 협의 및 확정해 나가도록 하겠습니다.</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">신규질의</td>
+                    <td class="pj-qa-q">○ 2단계 프로젝트 진행은 데이터 스키마 변경/추가 등에 따라 1단계 진행된 내용의 수정이 수반될 것으로 보입니다. 투입인력 조정을 통해 2단계 진행 중에도 수정개발 수용이 가능한건지 궁금합니다.</td>
+                    <td class="pj-qa-person">하세호</td>
+                    <td class="pj-qa-ans">1단계 대시보드·수기결산 전산화 내용은 AsIs 운영 시스템에 반영될 예정입니다. 이후 2단계로 재개발하여 적용할 계획이며, 변경에 대한 영향도가 수용 범위를 넘는 경우 변경통제위원회(CCB)를 개최하여 협의할 필요가 있습니다.</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">제언요청</td>
+                    <td class="pj-qa-q">○ 천명소프트가 현 시스템을 개발·유지보수하고 있다면, 현 고정자산시스템의 Pain Point 또는 개선점을 누구보다 잘 알고 있을 것입니다. 반드시 개선되어야 하는 부분에 대한 제안·제언이 있는지 궁금합니다.</td>
+                    <td class="pj-qa-person">하세호</td>
+                    <td class="pj-qa-ans"><span class="pj-qa-pending">확인 필요</span></td>
+                  </tr>
+                  <!-- 일정관리 (3건) -->
+                  <tr>
+                    <td rowspan="3" class="pj-qa-cat">일정관리</td>
+                    <td class="pj-qa-sub">일정/인력</td>
+                    <td class="pj-qa-q">투입인력계획서에서 업무개발 부분의 인력 투입 계획 조정이 필요할 듯합니다.<br>임대/리스 관련 화면은 복잡성이 높고 요구사항도 많은데 고급인력이 배정되어 있고, 상대적으로 난이도가 낮은 기타관리에 특급인력이 배정되어 있습니다. 결산 및 회계감사자료 부분도 중급인력인데 사업부서 요구사항 개발 시 6.5M/M는 적어 보입니다.<br><small class="pj-qa-note">근거 : 제안서_Ⅲ 업무 부문 · 별첨4 투입인력 계획</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">GNB아이텍에서 담당하는 업무 영역의 분석/설계는 안종영 이사·강상섭 부장 두 분이 리더로 수행합니다. 두 분 모두 30년 이상 경력이며 예산/회계 관련 프로젝트 다수 수행 경험이 있습니다. 특급 인원이 재물조사·기타관리만 수행하는 것이 아니라 전반적인 업무 분석/설계 활동을 수행하므로 문제없이 수행 가능합니다.<br><small class="pj-qa-note">참고 : "투입인력 프로파일_회계_예산" 시트</small></td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">인력</td>
+                    <td class="pj-qa-q">업무개발은 천명소프트와 GNB아이텍에서 진행할 것 같은데 업무를 어떻게 나눌 계획인지?<br><small class="pj-qa-note">근거 : 제안서_Ⅲ 업무 부문 · 별첨4 투입인력 계획</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">업무 영역으로 나눌 예정입니다.<br>· 천명소프트 : 기타관리 / 재물조사 / 현황관리 / 보고서(180개) RD전환<br>· GNB아이텍 : 원장관리 / 임대 / 리스 / 예산 / 세무 / 결산</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">인력</td>
+                    <td class="pj-qa-q">리스회계의 경우 산식이 정리된 업무방법서가 없기 때문에 기존 결산 프로그램 분석이 필요한 상황인데, 5M/M로 사업부서의 요구사항을 개발하기 위한 분석 및 테스트에 인력이 충분할지 의문입니다.<br><small class="pj-qa-note">근거 : 제안서_Ⅲ 업무 부문 · 별첨4 투입인력 계획</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">회계사 5MM에 대한 의견으로 이해하고 답변드립니다. 리스회계 영역에도 상세한 분석이 필요한 상황이라 MM에 대해서는 수행사에서도 고민 중인 사항입니다. 우선협상 종료 시까지 협의하면서 확정해나가도록 하겠습니다.</td>
+                  </tr>
+                  <!-- 요건정의 (7건) -->
+                  <tr>
+                    <td rowspan="7" class="pj-qa-cat">요건정의</td>
+                    <td class="pj-qa-sub">설계</td>
+                    <td class="pj-qa-q">사전미팅 때, 1단계 오픈은 웹페이지 형식으로 개발 후 2단계 오픈 시 툴로 넘어간다고 하셨는데 동일한 계획인지? 이중 개발이 되는 건 아닌지?<br><small class="pj-qa-note">근거 : 제안서_Ⅱ 구축기술부문</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">이중 개발되는 부분이 맞습니다. 데이터 시각화에 대한 1차 오픈 목표를 가지고 있기 때문에, 1차 연내 구현 후 재개발하여 2차 본오픈으로 전환할 예정입니다.</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">개발</td>
+                    <td class="pj-qa-q">인스웨이브 담당자(강민재 프로) 확인 결과, JDK 1.8에서 웹스퀘어 구동 가능하지만 환경 맞추는 개발이 필요하다고 했는데, 개발자분들이 진행할지 인스웨이브와 협업이 가능한지?<br><small class="pj-qa-note">근거 : 제안서_Ⅱ 구축기술부문</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">인스웨이브와 협업은 원활하게 진행이 가능합니다. 인스웨이브는 농협은행에서 웹스퀘어 전환 프로젝트를 다수 수행 중이고 지속적인 기술지원을 하고 있습니다. 환경 맞추는 개발 내용을 확인 후 시스템공통 개발자가 진행 가능한 내용인지 상세 확인하고 진행하겠습니다.</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">개발</td>
+                    <td class="pj-qa-q">제안서에서 AI PoC 검증을 해주셨는데 SK에서 Agent를 구현하는건지, 시연과 달리 농협 AI 솔루션 연계가 필요한건지?<br><small class="pj-qa-note">근거 : 제안서_Ⅲ 업무 부문</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">제안발표 시 AI PoC 내용은 SK에서 임의로 데이터를 생성하고 Agent를 구현했습니다. 시연 내용은 RFP AI요건 중 사용자 측면에서 Agent의 사용감을 나타내기 위한 용도로 제작된 내용입니다. 농협은행 AI 개발 환경에서 재구현하고, 자산관리시스템과 연계해야 합니다.</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">개발</td>
+                    <td class="pj-qa-q">지도는 어떤 방식으로 구현할 계획인지?<br><small class="pj-qa-note">근거 : 제안서_Ⅲ 업무 부문</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">JavaScript 기반의 지도 lib 사용 예정이며, 지도상에 표현하고자 하는 특정 자산을 분류하여 해당 자산을 타겟으로 구현 예정입니다. (PoC 구현 자료 스크린샷 등 공유 예정)</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">업무건의</td>
+                    <td class="pj-qa-q">결재 상신 이후 결재라인 변경 기능이 필요합니다.<br><small class="pj-qa-note">근거 : 제안서_Ⅲ 업무 부문</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">업무공통 영역에 신규 기능 추가 요건으로 이해했습니다. 현재 있는 결재선 관리에 결재선 변경 기능을 추가하는 것을 분석단계 요구사항 정의 시 신규 요건으로 정의하고 구현하겠습니다.</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">업무건의</td>
+                    <td class="pj-qa-q">수개월 전 리스계약 정정 요청 시, 잘못된 시점 원장 기준으로 정당한 계약 생성 후 리스료 지급 및 리스결산을 수행하여 리스부채·사용권자산 등의 계정처리와 원장반영을 진행 중입니다. 회계 컨설턴트와 함께 해당 부분을 전산화 가능할까요?<br><small class="pj-qa-note">근거 : 제안서_Ⅲ 업무 부문</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">리스 관련 계정처리 및 원장반영(DB update)을 별도로 후처리하고 계신 내용으로 이해했습니다. 해당 내용에 대해서는 조금 더 상세한 설명 및 분석이 필요할 것으로 보입니다.</td>
+                  </tr>
+                  <tr>
+                    <td class="pj-qa-sub">업무건의</td>
+                    <td class="pj-qa-q">현재 시스템에선 한 화면에서 자산원장을 불러온 채로, 다른 화면에서 자산원장을 변경한 후에 기존 화면의 원장을 변경할 경우 데이터 원장 정합성이 맞지 않게 되는 문제점이 있습니다. 결재 상신 시 원장 정합성 체크 로직이 필요합니다.<br><small class="pj-qa-note">근거 : 제안서_Ⅲ 업무 부문</small></td>
+                    <td class="pj-qa-person">박윤선</td>
+                    <td class="pj-qa-ans">전환 개발 시 체크로직을 적용하도록 하겠습니다.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
 
             <!-- 요구사항 정의 -->
             <section id="pj-req" class="pj-sec">
