@@ -3,7 +3,7 @@
 > 이 문서는 "지금까지 무엇을 했고, 어디까지 동작하며, 어떻게 이어서 작업하는지"를 정리한 것입니다.
 > 다음에 할 일은 [TODO.md](TODO.md), 디자인 규칙은 [DESIGN.md](DESIGN.md), 프로젝트 안내는 [CLAUDE.md](CLAUDE.md)를 참고하세요.
 
-최종 업데이트: **2026-06-15 (Phase 5 완료 — Phase 6 구현 대기 중)**
+최종 업데이트: **2026-06-15 (Phase 6 완료 — Phase 7 구현 대기 중)**
 
 ---
 
@@ -184,8 +184,8 @@ index.html 더블클릭  → 브라우저에서 바로 열림
 | ✅ Phase 5 | ① 이상탐지 보드 강화 (5→10 카테고리) | 완료 | `aiph-anomaly.js` |
 | ✅ Phase 5 | ② 자동 리포트 강화 (4→8 유형) | 완료 | `aiph-report.js` |
 | ✅ Phase 5 | ③ AI 예산 어시스턴트 신규 구현 | 완료 | `aiph-budget.js` |
-| **Phase 6** | ④ AI 결산·감사 지원 신규 구현 | 약 1~1.5시간 | `aiph-closing.js` 신규 |
-| **Phase 6** | ⑤ AI 계약·리스 관리 신규 구현 | | `aiph-contract.js` 신규 |
+| ✅ Phase 6 | ④ AI 결산·감사 지원 신규 구현 | 완료 | `aiph-closing.js` |
+| ✅ Phase 6 | ⑤ AI 계약·리스 관리 신규 구현 | 완료 | `aiph-contract.js` |
 | **Phase 7** | ⑥ AI 재물조사 분석 신규 구현 | 약 1시간 | `aiph-rfid.js` 신규 |
 | **Phase 7** | ⑦ AI 세무 검증 신규 구현 | | `aiph-tax.js` 신규 |
 | **Phase 7** | ⑧ 에이전트 빌더 플로우 확장 (5→12개) | | `aiph-builder.js` 수정 |
