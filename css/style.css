@@ -3005,13 +3005,9 @@ body.is-mobile .pj-shot-zoom { opacity: .75 !important; }
 
 /* ===== As-is 화면 내부 공통 레이아웃 ===== */
 .asis-page {
-  padding: 28px 32px;
+  padding: 16px 32px;
   max-width: 1400px;
   margin: 0 auto;
-}
-/* AI Agent 예상안 화면(view-aiph-*)만 상단 여백 축소 */
-[id^="view-aiph"] .asis-page {
-  padding-top: 16px;
 }
 .asis-page-header {
   display: flex;
