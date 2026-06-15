@@ -71,7 +71,7 @@ window.renderAiphContract = function () {
 
   // ===== 헬퍼: 리스 테이블 빌더 =====
   function buildLeaseTable(rows) {
-    var html = '<table class="asis-table"><thead><tr><th>계약번호</th><th>물건명</th><th>만기일</th><th>월 리스료</th><th>AI 분석</th><th>권고</th><th>분석</th></tr></thead><tbody>';
+    var html = '<div style="overflow-x:auto;"><table class="asis-table"><thead><tr><th>계약번호</th><th>물건명</th><th>만기일</th><th>월 리스료</th><th>AI 분석</th><th>권고</th><th>분석</th></tr></thead><tbody>';
     rows.forEach(function (r) {
       html += '<tr>';
       html += '<td style="font-family:monospace;font-size:11.5px;">' + r.no + '</td>';
@@ -83,13 +83,13 @@ window.renderAiphContract = function () {
       html += '<td><button onclick="alert(\'AI 갱신·해지 분석을 실행합니다.\')" style="padding:3px 9px;border:1px solid #E2E8F0;border-radius:5px;background:#fff;font-size:11px;cursor:pointer;">분석</button></td>';
       html += '</tr>';
     });
-    html += '</tbody></table>';
+    html += '</tbody></table></div>';
     return html;
   }
 
   // ===== 헬퍼: 상세 패널 빌더 =====
   function buildDetailPanel(d) {
-    return '<div>' +
+    return '<div style="padding:14px 16px;">' +
       '<div style="font-size:15px;font-weight:700;margin-bottom:4px;">' + d.title + '</div>' +
       '<div style="font-size:12.5px;color:#888;margin-bottom:16px;">' + d.desc + '</div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">' +
@@ -121,10 +121,10 @@ window.renderAiphContract = function () {
   });
 
   // ===== 타임라인 HTML =====
-  var tlHtml = '<div style="display:flex;align-items:flex-start;padding:8px 0;">';
+  var tlHtml = '<div style="display:flex;align-items:flex-start;padding:12px 0;">';
   TIMELINE.forEach(function (t, i) {
     tlHtml +=
-      '<div class="contract-tl-item" data-key="' + t.key + '" style="cursor:pointer;min-width:160px;flex:1;padding:8px 10px;border-radius:8px;transition:background 0.15s;">' +
+      '<div class="contract-tl-item" data-key="' + t.key + '" style="cursor:pointer;min-width:160px;flex:1;padding:14px 16px;border-radius:8px;transition:background 0.15s;">' +
         '<div style="width:14px;height:14px;border-radius:50%;background:' + t.dotColor + ';margin:0 auto 8px;border:3px solid #fff;box-shadow:0 0 0 2px ' + t.dotColor + ';"></div>' +
         '<div style="font-weight:700;font-size:13px;color:' + t.textColor + ';text-align:center;">' + t.dday + '</div>' +
         '<div style="font-size:13px;font-weight:600;margin:4px 0 2px;text-align:center;">' + t.label + '</div>' +

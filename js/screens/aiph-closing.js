@@ -138,34 +138,38 @@ window.renderAiphClosing = function () {
     '<div class="asis-panel-body">' +
 
     // 탭1
-    '<div id="closing-tab1">' +
+    '<div id="closing-tab1" style="padding:16px 0 0;">' +
     '<div style="display:grid;grid-template-columns:280px 1fr;gap:20px;margin-bottom:20px;">' +
     '<div>' +
     '<div style="font-size:14px;font-weight:600;margin-bottom:10px;">불일치 원인 분류</div>' +
-    '<div style="position:relative;height:200px;"><canvas id="closing-donut-chart"></canvas></div>' +
+    '<div style="position:relative;height:200px;padding:8px 0;"><canvas id="closing-donut-chart"></canvas></div>' +
     '<div style="margin-top:12px;">' + donutLegend + '</div>' +
     '</div>' +
     '<div>' +
     '<div style="font-size:14px;font-weight:600;margin-bottom:10px;">잔액대사 AI 분석</div>' +
+    '<div style="overflow-x:auto;">' +
     '<table class="asis-table"><thead><tr><th>계정과목</th><th>불일치 금액</th><th>원인</th><th>AI 권고사항</th><th>처리 상태</th></tr></thead>' +
     '<tbody>' + balanceRows + '</tbody></table>' +
     '</div>' +
     '</div>' +
+    '</div>' +
     '<div style="font-size:14px;font-weight:600;margin-bottom:10px;">감가상각 이상 탐지</div>' +
-    '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">' + depriCards + '</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">' + depriCards + '</div>' +
     '</div>' +
 
     // 탭2
-    '<div id="closing-tab2" style="display:none;">' +
+    '<div id="closing-tab2" style="display:none;padding:16px 0 0;">' +
     '<div style="background:#F0F9FF;border-left:4px solid #0284C7;padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:13px;color:#0c4a6e;">' +
     '전기말 기준 vs 당기말 기준 주석공시 데이터를 AI가 자동 비교·검증합니다. 🔴 불일치 항목은 자동으로 AI 결재함에 검토 요청이 생성됩니다.' +
     '</div>' +
+    '<div style="overflow-x:auto;">' +
     '<table class="asis-table"><thead><tr><th>항목</th><th>전기말</th><th>당기말</th><th>변동</th><th>AI 검증</th><th>액션</th></tr></thead>' +
     '<tbody>' + noteRows + '</tbody></table>' +
     '</div>' +
+    '</div>' +
 
     // 탭3
-    '<div id="closing-tab3" style="display:none;">' +
+    '<div id="closing-tab3" style="display:none;padding:16px 0 0;">' +
     '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">AI가 결산 단계별 진행 현황을 자동 추적합니다. 각 항목을 클릭하면 세부 작업 목록을 확인할 수 있습니다.</div>' +
     '<div style="display:flex;flex-direction:column;gap:12px;">' + checkCards + '</div>' +
     '</div>' +
@@ -211,6 +215,7 @@ window.renderAiphClosing = function () {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: { padding: { right: 16, top: 8 } },
         plugins: {
           legend: { display: false },
           tooltip: {
