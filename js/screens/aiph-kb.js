@@ -78,7 +78,7 @@ window.renderAiphKb = function () {
       "</div>" +
       // 상단: 검색 + 업로드
       "<div class='asis-panel' style='margin-bottom:20px;'>" +
-        "<div style='display:flex;gap:12px;align-items:center;flex-wrap:wrap;'>" +
+        "<div style='display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 16px;'>" +
           "<input id='kb-search' type='text' placeholder='문서명, 태그로 검색…' style='flex:1;min-width:200px;padding:8px 12px;border:1px solid #E2E8F0;border-radius:8px;font-size:13px;'>" +
           "<select id='kb-format-filter' style='padding:8px 10px;border:1px solid #E2E8F0;border-radius:8px;font-size:13px;'><option value=''>전체 형식</option><option>PDF</option><option>XLSX</option><option>DOCX</option><option>TXT</option></select>" +
           "<button onclick=\"alert('문서 업로드 기능을 엽니다. (시연 프로토타입)')\" style='padding:8px 16px;background:#3B82F6;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;'>📤 문서 업로드</button>" +
@@ -87,11 +87,11 @@ window.renderAiphKb = function () {
       "</div>" +
       // 카테고리 탭 + 문서 목록
       "<div class='asis-panel'>" +
-        "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
+        "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:14px 16px 0;'>" +
           "<div class='asis-tabs' id='kb-cat-tabs'>" + buildCatTabs() + "</div>" +
           "<span style='font-size:12px;color:#9CA3AF;' id='kb-doc-count'>전체 10건</span>" +
         "</div>" +
-        "<div style='overflow-x:auto;'>" +
+        "<div style='overflow-x:auto;padding:0 16px 14px;'>" +
           "<table class='asis-table' id='kb-doc-table'>" +
             "<thead><tr><th>ID</th><th>문서명 / 태그</th><th>카테고리</th><th>형식</th><th>크기</th><th>최종 갱신</th><th>AI 참조 수</th><th>상태</th><th>관리</th></tr></thead>" +
             "<tbody id='kb-doc-tbody'>" + buildDocRows("전체") + "</tbody>" +
@@ -100,6 +100,7 @@ window.renderAiphKb = function () {
       "</div>" +
       // 하단: 벡터 임베딩 현황
       "<div class='asis-panel' style='margin-top:20px;'>" +
+        "<div style='padding:16px 16px 0;'>" +
         "<div style='font-size:15px;font-weight:700;color:#111827;margin-bottom:14px;'>RAG 임베딩 현황</div>" +
         "<div style='display:grid;grid-template-columns:repeat(3,1fr);gap:14px;'>" +
           "<div style='background:#F8FAFC;border-radius:10px;padding:14px 16px;'>" +
@@ -119,7 +120,7 @@ window.renderAiphKb = function () {
           "</div>" +
         "</div>" +
         // 임베딩 상태 테이블
-        "<div style='overflow-x:auto;margin-top:16px;'>" +
+        "<div style='overflow-x:auto;margin-top:16px;padding-bottom:2px;'>" +
           "<table class='asis-table'>" +
             "<thead><tr><th>문서 ID</th><th>문서명</th><th>청크 수</th><th>인덱싱 일시</th><th>상태</th></tr></thead>" +
             "<tbody>" +
@@ -129,6 +130,7 @@ window.renderAiphKb = function () {
               "<tr><td style='font-size:11px;color:#9CA3AF;'>KB-PRO-001</td><td>자산 취득 업무 처리 절차서</td><td>87청크</td><td>2026-03-01 02:00</td><td><span style='color:#B45309;font-size:12px;font-weight:600;'>⚠ 갱신필요</span></td></tr>" +
             "</tbody>" +
           "</table>" +
+        "</div>" +
         "</div>" +
       "</div>" +
     "</div>";

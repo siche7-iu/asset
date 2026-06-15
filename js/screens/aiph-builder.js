@@ -173,9 +173,9 @@ window.renderAiphBuilder = function () {
   }
 
   function buildPaletteSection(title, items) {
-    var html = '<div style="font-size:11px;font-weight:700;color:#9CA3AF;margin:12px 0 6px;text-transform:uppercase;letter-spacing:.05em;">' + title + '</div>';
+    var html = '<div style="font-size:11px;font-weight:700;color:#9CA3AF;margin:12px 0 4px;padding:8px 10px 2px;text-transform:uppercase;letter-spacing:.05em;">' + title + '</div>';
     for (var i = 0; i < items.length; i++) {
-      html += '<div class="palette-item" style="padding:8px 10px;border-radius:6px;font-size:12px;color:#374151;cursor:grab;display:flex;align-items:center;gap:8px;">' + items[i] + '</div>';
+      html += '<div class="palette-item" style="padding:7px 10px;border-radius:6px;font-size:12px;color:#374151;cursor:grab;display:flex;align-items:center;gap:8px;">' + items[i] + '</div>';
     }
     return html;
   }
@@ -207,20 +207,26 @@ window.renderAiphBuilder = function () {
       '</div>' +
       // 활성 에이전트 카드 띠
       '<div class="asis-panel" style="margin-bottom:20px;">' +
-        '<div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;">활성 에이전트</div>' +
-        '<div style="overflow-x:auto;white-space:nowrap;padding-bottom:4px;">' +
-          buildAgentCards() +
+        '<div style="padding:14px 16px 10px;">' +
+          '<div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;">활성 에이전트</div>' +
+          '<div style="overflow-x:auto;white-space:nowrap;padding-bottom:4px;">' +
+            buildAgentCards() +
+          '</div>' +
         '</div>' +
       '</div>' +
       // 3열 메인 영역
       '<div style="display:flex;gap:16px;align-items:flex-start;">' +
         // 블록 팔레트
         '<div class="asis-panel" style="width:220px;flex-shrink:0;">' +
-          '<div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">블록 팔레트</div>' +
-          buildPaletteSection("🔍 트리거", ["⏰ 스케줄 트리거", "🔔 이벤트 트리거", "📥 API 입력"]) +
-          buildPaletteSection("📊 데이터", ["🗄️ 자산 조회", "📈 집계 분석", "🔍 이상탐지"]) +
-          buildPaletteSection("🤖 AI", ["💬 LLM 응답 생성", "🧠 RAG 검색", "📝 요약 생성"]) +
-          buildPaletteSection("⚙️ 액션", ["📧 이메일 발송", "✅ 결재 요청", "💾 데이터 저장"]) +
+          '<div style="padding:14px 14px 0;">' +
+            '<div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">블록 팔레트</div>' +
+          '</div>' +
+          '<div style="padding:0 14px 14px;">' +
+            buildPaletteSection("🔍 트리거", ["⏰ 스케줄 트리거", "🔔 이벤트 트리거", "📥 API 입력"]) +
+            buildPaletteSection("📊 데이터", ["🗄️ 자산 조회", "📈 집계 분석", "🔍 이상탐지"]) +
+            buildPaletteSection("🤖 AI", ["💬 LLM 응답 생성", "🧠 RAG 검색", "📝 요약 생성"]) +
+            buildPaletteSection("⚙️ 액션", ["📧 이메일 발송", "✅ 결재 요청", "💾 데이터 저장"]) +
+          '</div>' +
         '</div>' +
         // 캔버스
         '<div style="flex:1;">' +
@@ -236,9 +242,11 @@ window.renderAiphBuilder = function () {
         '</div>' +
         // 속성 패널
         '<div class="asis-panel" style="width:260px;flex-shrink:0;">' +
-          '<div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">속성</div>' +
-          '<div style="font-size:11px;color:#9CA3AF;margin-bottom:14px;">노드를 클릭하면 편집할 수 있습니다</div>' +
-          '<div id="prop-panel-content">' + buildPropPanel("trigger") + '</div>' +
+          '<div style="padding:14px 16px;">' +
+            '<div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">속성</div>' +
+            '<div style="font-size:11px;color:#9CA3AF;margin-bottom:14px;">노드를 클릭하면 편집할 수 있습니다</div>' +
+            '<div id="prop-panel-content">' + buildPropPanel("trigger") + '</div>' +
+          '</div>' +
         '</div>' +
       '</div>' +
     '</div>';
