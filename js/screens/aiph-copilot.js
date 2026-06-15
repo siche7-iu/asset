@@ -12,7 +12,7 @@ window.renderAiphCopilot = function () {
     styleEl.id = 'acp-style';
     styleEl.textContent = [
       /* 전체 레이아웃 */
-      '.acp-root{display:flex;height:100%;gap:0;background:#f8f9fb;font-family:inherit;overflow:hidden}',
+      '.acp-root{display:flex;height:100%;gap:0;background:#fff;font-family:inherit;overflow:hidden;border:1px solid #e8ecf0;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}',
       /* 좌측 패널 */
       '.acp-left{width:240px;min-width:200px;flex-shrink:0;background:#fff;border-right:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
       '.acp-left-head{padding:16px 16px 10px;font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f0f2f5}',
@@ -423,15 +423,18 @@ window.renderAiphCopilot = function () {
   wrapper.style.cssText = 'display:flex;flex-direction:column;height:100%;padding:0;';
 
   var pageHeader = document.createElement('div');
-  pageHeader.style.cssText = 'padding:20px 24px 0;flex-shrink:0;';
+  pageHeader.style.cssText = 'padding:20px 24px 16px;flex-shrink:0;';
   pageHeader.innerHTML = '<h2 style="font-size:22px;font-weight:700;color:#111827;margin:0 0 4px;">AI Copilot</h2>'
     + '<p style="font-size:14px;color:#6B7280;margin:0;">자산 데이터를 자연어로 질문하고 AI의 분석 결과를 즉시 확인합니다.</p>';
 
-  root.style.flex = '1';
-  root.style.minHeight = '0';
+  var contentArea = document.createElement('div');
+  contentArea.style.cssText = 'flex:1;min-height:0;padding:0 20px 20px;display:flex;flex-direction:column;';
 
+  root.style.cssText = 'flex:1;min-height:0;';
+
+  contentArea.appendChild(root);
   wrapper.appendChild(pageHeader);
-  wrapper.appendChild(root);
+  wrapper.appendChild(contentArea);
   el.appendChild(wrapper);
 
   // ── 미리 로드된 대화 2쌍 렌더 ────────────────────────────────
