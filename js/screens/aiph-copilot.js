@@ -16,7 +16,7 @@ window.renderAiphCopilot = function () {
       /* 좌측 패널 */
       '.acp-left{width:240px;min-width:200px;flex-shrink:0;background:#fff;border-right:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
       '.acp-left-head{padding:16px 16px 10px;font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f0f2f5}',
-      '.acp-suggest-list{display:flex;flex-direction:column;gap:2px;padding:8px}',
+      '.acp-suggest-list{display:flex;flex-direction:column;gap:8px;padding:8px}',
       '.acp-suggest-btn{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:9px 11px;font-size:13px;color:#374151;cursor:pointer;line-height:1.4;transition:background .15s,border-color .15s}',
       '.acp-suggest-btn:hover{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}',
       '.acp-left-section-head{padding:14px 16px 6px;font-size:11px;font-weight:700;color:#aaa;letter-spacing:.06em;text-transform:uppercase;border-top:1px solid #f0f2f5;margin-top:4px}',
@@ -49,7 +49,7 @@ window.renderAiphCopilot = function () {
       /* 추론 단계 토글 */
       '.acp-reasoning-toggle{display:inline-flex;align-items:center;gap:5px;background:none;border:1px solid #e5e7eb;border-radius:8px;padding:4px 10px;font-size:12px;color:#6b7280;cursor:pointer;margin-top:4px;transition:border-color .15s,color .15s}',
       '.acp-reasoning-toggle:hover{border-color:#93c5fd;color:#2563eb}',
-      '.acp-reasoning-body{display:none;margin-top:8px;padding:0 0 0 12px;border-left:3px solid #e5e7eb}',
+      '.acp-reasoning-body{display:none;margin-top:8px;padding:4px 0 4px 12px;border-left:3px solid #e5e7eb}',
       '.acp-reasoning-body.open{display:block}',
       '.acp-step{display:flex;align-items:flex-start;gap:8px;padding:6px 0}',
       '.acp-step-num{min-width:22px;height:22px;border-radius:50%;background:#f3f4f6;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#6b7280;flex-shrink:0}',
@@ -80,7 +80,7 @@ window.renderAiphCopilot = function () {
       /* 우측 패널 */
       '.acp-right{width:260px;min-width:220px;flex-shrink:0;background:#fff;border-left:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
       '.acp-right-head{padding:16px 16px 10px;font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f0f2f5}',
-      '.acp-agent-list{display:flex;flex-direction:column;gap:0;padding:8px}',
+      '.acp-agent-list{display:flex;flex-direction:column;gap:4px;padding:8px}',
       '.acp-agent-card{display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:10px;transition:background .15s}',
       '.acp-agent-icon{font-size:20px;min-width:28px;text-align:center}',
       '.acp-agent-name{font-size:13px;font-weight:600;color:#374151}',

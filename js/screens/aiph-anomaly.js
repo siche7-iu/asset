@@ -373,6 +373,9 @@ window.renderAiphAnomaly = function () {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+          padding: { right: 16, top: 8 }
+        },
         plugins: {
           legend: { display: false },
           tooltip: {
