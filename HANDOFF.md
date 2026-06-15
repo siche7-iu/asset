@@ -3,7 +3,7 @@
 > 이 문서는 "지금까지 무엇을 했고, 어디까지 동작하며, 어떻게 이어서 작업하는지"를 정리한 것입니다.
 > 다음에 할 일은 [TODO.md](TODO.md), 디자인 규칙은 [DESIGN.md](DESIGN.md), 프로젝트 안내는 [CLAUDE.md](CLAUDE.md)를 참고하세요.
 
-최종 업데이트: **2026-06-15 (Phase 6 완료 — Phase 7 구현 대기 중)**
+최종 업데이트: **2026-06-15 (Phase 5~7 전체 완료 — AI 에이전트 확장 설계 구현 완성)**
 
 ---
 
@@ -69,26 +69,33 @@
 | 데이터 추출 | `asis-prop-extract` | 체크박스 동적 컬럼 |
 | 계약 관리 | `asis-prop-contract` | D-day 배지 + KPI4 |
 
-#### AI Agent 예상안 (9개 서브화면, 사이드바 아코디언)
+#### AI Agent 예상안 (14개 서브화면, 사이드바 아코디언) — Phase 5~7 전체 완성
 
-**사용자 레이어 (4개)**
+**사용자 레이어 (7개)**
 
 | 서브화면 | view ID | 핵심 내용 |
 |---------|---------|----------|
 | AI Copilot | `aiph-copilot` | 3열 레이아웃 · 추론 Trace · 신뢰도 배지 · 멀티에이전트 진행표시 · 추천질문 6개 mock 답변 |
-| 이상탐지 보드 | `aiph-anomaly` | KPI4 · 탐지 카드 그리드 · Chart.js 바 차트 · 탐지 이력 |
+| 이상탐지 보드 | `aiph-anomaly` | KPI4 · 탐지 카드 11개(10카테고리) · Chart.js 바 차트 · 탐지 이력 |
 | AI 결재함 | `aiph-approval` | KPI4 · 결재 대기 6행 · 우측 상세 패널(클릭 토글) · AI 분석 근거 · 승인/반려 |
-| 자동 리포트 | `aiph-report` | KPI4 · Chart.js 월별 발송 바 차트 · 스케줄 설정 · 발송 이력 |
+| 자동 리포트 | `aiph-report` | KPI4 · Chart.js 월별 발송 바 차트 · 8유형 현황 카드 · 스케줄 설정 · 발송 이력 |
+| AI 예산 어시스턴트 ★ | `aiph-budget` | KPI4 · 사무소별 배정vs집행 바 차트 · 월별 추세+AI 예측 꺾은선 · AI 인사이트 패널 · 예산 12행 테이블 |
+| AI 결산·감사 지원 ★ | `aiph-closing` | KPI4 · 3탭(결산이상탐지·주석공시검증·AI결산체크리스트) · 도넛 차트(불일치원인) |
+| AI 계약·리스 관리 ★ | `aiph-contract` | KPI4 · 만기 타임라인 4건(클릭→분석패널) · 리스 현황 3탭(부동산·차량·기타) |
+| AI 재물조사 분석 ★ | `aiph-rfid` | KPI4 · 수평 막대 차트(이상 4분류) · Leaflet CircleMarker 지도(9지역) · 우선처리 자산 8행 |
 
-**관리 레이어 (5개)**
+**관리 레이어 (6개)**
 
 | 서브화면 | view ID | 핵심 내용 |
 |---------|---------|----------|
 | 모니터링 | `aiph-monitor` | 6축 운영 현황 · KPI4 · Chart.js 2개(질의량·응답시간) · 세션 상세 패널 · 가드레일 현황 |
-| 에이전트 빌더 | `aiph-builder` | 활성 에이전트 카드 4개 · 블록 팔레트 · SVG 플로우 다이어그램 · 노드 클릭 속성 패널 |
+| 에이전트 빌더 | `aiph-builder` | 활성 에이전트 카드 4개 · 블록 팔레트 · SVG 플로우 다이어그램(5노드) · 예시 플로우 12개 |
 | 지식베이스 | `aiph-kb` | 문서 10건 · 카테고리 탭 필터 · 실시간 검색 · RAG 임베딩 현황 |
 | 평가·품질 | `aiph-eval` | Chart.js 레이더 차트(3에이전트·5축) · 에이전트 성적표 · 테스트 케이스 이력 |
+| AI 세무 검증 ★ | `aiph-tax` | KPI4 · 3탭(부가세신고검증·지급회의서이상탐지·법인세검증) · 탐지 결과 테이블 |
 | 거버넌스 | `aiph-governance` | 역할·권한 매트릭스(3역할×10기능) · 가드레일 정책 5건 · 감사 로그 |
+
+> ★ = Phase 5~7에서 신규 추가된 화면
 
 #### 프로젝트 관리 (비밀 버튼 `v0.9.3 · NH Demo Build` → 비밀번호 입력)
 - 비밀번호: SHA-256 해시 처리 완료 (로컬 메모리에만 원문 보관)
@@ -116,13 +123,18 @@ js/screens/                   화면별 분리 모듈 (lazy-init, window.renderX
   asis-c.js                   건물생애주기·건물운영관리·임대정보관리
   asis-d.js                   데이터추출·계약관리
   aiph-copilot.js             AI Copilot (3열·추론Trace·멀티에이전트)
-  aiph-anomaly.js             이상탐지 보드
+  aiph-anomaly.js             이상탐지 보드 (10카테고리, 11카드)
   aiph-approval.js            AI 결재함 (상세 패널 토글)
-  aiph-report.js              자동 리포트 (Chart.js 바 차트)
+  aiph-report.js              자동 리포트 (8유형, Chart.js 바 차트)
+  aiph-budget.js              AI 예산 어시스턴트 (배정vs집행 바+AI예측 꺾은선)
+  aiph-closing.js             AI 결산·감사 지원 (3탭·도넛 차트)
+  aiph-contract.js            AI 계약·리스 관리 (만기 타임라인·3탭)
+  aiph-rfid.js                AI 재물조사 분석 (Leaflet 지도·수평 막대)
   aiph-monitor.js             모니터링 (6축 도식·세션 상세)
-  aiph-builder.js             에이전트 빌더 (SVG 플로우 다이어그램)
+  aiph-builder.js             에이전트 빌더 (SVG 플로우 다이어그램, 플로우 12개)
   aiph-kb.js                  지식베이스 (RAG 임베딩 현황)
   aiph-eval.js                평가·품질 (Chart.js 레이더 차트)
+  aiph-tax.js                 AI 세무 검증 (3탭·부가세·지급회의서·법인세)
   aiph-governance.js          거버넌스 (역할 매트릭스·가드레일·감사 로그)
 images/                       SVG 아이콘 + 프로젝트 관리용 이미지
   proj-screens/               To-Be 화면 디자인 14장 (비밀번호 인증 후에만 src 주입)

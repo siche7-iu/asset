@@ -57,8 +57,8 @@ var INTRO_ENABLED = false;
     "asis-prop-extract", "asis-prop-contract",
     "aiph-copilot", "aiph-anomaly", "aiph-monitor",
     "aiph-approval", "aiph-builder",
-    "aiph-report", "aiph-budget", "aiph-closing", "aiph-contract", "aiph-kb",
-    "aiph-eval", "aiph-governance"
+    "aiph-report", "aiph-budget", "aiph-closing", "aiph-contract", "aiph-rfid", "aiph-kb",
+    "aiph-eval", "aiph-tax", "aiph-governance"
   ];
 
   // ===== 차트 공용 툴팁 =====
@@ -199,8 +199,10 @@ var INTRO_ENABLED = false;
           "aiph-budget": window.renderAiphBudget,
           "aiph-closing": window.renderAiphClosing,
           "aiph-contract": window.renderAiphContract,
+          "aiph-rfid": window.renderAiphRfid,
           "aiph-kb": window.renderAiphKb,
           "aiph-eval": window.renderAiphEval,
+          "aiph-tax": window.renderAiphTax,
           "aiph-governance": window.renderAiphGovernance
         };
         var fn = _aiphMap[view];

@@ -163,12 +163,14 @@
               <button class="nav-item nav-subitem" data-view="aiph-report" data-title="자동 리포트"><span class="nav-item-label">자동 리포트</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-budget" data-title="AI 예산 어시스턴트"><span class="nav-item-label">AI 예산 어시스턴트</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-closing" data-title="AI 결산·감사 지원"><span class="nav-item-label">AI 결산·감사 지원</span></button>
+              <button class="nav-item nav-subitem" data-view="aiph-rfid" data-title="AI 재물조사 분석"><span class="nav-item-label">AI 재물조사 분석</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-contract" data-title="AI 계약·리스 관리"><span class="nav-item-label">AI 계약·리스 관리</span></button>
               <div class="nav-sub-grp-label">관리 레이어</div>
               <button class="nav-item nav-subitem" data-view="aiph-monitor" data-title="모니터링"><span class="nav-item-label">모니터링</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-builder" data-title="에이전트 빌더"><span class="nav-item-label">에이전트 빌더</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-kb" data-title="지식베이스"><span class="nav-item-label">지식베이스</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-eval" data-title="평가·품질"><span class="nav-item-label">평가·품질</span></button>
+              <button class="nav-item nav-subitem" data-view="aiph-tax" data-title="AI 세무 검증"><span class="nav-item-label">AI 세무 검증</span></button>
               <button class="nav-item nav-subitem" data-view="aiph-governance" data-title="거버넌스"><span class="nav-item-label">거버넌스</span></button>
             </div>
           </div>
@@ -190,7 +192,13 @@
           <button class="pj-group-head"><span class="pj-caret"></span><span class="nav-item-label">분석 자료</span></button>
           <div class="pj-group-items">
             <a class="pj-link" data-pj="pj-rfp"><span class="nav-item-label">RFP 요청사항</span></a>
-            <a class="pj-link" data-pj="pj-proposal"><span class="nav-item-label">제안서 (UI/UX·개발)</span></a>
+            <div class="pj-subgroup">
+              <a class="pj-link pj-link-parent" data-pj="pj-proposal"><span class="pj-subcaret"></span><span class="nav-item-label">제안서 (UI/UX·개발)</span></a>
+              <div class="pj-subitems">
+                <a class="pj-link pj-sublink" data-pj="pj-proposal"><span class="nav-item-label">제안서 분석</span></a>
+                <a class="pj-link pj-sublink" data-pj="pj-proposal-qa"><span class="nav-item-label">작성 요청</span></a>
+              </div>
+            </div>
             <a class="pj-link" data-pj="pj-req"><span class="nav-item-label">요구사항 정의</span></a>
             <div class="pj-subgroup">
               <a class="pj-link pj-link-parent" data-pj="pj-asis"><span class="pj-subcaret"></span><span class="nav-item-label">As-Is 현행 · 화면 디자인</span></a>
@@ -744,8 +752,14 @@
         <section id="view-aiph-eval" class="view asis-view">
           <div class="asis-loading"><div class="asis-spinner"></div><span>평가·품질 로딩 중…</span></div>
         </section>
+        <section id="view-aiph-tax" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>AI 세무 검증 로딩 중…</span></div>
+        </section>
         <section id="view-aiph-governance" class="view asis-view">
           <div class="asis-loading"><div class="asis-spinner"></div><span>거버넌스 로딩 중…</span></div>
+        </section>
+        <section id="view-aiph-rfid" class="view asis-view">
+          <div class="asis-loading"><div class="asis-spinner"></div><span>AI 재물조사 분석 로딩 중…</span></div>
         </section>
 
         <!-- ===== 프로젝트 관리 화면 (비밀 모드) ===== -->
@@ -2876,6 +2890,8 @@
   <script src="js/screens/aiph-contract.js"></script>
   <script src="js/screens/aiph-kb.js"></script>
   <script src="js/screens/aiph-eval.js"></script>
+  <script src="js/screens/aiph-rfid.js"></script>
+  <script src="js/screens/aiph-tax.js"></script>
   <script src="js/screens/aiph-governance.js"></script>
 
   <!-- 요구사항 편집 모달 -->
