@@ -78,17 +78,18 @@ window.renderAiphCopilot = function () {
       '.acp-send-btn:hover{background:#1d4ed8}',
       '.acp-send-btn svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
       /* 우측 패널 */
-      '.acp-right{width:260px;min-width:220px;flex-shrink:0;background:#fff;border-left:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
+      '.acp-right{width:280px;min-width:240px;flex-shrink:0;background:#fff;border-left:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
       '.acp-right-head{padding:16px 16px 10px;font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f0f2f5}',
       '.acp-agent-list{display:flex;flex-direction:column;gap:4px;padding:8px}',
-      '.acp-agent-card{display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:10px;transition:background .15s}',
+      '.acp-agent-card{display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:10px;transition:background .15s;background:#f9fafb;border:1px solid #f0f2f5;margin-bottom:4px}',
+      '.acp-agent-card:last-child{margin-bottom:0}',
       '.acp-agent-icon{font-size:20px;min-width:28px;text-align:center}',
       '.acp-agent-name{font-size:13px;font-weight:600;color:#374151}',
       '.acp-agent-status{font-size:11px;color:#9ca3af;margin-top:1px}',
       '.acp-agent-status.running{color:#16a34a;font-weight:600}',
       '.acp-live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#16a34a;margin-right:3px;animation:acpPulse 1s ease-in-out infinite}',
       '@keyframes acpPulse{0%,100%{opacity:1}50%{opacity:.3}}',
-      '.acp-result-section{padding:12px 14px;border-top:1px solid #f0f2f5;margin-top:4px}',
+      '.acp-result-section{padding:10px 14px;border-top:1px solid #f0f2f5}',
       '.acp-result-head{font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}',
       '.acp-result-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f3f4f6}',
       '.acp-result-stat:last-child{border-bottom:none}',
@@ -196,12 +197,12 @@ window.renderAiphCopilot = function () {
 
   // ── 추천 질문 목록 ────────────────────────────────────────────
   var SUGGESTIONS = [
-    '서울 지역 유휴 자산 현황 알려줘',
-    '내용연수 초과 자산 목록 보여줘',
-    '이번 달 취득한 자산은?',
-    '부서별 자산 현황 요약해줘',
-    '보험 만료 임박 자산 알려줘',
-    '전체 자산 감가상각률은?'
+    { icon: '🏢', text: '서울 지역 유휴 자산 현황 알려줘' },
+    { icon: '📋', text: '내용연수 초과 자산 목록 보여줘' },
+    { icon: '📅', text: '이번 달 취득한 자산은?' },
+    { icon: '🏦', text: '부서별 자산 현황 요약해줘' },
+    { icon: '🛡️', text: '보험 만료 임박 자산 알려줘' },
+    { icon: '📊', text: '전체 자산 감가상각률은?' }
   ];
 
   // ── 에이전트 정의 ─────────────────────────────────────────────
@@ -293,28 +294,33 @@ window.renderAiphCopilot = function () {
 
   var suggestList = document.createElement('div');
   suggestList.className = 'acp-suggest-list';
-  SUGGESTIONS.forEach(function (q) {
+  SUGGESTIONS.forEach(function (item) {
     var btn = document.createElement('button');
     btn.className = 'acp-suggest-btn';
-    btn.textContent = q;
-    btn.dataset.q = q;
+    btn.dataset.q = item.text;
+    btn.innerHTML = '<span style="margin-right:7px;font-size:14px;">' + item.icon + '</span>' + item.text;
     suggestList.appendChild(btn);
   });
   leftPanel.appendChild(suggestList);
 
   var freqHead = document.createElement('div');
   freqHead.className = 'acp-left-section-head';
-  freqHead.textContent = '자주 쓰는 질문';
+  freqHead.textContent = '즐겨찾는 분석';
   leftPanel.appendChild(freqHead);
 
   var freqList = document.createElement('div');
   freqList.className = 'acp-suggest-list';
-  ['전체 자산 요약', '부서별 현황'].forEach(function (q) {
+  [
+    { icon: '✅', text: '전체 자산 요약' },
+    { icon: '✅', text: '부서별 현황' },
+    { icon: '⚠️', text: '위험 자산 목록' },
+    { icon: '📈', text: '감가상각 현황' }
+  ].forEach(function (item) {
     var btn = document.createElement('button');
     btn.className = 'acp-suggest-btn';
-    btn.style.color = '#9ca3af';
-    btn.textContent = q;
-    btn.dataset.q = q;
+    btn.style.color = '#6b7280';
+    btn.dataset.q = item.text;
+    btn.innerHTML = '<span style="margin-right:7px;">' + item.icon + '</span>' + item.text;
     freqList.appendChild(btn);
   });
   leftPanel.appendChild(freqList);
@@ -327,7 +333,11 @@ window.renderAiphCopilot = function () {
   chatHeader.className = 'acp-chat-header';
   chatHeader.innerHTML = '<span class="acp-ai-badge"><span class="acp-ai-dot"></span>AI</span>'
     + '<span class="acp-chat-title">자산 AI Copilot</span>'
-    + '<span class="acp-chat-subtitle">자산에 대해 자유롭게 질문하세요</span>';
+    + '<span class="acp-chat-subtitle" style="background:#f3f4f6;border-radius:12px;padding:2px 8px;font-size:11px;color:#6b7280;">NH 고정자산 특화 · Claude 3.5</span>'
+    + '<div style="margin-left:auto;display:flex;gap:8px;">'
+    + '<button onclick="alert(\'대화 이력 기능은 준비 중입니다.\')" style="padding:5px 12px;background:none;border:1px solid #e5e7eb;border-radius:8px;font-size:12px;color:#6b7280;cursor:pointer;white-space:nowrap;">이력 보기</button>'
+    + '<button onclick="document.getElementById(\'acp-messages\').innerHTML=\'\'" style="padding:5px 12px;background:#2563eb;border:none;border-radius:8px;font-size:12px;color:#fff;cursor:pointer;white-space:nowrap;font-weight:600;">새 대화 시작</button>'
+    + '</div>';
 
   var messages = document.createElement('div');
   messages.className = 'acp-messages';
@@ -363,19 +373,35 @@ window.renderAiphCopilot = function () {
       ? '<div class="acp-agent-status running"><span class="acp-live-dot"></span>' + ag.status + '</div>'
       : '<div class="acp-agent-status">' + ag.status + '</div>';
     card.innerHTML = '<span class="acp-agent-icon">' + ag.icon + '</span>'
-      + '<div><div class="acp-agent-name">' + ag.name + '</div>' + statusHtml + '</div>';
+      + '<div style="flex:1;min-width:0;"><div class="acp-agent-name">' + ag.name + '</div>' + statusHtml + '</div>'
+      + '<span class="acp-agent-cnt" id="acp-cnt-' + ag.id + '" style="margin-left:auto;font-size:11px;font-weight:700;color:#9ca3af;background:#f3f4f6;border-radius:10px;padding:2px 7px;flex-shrink:0;">—</span>';
     agentList.appendChild(card);
   });
   rightPanel.appendChild(agentList);
 
   var resultSection = document.createElement('div');
   resultSection.className = 'acp-result-section';
-  resultSection.innerHTML = '<div class="acp-result-head">현재 분석 결과</div>'
-    + '<div class="acp-result-stat"><span class="acp-result-label">조회 건수</span><span class="acp-result-val">—</span></div>'
-    + '<div class="acp-result-stat"><span class="acp-result-label">이상 감지</span><span class="acp-result-val">2건</span></div>'
-    + '<div class="acp-result-stat"><span class="acp-result-label">마지막 쿼리</span><span class="acp-result-val">—</span></div>';
   resultSection.id = 'acp-result-section';
+  resultSection.innerHTML = '<div class="acp-result-head">📊 AI 요약</div>'
+    + '<div class="acp-result-stat"><span class="acp-result-label">조회 건수</span><span class="acp-result-val" id="acp-stat-count">—</span></div>'
+    + '<div class="acp-result-stat"><span class="acp-result-label">이상 감지</span><span class="acp-result-val" style="color:#ef4444;">2건</span></div>'
+    + '<div class="acp-result-stat"><span class="acp-result-label">신뢰도</span><span class="acp-result-val" id="acp-stat-conf">—</span></div>'
+    + '<div class="acp-result-stat"><span class="acp-result-label">마지막 쿼리</span><span class="acp-result-val" id="acp-stat-query" style="font-size:11px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">—</span></div>';
   rightPanel.appendChild(resultSection);
+
+  var relatedSection = document.createElement('div');
+  relatedSection.className = 'acp-result-section';
+  relatedSection.id = 'acp-related-assets';
+  relatedSection.innerHTML = '<div class="acp-result-head">📌 관련 자산</div>'
+    + '<div style="font-size:12px;color:#9ca3af;padding:4px 0;" id="acp-related-list">질문 후 관련 자산이 표시됩니다.</div>';
+  rightPanel.appendChild(relatedSection);
+
+  var actionSection = document.createElement('div');
+  actionSection.className = 'acp-result-section';
+  actionSection.id = 'acp-action-card';
+  actionSection.innerHTML = '<div class="acp-result-head">💡 추천 조치</div>'
+    + '<div style="font-size:12px;color:#9ca3af;padding:4px 0;" id="acp-action-list">AI 분석 후 추천 조치가 표시됩니다.</div>';
+  rightPanel.appendChild(actionSection);
 
   // ── DOM 조립 ─────────────────────────────────────────────────
   root.appendChild(leftPanel);
@@ -463,11 +489,70 @@ window.renderAiphCopilot = function () {
 
   // ── 우측 결과 업데이트 헬퍼 ──────────────────────────────────
   function updateResultSection(count, label) {
-    var rs = document.getElementById('acp-result-section');
-    if (!rs) return;
-    var stats = rs.querySelectorAll('.acp-result-stat');
-    if (stats[0]) stats[0].querySelector('.acp-result-val').textContent = count;
-    if (stats[2]) stats[2].querySelector('.acp-result-val').textContent = label;
+    var statCount = document.getElementById('acp-stat-count');
+    if (statCount) statCount.textContent = count;
+    var statQuery = document.getElementById('acp-stat-query');
+    if (statQuery) statQuery.textContent = label;
+  }
+
+  function updateRightPanel(answer, q) {
+    // 신뢰도 업데이트
+    var statConf = document.getElementById('acp-stat-conf');
+    if (statConf) {
+      var confColors = { excellent: '#15803d', good: '#1d4ed8', moderate: '#b45309', bad: '#b91c1c' };
+      statConf.textContent = answer.confLabel;
+      statConf.style.color = confColors[answer.confidence] || '#374151';
+    }
+
+    // 조회 건수 업데이트
+    var statCount = document.getElementById('acp-stat-count');
+    if (statCount) {
+      var cnt = answer.citations.length + answer.moreCount;
+      statCount.textContent = cnt ? cnt + '건' : '—';
+    }
+
+    // 마지막 쿼리 업데이트
+    var statQuery = document.getElementById('acp-stat-query');
+    if (statQuery) {
+      statQuery.textContent = q.substring(0, 10) + (q.length > 10 ? '…' : '');
+    }
+
+    // 관련 자산 업데이트
+    var relatedList = document.getElementById('acp-related-list');
+    if (relatedList) {
+      if (answer.citations && answer.citations.length) {
+        relatedList.innerHTML = answer.citations.map(function (c) {
+          return '<div style="padding:4px 0;border-bottom:1px solid #f3f4f6;color:#374151;font-weight:600;">'
+            + c + ' <span style="font-size:11px;color:#9ca3af;font-weight:400;">↗ 상세보기</span></div>';
+        }).join('') + (answer.moreCount > 0 ? '<div style="padding:4px 0;color:#9ca3af;font-size:11px;">+' + answer.moreCount + '건 더 있음</div>' : '');
+      } else {
+        relatedList.innerHTML = '<div style="font-size:12px;color:#9ca3af;padding:4px 0;">직접 인용 자산 없음</div>';
+      }
+    }
+
+    // 추천 조치 업데이트
+    var actionList = document.getElementById('acp-action-list');
+    if (actionList) {
+      var actions = {
+        excellent: ['✅ 정기 보고서에 포함 권장', '📋 부서별 현황 추가 조회'],
+        good: ['🔍 상세 조회 추가 진행', '📊 트렌드 분석 검토'],
+        moderate: ['⚠️ 담당자 확인 필요', '📝 수동 검증 권장'],
+        bad: ['🚨 즉시 담당자 보고', '🔒 시스템 점검 요청']
+      };
+      var actionItems = actions[answer.confidence] || actions['good'];
+      actionList.innerHTML = actionItems.map(function (a) {
+        return '<div style="padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:12px;color:#374151;">' + a + '</div>';
+      }).join('');
+    }
+
+    // 에이전트 처리 건수 배지 업데이트
+    var totalCnt = answer.citations.length + answer.moreCount;
+    var cntSearch  = document.getElementById('acp-cnt-search');
+    var cntAnalyze = document.getElementById('acp-cnt-analyze');
+    var cntGenerate = document.getElementById('acp-cnt-generate');
+    if (cntSearch)   cntSearch.textContent   = totalCnt ? totalCnt + '건' : '—';
+    if (cntAnalyze)  cntAnalyze.textContent  = totalCnt ? totalCnt + '건' : '—';
+    if (cntGenerate) cntGenerate.textContent = '1건';
   }
 
   // ── 질문 처리 시뮬레이션 ─────────────────────────────────────
@@ -528,6 +613,9 @@ window.renderAiphCopilot = function () {
       // 결과 업데이트
       var cnt = answer.citations.length + answer.moreCount || '—';
       updateResultSection(typeof cnt === 'number' ? cnt + '건' : cnt, q.substring(0, 8) + '…');
+
+      // 우측 패널 전체 업데이트
+      updateRightPanel(answer, q);
 
       _processing = false;
     }, 1800);
