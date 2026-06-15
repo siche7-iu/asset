@@ -16,9 +16,9 @@ window.renderAiphCopilot = function () {
       /* 좌측 패널 */
       '.acp-left{width:240px;min-width:200px;flex-shrink:0;background:#fff;border-right:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
       '.acp-left-head{padding:16px 16px 10px;font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f0f2f5}',
-      '.acp-suggest-list{display:flex;flex-direction:column;gap:8px;padding:8px}',
-      '.acp-suggest-btn{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:9px 11px;font-size:13px;color:#374151;cursor:pointer;line-height:1.4;transition:background .15s,border-color .15s}',
-      '.acp-suggest-btn:hover{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}',
+      '.acp-suggest-list{display:flex;flex-direction:column;gap:6px;padding:8px}',
+      '.acp-suggest-btn{display:block;width:100%;text-align:left;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:10px 12px;font-size:13px;color:#374151;cursor:pointer;line-height:1.45;transition:background .15s,border-color .15s,box-shadow .15s}',
+      '.acp-suggest-btn:hover{background:#EFF6FF;border-color:#93C5FD;color:#1D4ED8;box-shadow:0 1px 3px rgba(59,130,246,0.1)}',
       '.acp-left-section-head{padding:14px 16px 6px;font-size:11px;font-weight:700;color:#aaa;letter-spacing:.06em;text-transform:uppercase;border-top:1px solid #f0f2f5;margin-top:4px}',
       /* 중앙 채팅 */
       '.acp-center{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}',
@@ -407,7 +407,22 @@ window.renderAiphCopilot = function () {
   root.appendChild(leftPanel);
   root.appendChild(center);
   root.appendChild(rightPanel);
-  el.appendChild(root);
+
+  var wrapper = document.createElement('div');
+  wrapper.className = 'asis-page';
+  wrapper.style.cssText = 'display:flex;flex-direction:column;height:100%;padding:0;';
+
+  var pageHeader = document.createElement('div');
+  pageHeader.style.cssText = 'padding:20px 24px 0;flex-shrink:0;';
+  pageHeader.innerHTML = '<h2 style="font-size:22px;font-weight:700;color:#111827;margin:0 0 4px;">AI Copilot</h2>'
+    + '<p style="font-size:14px;color:#6B7280;margin:0;">자산 데이터를 자연어로 질문하고 AI의 분석 결과를 즉시 확인합니다.</p>';
+
+  root.style.flex = '1';
+  root.style.minHeight = '0';
+
+  wrapper.appendChild(pageHeader);
+  wrapper.appendChild(root);
+  el.appendChild(wrapper);
 
   // ── 미리 로드된 대화 2쌍 렌더 ────────────────────────────────
   function appendUserMsg(text) {
@@ -426,16 +441,13 @@ window.renderAiphCopilot = function () {
     bindFeedback(wrap);
   }
 
-  // 대화 1
-  appendUserMsg('서울 지역 유휴 자산 현황 알려줘');
-  appendAiMsg(MOCK_ANSWERS['서울 지역 유휴 자산 현황 알려줘']);
-
-  // 대화 2
-  appendUserMsg('내용연수 초과 자산 목록 보여줘');
-  appendAiMsg(MOCK_ANSWERS['내용연수 초과 자산 목록 보여줘']);
-
-  // 스크롤 맨 아래
-  messages.scrollTop = messages.scrollHeight;
+  // 빈 채팅 초기 상태
+  var welcomeEl = document.createElement('div');
+  welcomeEl.style.cssText = 'text-align:center;padding:40px 20px;color:#9CA3AF;';
+  welcomeEl.innerHTML = '<div style="font-size:32px;margin-bottom:12px;">💬</div>'
+    + '<div style="font-size:15px;font-weight:600;color:#374151;margin-bottom:6px;">자산 AI Copilot에 오신 것을 환영합니다</div>'
+    + '<div style="font-size:13px;color:#9CA3AF;">왼쪽 추천 질문을 클릭하거나<br>아래 입력창에 자유롭게 질문하세요.</div>';
+  messages.appendChild(welcomeEl);
 
   // ── 추론 토글 바인딩 ────────────────────────────────────────
   function bindToggle(wrap) {
