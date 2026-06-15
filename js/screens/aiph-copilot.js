@@ -12,16 +12,16 @@ window.renderAiphCopilot = function () {
     styleEl.id = 'acp-style';
     styleEl.textContent = [
       /* 전체 레이아웃 */
-      '.acp-root{display:flex;height:100%;gap:0;background:#fff;font-family:inherit;overflow:hidden;border:1px solid #e8ecf0;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}',
+      '.acp-root{display:flex;height:100%;gap:12px;background:transparent;font-family:inherit;}',
       /* 좌측 패널 */
-      '.acp-left{width:240px;min-width:200px;flex-shrink:0;background:#fff;border-right:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
+      '.acp-left{width:240px;min-width:200px;flex-shrink:0;background:#fff;border:1px solid #e8edf2;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;flex-direction:column;overflow-y:auto}',
       '.acp-left-head{padding:16px 16px 10px;font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f0f2f5}',
       '.acp-suggest-list{display:flex;flex-direction:column;gap:6px;padding:8px}',
       '.acp-suggest-btn{display:block;width:100%;text-align:left;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:10px 12px;font-size:13px;color:#374151;cursor:pointer;line-height:1.45;transition:background .15s,border-color .15s,box-shadow .15s}',
       '.acp-suggest-btn:hover{background:#EFF6FF;border-color:#93C5FD;color:#1D4ED8;box-shadow:0 1px 3px rgba(59,130,246,0.1)}',
       '.acp-left-section-head{padding:14px 16px 6px;font-size:11px;font-weight:700;color:#aaa;letter-spacing:.06em;text-transform:uppercase;border-top:1px solid #f0f2f5;margin-top:4px}',
       /* 중앙 채팅 */
-      '.acp-center{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}',
+      '.acp-center{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;background:#fff;border:1px solid #e8edf2;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}',
       '.acp-chat-header{padding:14px 20px;background:#fff;border-bottom:1px solid #e8ecf0;display:flex;align-items:center;gap:10px;flex-shrink:0}',
       '.acp-chat-title{font-size:15px;font-weight:700;color:#1a1a2e}',
       '.acp-chat-subtitle{font-size:12px;color:#888}',
@@ -77,7 +77,7 @@ window.renderAiphCopilot = function () {
       '.acp-send-btn{height:42px;border-radius:12px;background:#2563eb;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;color:#fff;}',
       '.acp-send-btn:hover{background:#1d4ed8}',
       /* 우측 패널 */
-      '.acp-right{width:280px;min-width:240px;flex-shrink:0;background:#fff;border-left:1px solid #e8ecf0;display:flex;flex-direction:column;overflow-y:auto}',
+      '.acp-right{width:280px;min-width:240px;flex-shrink:0;background:#fff;border:1px solid #e8edf2;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;flex-direction:column;overflow-y:auto}',
       '.acp-right-head{padding:16px 16px 10px;font-size:11px;font-weight:700;color:#888;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f0f2f5}',
       '.acp-agent-list{display:flex;flex-direction:column;gap:4px;padding:8px}',
       '.acp-agent-card{display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:10px;transition:background .15s;background:#f9fafb;border:1px solid #f0f2f5;margin-bottom:4px}',
@@ -423,12 +423,12 @@ window.renderAiphCopilot = function () {
   wrapper.style.cssText = 'display:flex;flex-direction:column;height:100%;padding:0;';
 
   var pageHeader = document.createElement('div');
-  pageHeader.style.cssText = 'padding:20px 24px 16px;flex-shrink:0;';
+  pageHeader.style.cssText = 'padding:20px 24px 16px;flex-shrink:0;background:#fff;border-bottom:1px solid #E5E7EB;';
   pageHeader.innerHTML = '<h2 style="font-size:22px;font-weight:700;color:#111827;margin:0 0 4px;">AI Copilot</h2>'
     + '<p style="font-size:14px;color:#6B7280;margin:0;">자산 데이터를 자연어로 질문하고 AI의 분석 결과를 즉시 확인합니다.</p>';
 
   var contentArea = document.createElement('div');
-  contentArea.style.cssText = 'flex:1;min-height:0;padding:0 20px 20px;display:flex;flex-direction:column;';
+  contentArea.style.cssText = 'flex:1;min-height:0;padding:8px 16px 16px;display:flex;flex-direction:column;background:#F3F4F6;';
 
   root.style.cssText = 'flex:1;min-height:0;';
 
