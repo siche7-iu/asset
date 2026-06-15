@@ -94,6 +94,7 @@ window.renderAiphTax = function () {
   html += '  <strong>AI 이상 탐지 요약</strong>: 최근 6개월 세금계산서 중 통계적 기준선(±3σ) 이탈 항목 4건 탐지. ';
   html += '  공통매입세액 적용비율 전기 대비 이상 변동 3건. 누락 의심 계산서 3건.';
   html += '</div>';
+  html += '<div class="asis-table-wrap">';
   html += '<table class="asis-table">';
   html += '<thead><tr>';
   html += '  <th>과세기간</th><th>거래처</th><th>유형</th><th>금액</th><th>이탈도</th><th>AI 위험도</th><th>조치</th>';
@@ -112,6 +113,7 @@ window.renderAiphTax = function () {
     html += '</tr>';
   }
   html += '</tbody></table>';
+  html += '</div>';
   html += '</div>'; // tax-vat
 
   // ── 탭 2: 지급회의서 이상 탐지 ──────────────────────────────
@@ -120,6 +122,7 @@ window.renderAiphTax = function () {
   html += '  <strong>AI 이상 탐지 요약</strong>: 반복 지급 패턴 이상 3건, 증빙서류 누락 3건, 금액 단위 오류 의심 1건. ';
   html += '  고위험 건은 즉시 세무담당자 확인이 필요합니다.';
   html += '</div>';
+  html += '<div class="asis-table-wrap">';
   html += '<table class="asis-table">';
   html += '<thead><tr>';
   html += '  <th>지급일</th><th>거래처</th><th>금액</th><th>탐지 패턴</th><th>근거</th><th>AI 위험도</th><th>조치</th>';
@@ -138,6 +141,7 @@ window.renderAiphTax = function () {
     html += '</tr>';
   }
   html += '</tbody></table>';
+  html += '</div>';
   html += '</div>'; // tax-payment
 
   // ── 탭 3: 법인세 검증 ───────────────────────────────────────
@@ -146,6 +150,7 @@ window.renderAiphTax = function () {
   html += '  <strong>AI 검증 요약</strong>: 업무용 차량 비용 처리 기준 위반 의심 2건, 간주임대료 계산 이탈 1건, ';
   html += '  세무조정 항목 전기 대비 이상 변동 3건.';
   html += '</div>';
+  html += '<div class="asis-table-wrap">';
   html += '<table class="asis-table">';
   html += '<thead><tr>';
   html += '  <th>구분</th><th>항목</th><th>금액</th><th>AI 발견 이슈</th><th>AI 위험도</th><th>조치</th>';
@@ -163,6 +168,7 @@ window.renderAiphTax = function () {
     html += '</tr>';
   }
   html += '</tbody></table>';
+  html += '</div>';
   html += '</div>'; // tax-corp
 
   html += '</div>'; // asis-panel-body

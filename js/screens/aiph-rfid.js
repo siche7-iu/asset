@@ -110,7 +110,7 @@ window.renderAiphRfid = function () {
     '    <div class="asis-panel">',
     '      <div class="asis-panel-head"><span class="asis-panel-title">지역별 재물조사 현황</span></div>',
     '      <div class="asis-panel-body" style="padding:0;">',
-    '        <div id="rfid-map" style="height:260px;border-radius:0 0 8px 8px;"></div>',
+    '        <div id="rfid-map" style="height:260px;border-radius:0 0 8px 8px;overflow:hidden;"></div>',
     '      </div>',
     '    </div>',
 
@@ -121,7 +121,7 @@ window.renderAiphRfid = function () {
     '    <div class="asis-panel-head">',
     '      <span class="asis-panel-title">우선 처리 자산 목록</span>',
     '      <button onclick="alert(\'AI 결재함으로 일괄 처리 요청이 전달되었습니다.\')" ' +
-    '        style="padding:6px 14px;background:#3B82F6;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">AI 결재함으로 일괄 요청</button>',
+    '        style="padding:6px 14px;background:#3B82F6;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;white-space:nowrap;">AI 결재함으로 일괄 요청</button>',
     '    </div>',
     '    <div class="asis-panel-body">',
     '      <div class="asis-table-wrap">',
@@ -165,6 +165,9 @@ window.renderAiphRfid = function () {
               label: function (ctx) { return ctx.parsed.x + '건'; }
             }
           }
+        },
+        layout: {
+          padding: { right: 16, top: 8 }
         },
         scales: {
           x: {
