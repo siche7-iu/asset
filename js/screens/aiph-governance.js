@@ -105,7 +105,7 @@ window.renderAiphGovernance = function () {
         "<div class='asis-kpi-card accent-red'><div class='asis-kpi-label'>감사 로그</div><div class='asis-kpi-value'>247건</div><div class='asis-kpi-sub'>이번 달 전체 이력</div></div>" +
       "</div>" +
       // 역할·권한 매트릭스
-      "<div class='asis-panel' style='margin-bottom:24px;'>" +
+      "<div class='asis-panel' style='margin-bottom:24px;padding:16px 20px;'>" +
         "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;'>역할·권한 매트릭스</div>" +
           "<button onclick=\"alert('역할을 편집합니다.')\" style='padding:6px 14px;background:#3B82F6;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;'>역할 관리</button>" +
@@ -131,7 +131,7 @@ window.renderAiphGovernance = function () {
         "<div style='overflow-x:auto;'>" + buildPermMatrix() + "</div>" +
       "</div>" +
       // 가드레일 정책
-      "<div class='asis-panel' style='margin-bottom:24px;'>" +
+      "<div class='asis-panel' style='margin-bottom:24px;padding:16px 20px;'>" +
         "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;'>가드레일 정책</div>" +
           "<button onclick=\"alert('새 정책을 추가합니다.')\" style='padding:6px 14px;background:#7C3AED;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;'>+ 정책 추가</button>" +
@@ -144,7 +144,7 @@ window.renderAiphGovernance = function () {
         "</div>" +
       "</div>" +
       // 감사 로그
-      "<div class='asis-panel'>" +
+      "<div class='asis-panel' style='padding:16px 20px;'>" +
         "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;'>감사 로그</div>" +
           "<div style='display:flex;gap:8px;'>" +

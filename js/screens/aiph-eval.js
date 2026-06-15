@@ -97,11 +97,11 @@ window.renderAiphEval = function () {
       "</div>" +
       // 2열: 레이더 차트 + 에이전트 등급
       "<div style='display:flex;gap:20px;margin-bottom:24px;align-items:flex-start;'>" +
-        "<div class='asis-panel' style='flex:1;'>" +
+        "<div class='asis-panel' style='flex:1;padding:16px 20px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;margin-bottom:14px;'>에이전트별 품질 레이더</div>" +
           "<canvas id='eval-radar-chart' style='max-height:260px;height:260px;'></canvas>" +
         "</div>" +
-        "<div class='asis-panel' style='width:300px;flex-shrink:0;'>" +
+        "<div class='asis-panel' style='width:300px;flex-shrink:0;padding:16px 20px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;margin-bottom:14px;'>평가 기준 안내</div>" +
           "<div style='display:flex;flex-direction:column;gap:10px;font-size:13px;'>" +
             "<div style='padding:10px 12px;background:#F0FDF4;border-radius:8px;border-left:3px solid #16A34A;'><div style='font-weight:600;color:#15803D;margin-bottom:3px;'>정확도 (Accuracy)</div><div style='color:#6B7280;'>AI 응답이 실제 자산 데이터와 일치하는 비율</div></div>" +
@@ -112,7 +112,7 @@ window.renderAiphEval = function () {
         "</div>" +
       "</div>" +
       // 에이전트별 성적표
-      "<div class='asis-panel' style='margin-bottom:24px;'>" +
+      "<div class='asis-panel' style='margin-bottom:24px;padding:16px 20px;'>" +
         "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;'>에이전트별 성적표</div>" +
           "<button onclick=\"alert('전체 테스트를 재실행합니다.')\" style='padding:6px 14px;background:#3B82F6;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;'>▶ 전체 테스트 실행</button>" +
@@ -125,7 +125,7 @@ window.renderAiphEval = function () {
         "</div>" +
       "</div>" +
       // 테스트 케이스 목록
-      "<div class='asis-panel'>" +
+      "<div class='asis-panel' style='padding:16px 20px;'>" +
         "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;'>" +
           "<div style='font-size:15px;font-weight:700;color:#111827;'>테스트 케이스 이력</div>" +
           "<div style='display:flex;gap:8px;'>" +
